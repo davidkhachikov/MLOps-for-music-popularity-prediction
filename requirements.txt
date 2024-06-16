@@ -1,3 +1,4 @@
 dvc
 pytest
 hydra-core
+dvc_gdrive
