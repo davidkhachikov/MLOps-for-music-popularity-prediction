@@ -2,3 +2,7 @@ dvc
 pytest
 hydra-core
 dvc_gdrive
+pandas
+seaborn
+scipy
+numpy
