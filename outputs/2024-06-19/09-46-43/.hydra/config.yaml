@@ -1,5 +1,0 @@
-data:
-  version: 1.0
-  path: data/tracs.csv
-  repo: .
-  remote: mlops_remote
