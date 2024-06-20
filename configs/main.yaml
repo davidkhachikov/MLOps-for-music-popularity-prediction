@@ -1,5 +1,5 @@
 data:
-  version: 1.0
-  path: data/tracs.csv
+  version: v1.0
+  path: /data/tracks.csv
   repo: .
   remote: mlops_remote

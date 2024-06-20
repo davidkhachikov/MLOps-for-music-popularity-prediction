@@ -1,4 +1,5 @@
-dvc
+dvc[gdrive]
+git+https://github.com/fsspec/gdrivefs
 pytest
 hydra-core
 dvc_gdrive
