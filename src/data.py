@@ -8,7 +8,6 @@ import math
 import os.path
 import pandas as pd
 from hydra import initialize, compose
-import hydra
 from omegaconf import DictConfig
 import dvc.api
 
@@ -30,7 +29,7 @@ def sample_data():
     # Read the data file
     with dvc.api.open(cfg.data_local.path, rev=cfg.data_local.version, encoding='utf-8') as f:
         df = pd.read_csv(f)
-    return df
+    return df.iloc[0:int(len(df) * cfg.data_local.sample_size)]
 
 
 def sample_data_remotely():
