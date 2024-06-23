@@ -6,7 +6,6 @@ data_remote:
   sample_size: 0.2
   data_size: 899702
   column_number: 33
-
 data_local:
   path: ../data/tracks.csv
   version: v0.0
