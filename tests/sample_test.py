@@ -5,6 +5,7 @@ from hydra import initialize, compose
 from omegaconf import DictConfig
 import pytest
 import pandas as pd
+from math import ceil
 
 samples_data = [
     ("./data/samples/sample.csv")
@@ -15,7 +16,7 @@ data_list = [pd.read_csv(path) for path in samples_data]
 @pytest.mark.parametrize("data", data_list)
 def test_is_not_empty(data):
     """test of sampled data fails if it is empty"""
-    assert not data.is_empty()
+    assert not data.empty
 
 @pytest.mark.parametrize("data", data_list)
 def test_size_of_sample(data):
@@ -23,7 +24,7 @@ def test_size_of_sample(data):
     # Initialize Hydra to read the configuration
     with initialize(config_path="../configs", version_base=None):
         cfg: DictConfig = compose(config_name='main')
-    assert data.shape[0] == int(cfg.data.data_size*cfg.data.sample_size)
+    assert data.shape[0] == ceil(cfg.data.data_size/cfg.data.num_files)
 
 @pytest.mark.parametrize("data", data_list)
 def test_number_of_columns(data):
