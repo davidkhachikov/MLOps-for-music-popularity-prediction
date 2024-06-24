@@ -1,0 +1,100 @@
+columns_expectation:
+  track_id:
+    type: str
+    can_be_none: False
+  streams:
+    type: float
+    can_be_none: True
+  artist_followers:
+    type: float
+    can_be_none: False
+  genres:
+    type: str
+    can_be_none: False
+  album_total_tracks:
+    type: float
+    can_be_none: False
+  track_artists:
+    type: str
+    can_be_none: True
+  artist_popularity:
+    type: float
+    can_be_none: False
+  explicit:
+    type: bool
+    can_be_none: False
+  tempo:
+    type: float
+    can_be_none: True
+  chart:
+    type: str
+    can_be_none: True
+  album_release_date:
+    type: str
+    can_be_none: False
+  energy:
+    type: float
+    can_be_none: True
+  key:
+    type: float
+    can_be_none: True
+  added_at:
+    type: str
+    can_be_none: True
+  popularity:
+    type: float
+    can_be_none: False
+  track_album_album:
+    type: str
+    can_be_none: True
+  duration_ms:
+    type: float
+    can_be_none: True
+  available_markets:
+    type: str
+    can_be_none: False
+  track_track_number:
+    type: float
+    can_be_none: True
+  rank:
+    type: float
+    can_be_none: True
+  mode:
+    type: float
+    can_be_none: True
+  time_signature:
+    type: float
+    can_be_none: True
+  album_name:
+    type: str
+    can_be_none: True
+  speechiness:
+    type: float
+    can_be_none: True
+  region:
+    type: str
+    can_be_none: True
+  danceability:
+    type: float
+    can_be_none: True
+  valence:
+    type: float
+    can_be_none: True
+  acousticness:
+    type: float
+    can_be_none: True
+  liveness:
+    type: float
+    can_be_none: True
+  trend:
+    type: str
+    can_be_none: True
+  instrumentalness:
+    type: float
+    can_be_none: True
+  loudness:
+    type: float
+    can_be_none: True
+  name:
+    type: str
+    can_be_none: True
