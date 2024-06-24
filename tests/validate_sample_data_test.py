@@ -8,11 +8,7 @@ import pandas as pd
 import pytest
 
 samples_data = [
-    ("../data/samples/sample_1.csv"),
-    ("../data/samples/sample_2.csv"),
-    ("../data/samples/sample_3.csv"),
-    ("../data/samples/sample_4.csv"),
-    ("../data/samples/sample_5.csv")
+    ("./data/samples/sample.csv")
 ]
 
 data_list = [pd.read_csv(path) for path in samples_data]
