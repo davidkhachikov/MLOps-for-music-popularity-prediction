@@ -1,1 +1,2 @@
 # Notebooks
+- In the `1_business_data_understanding.ipynb` notebook, we conduct an in-depth analysis of the music popularity prediction business problems and analyzed dataset. This involves exploring data distributions, data testings, and proof of concept model.
