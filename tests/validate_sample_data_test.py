@@ -4,11 +4,21 @@ import of tested functions and types for tests
 from pydoc import locate
 from hydra import initialize, compose
 from omegaconf import DictConfig
-from src.data import (sample_data, sample_data_remotely)
+import pandas as pd
+import pytest
 
-data = sample_data()
+samples_data = [
+    ("../data/samples/sample_1.csv"),
+    ("../data/samples/sample_2.csv"),
+    ("../data/samples/sample_3.csv"),
+    ("../data/samples/sample_4.csv"),
+    ("../data/samples/sample_5.csv")
+]
 
-def test_track_id_type():
+data_list = [pd.read_csv(path) for path in samples_data]
+
+@pytest.mark.parametrize("data", data_list)
+def test_track_id_type(data):
     """test for checking correctness of types in 'track_id' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -17,7 +27,8 @@ def test_track_id_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.track_id.can_be_none)
 
-def test_streams_type():
+@pytest.mark.parametrize("data", data_list)
+def test_streams_type(data):
     """test for checking correctness of types in 'streams' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -25,8 +36,9 @@ def test_streams_type():
     for val in data["streams"]:
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.streams.can_be_none)
-        
-def test_artist_followers_type():
+
+@pytest.mark.parametrize("data", data_list)
+def test_artist_followers_type(data):
     """test for checking correctness of types in 'artist_followers' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -35,7 +47,8 @@ def test_artist_followers_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.artist_followers.can_be_none)
 
-def test_genres_type():
+@pytest.mark.parametrize("data", data_list)
+def test_genres_type(data):
     """test for checking correctness of types in 'genres' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -44,7 +57,8 @@ def test_genres_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.genres.can_be_none)
 
-def test_album_total_tracks_type():
+@pytest.mark.parametrize("data", data_list)
+def test_album_total_tracks_type(data):
     """test for checking correctness of types in 'album_total_tracks' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -53,7 +67,8 @@ def test_album_total_tracks_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.album_total_tracks.can_be_none)
 
-def test_track_artists_type():
+@pytest.mark.parametrize("data", data_list)
+def test_track_artists_type(data):
     """test for checking correctness of types in 'track_artists' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -62,7 +77,8 @@ def test_track_artists_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.track_artists.can_be_none)
 
-def test_artist_popularity_type():
+@pytest.mark.parametrize("data", data_list)
+def test_artist_popularity_type(data):
     """test for checking correctness of types in 'artist_popularity' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -71,7 +87,8 @@ def test_artist_popularity_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.artist_popularity.can_be_none)
 
-def test_explicit_type():
+@pytest.mark.parametrize("data", data_list)
+def test_explicit_type(data):
     """test for checking correctness of types in 'explicit' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -80,7 +97,8 @@ def test_explicit_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.explicit.can_be_none)
 
-def test_tempo_type():
+@pytest.mark.parametrize("data", data_list)
+def test_tempo_type(data):
     """test for checking correctness of types in 'tempo' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -89,7 +107,8 @@ def test_tempo_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.tempo.can_be_none)
 
-def test_chart_type():
+@pytest.mark.parametrize("data", data_list)
+def test_chart_type(data):
     """test for checking correctness of types in 'chart' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -98,7 +117,8 @@ def test_chart_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.chart.can_be_none)
 
-def test_album_release_date_type():
+@pytest.mark.parametrize("data", data_list)
+def test_album_release_date_type(data):
     """test for checking correctness of types in 'album_release_date' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -107,7 +127,8 @@ def test_album_release_date_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.album_release_date.can_be_none)
 
-def test_energy_type():
+@pytest.mark.parametrize("data", data_list)
+def test_energy_type(data):
     """test for checking correctness of types in 'energy' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -116,7 +137,8 @@ def test_energy_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.energy.can_be_none)
 
-def test_key_type():
+@pytest.mark.parametrize("data", data_list)
+def test_key_type(data):
     """test for checking correctness of types in 'key' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -125,7 +147,8 @@ def test_key_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.key.can_be_none)
 
-def test_added_at_type():
+@pytest.mark.parametrize("data", data_list)
+def test_added_at_type(data):
     """test for checking correctness of types in 'added_at' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -134,7 +157,8 @@ def test_added_at_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.added_at.can_be_none)
 
-def test_popularity_type():
+@pytest.mark.parametrize("data", data_list)
+def test_popularity_type(data):
     """test for checking correctness of types in 'popularity' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -143,7 +167,8 @@ def test_popularity_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.popularity.can_be_none)
 
-def test_track_album_album_type():
+@pytest.mark.parametrize("data", data_list)
+def test_track_album_album_type(data):
     """test for checking correctness of types in 'track_album_album' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -152,7 +177,8 @@ def test_track_album_album_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.track_album_album.can_be_none)
 
-def test_duration_ms_type():
+@pytest.mark.parametrize("data", data_list)
+def test_duration_ms_type(data):
     """test for checking correctness of types in 'duration_ms' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -161,7 +187,8 @@ def test_duration_ms_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.duration_ms.can_be_none)
 
-def test_available_markets_type():
+@pytest.mark.parametrize("data", data_list)
+def test_available_markets_type(data):
     """test for checking correctness of types in 'available_markets' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -170,7 +197,8 @@ def test_available_markets_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.available_markets.can_be_none)
 
-def test_track_track_number_type():
+@pytest.mark.parametrize("data", data_list)
+def test_track_track_number_type(data):
     """test for checking correctness of types in 'track_track_number' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -179,7 +207,8 @@ def test_track_track_number_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.track_track_number.can_be_none)
 
-def test_rank_type():
+@pytest.mark.parametrize("data", data_list)
+def test_rank_type(data):
     """test for checking correctness of types in 'rank' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -188,7 +217,8 @@ def test_rank_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.rank.can_be_none)
 
-def test_mode_type():
+@pytest.mark.parametrize("data", data_list)
+def test_mode_type(data):
     """test for checking correctness of types in 'streams' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -197,7 +227,8 @@ def test_mode_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.mode.can_be_none)
 
-def test_time_signature_type():
+@pytest.mark.parametrize("data", data_list)
+def test_time_signature_type(data):
     """test for checking correctness of types in 'time_signature' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -206,7 +237,8 @@ def test_time_signature_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.time_signature.can_be_none)
 
-def test_album_name_type():
+@pytest.mark.parametrize("data", data_list)
+def test_album_name_type(data):
     """test for checking correctness of types in 'album_name' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -215,7 +247,8 @@ def test_album_name_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.album_name.can_be_none)
 
-def test_speechiness_type():
+@pytest.mark.parametrize("data", data_list)
+def test_speechiness_type(data):
     """test for checking correctness of types in 'speechiness' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -224,7 +257,8 @@ def test_speechiness_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.speechiness.can_be_none)
 
-def test_region_type():
+@pytest.mark.parametrize("data", data_list)
+def test_region_type(data):
     """test for checking correctness of types in 'region' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -233,7 +267,8 @@ def test_region_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.region.can_be_none)
 
-def test_danceability_type():
+@pytest.mark.parametrize("data", data_list)
+def test_danceability_type(data):
     """test for checking correctness of types in 'danceability' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -242,7 +277,8 @@ def test_danceability_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.danceability.can_be_none)
 
-def test_valence_type():
+@pytest.mark.parametrize("data", data_list)
+def test_valence_type(data):
     """test for checking correctness of types in 'valence' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -251,7 +287,8 @@ def test_valence_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.valence.can_be_none)
 
-def test_acousticness_type():
+@pytest.mark.parametrize("data", data_list)
+def test_acousticness_type(data):
     """test for checking correctness of types in 'acousticness' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -260,7 +297,8 @@ def test_acousticness_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.acousticness.can_be_none)
 
-def test_liveness_type():
+@pytest.mark.parametrize("data", data_list)
+def test_liveness_type(data):
     """test for checking correctness of types in 'liveness' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -269,7 +307,8 @@ def test_liveness_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.liveness.can_be_none)
 
-def test_trend_type():
+@pytest.mark.parametrize("data", data_list)
+def test_trend_type(data):
     """test for checking correctness of types in 'trend' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -278,7 +317,8 @@ def test_trend_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.trend.can_be_none)
 
-def test_instrumentalness_type():
+@pytest.mark.parametrize("data", data_list)
+def test_instrumentalness_type(data):
     """test for checking correctness of types in 'instrumentalness' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -287,7 +327,8 @@ def test_instrumentalness_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.instrumentalness.can_be_none)
 
-def test_loudness_type():
+@pytest.mark.parametrize("data", data_list)
+def test_loudness_type(data):
     """test for checking correctness of types in 'loudness' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
@@ -296,7 +337,8 @@ def test_loudness_type():
         assert isinstance(val, data_type) \
             or (val is None and expectations.columns_expectation.loudness.can_be_none)
 
-def test_name_type():
+@pytest.mark.parametrize("data", data_list)
+def test_name_type(data):
     """test for checking correctness of types in 'name' column"""
     with initialize(config_path="../services/gx", version_base=None):
         expectations: DictConfig = compose(config_name='expectations')
