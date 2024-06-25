@@ -208,7 +208,6 @@ def validate_initial_data():
         validator=validator
     )
     checkpoint_result = checkpoint.run()
-    print(checkpoint_result.items())
     if checkpoint_result.success:
         exit(0)
     exit(1)
