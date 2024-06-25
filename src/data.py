@@ -40,7 +40,7 @@ def sample_data(num=0):
                     rev=cfg.data.version,
                     encoding='utf-8'
             ) as f:
-                df = pd.read_csv(f)
+                df = pd.read_csv(f, low_memory=False)
 
         num_files = cfg.data.num_files
         start = num * int(len(df) / num_files)
