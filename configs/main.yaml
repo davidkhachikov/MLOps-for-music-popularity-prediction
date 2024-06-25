@@ -1,5 +1,9 @@
 data:
-  version: 1.0
-  path: data/tracs.csv
+  version: v0.0
+  path: ../data/tracks.csv
   repo: .
   remote: mlops_remote
+  num_files: 5
+  data_size: 899702
+  column_number: 33
+  is_remote: False

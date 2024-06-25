@@ -1,1 +1,3 @@
 # Outputs
+
+Outputs of Hydra.

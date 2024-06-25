@@ -1,0 +1,9 @@
+data_remote:
+  version: v0.0
+  path: /data/tracks.csv
+  repo: .
+  remote: mlops_remote
+  sample_size: 0.2
+data_local:
+  path: ../data/tracks.csv
+  sample_size: 0.2
