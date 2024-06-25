@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 from hydra import initialize, compose
 from omegaconf import DictConfig
-from sklearn.preprocessing import MultiLabelBinarizer
+import great_expectations as gx
 import dvc.api
 
 
@@ -114,9 +114,110 @@ def preprocess_data():
     print("Missing values imputed")
     pattern_df.to_csv(data_path, index=False)
 
+def validate_initial_data():
+    current_dir = os.getcwd()
+    data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
+    df = pd.read_csv(data_path)
+
+    context = gx.get_context(context_root_dir="../services")
+    validator = context.sources.add_pandas("sample").read_dataframe(
+        df
+    )
+
+    for column in df.columns:
+        validator.expect_column_values_to_not_be_null(column)
+
+    # artist_followers
+    validator.expect_column_values_to_be_between("artist_followers", min_value=0)
+    validator.expect_column_values_to_be_of_type("artist_followers", type_="NUMBER")
+
+    # genres
+
+    # album_total_tracks
+    # artist_popularity
+    validator.expect_column_values_to_be_between(
+        "artist_popularity", min_value=0, max_value=100
+    )
+    validator.expect_column_values_to_be_of_type("artist_popularity", type_="float64")
+    # explicit
+    # tempo
+    validator.expect_column_values_to_be_between("artist_followers", min_value=0)
+    validator.expect_column_values_to_be_of_type("artist_followers", type_="float64")
+    # chart
+    validator.expect_column_values_to_be_in_set("chart", value_set=[0, 1, 2])
+    # album_release_date
+
+    # energy
+    validator.expect_column_values_to_be_between(
+        "energy", min_value=0, max_value=1
+    )
+    validator.expect_column_values_to_be_of_type("energy", type_="float64")
+    # key
+    validator.expect_column_values_to_be_in_set(
+        "key", value_set=list(range(-1, 12))
+    )
+    # popularity
+    validator.expect_column_values_to_be_between(
+        "popularity", min_value=0, max_value=100
+    )
+    validator.expect_column_values_to_be_of_type("popularity", type_="float64")
+    # available_markets
+    # mode
+    validator.expect_column_values_to_be_in_set(
+        "mode", value_set=[0, 1]
+    )
+    # time_signature
+    validator.expect_column_values_to_be_in_set(
+        "time_signature", value_set=[0, 1, 2, 3, 4, 5, 6, 7]
+    )
+    # speechiness
+    validator.expect_column_values_to_be_between(
+        "speechiness", min_value=0, max_value=1
+    )
+    validator.expect_column_values_to_be_of_type("speechiness", type_="float64")
+    # danceability
+    validator.expect_column_values_to_be_between(
+        "danceability", min_value=0, max_value=1
+    )
+    validator.expect_column_values_to_be_of_type("danceability", type_="float64")
+    # valence
+    validator.expect_column_values_to_be_between(
+        "valence", min_value=0, max_value=1
+    )
+    validator.expect_column_values_to_be_of_type("valence", type_="float64")
+    # acousticness
+    validator.expect_column_values_to_be_between(
+        "acousticness", min_value=0, max_value=1
+    )
+    validator.expect_column_values_to_be_of_type("acousticness", type_="float64")
+    # liveness
+    validator.expect_column_values_to_be_of_type("liveness", type_="float64")
+    validator.expect_column_values_to_be_between("liveness", min_value=0)
+    # instrumentalness
+    validator.expect_column_values_to_be_between(
+        "instrumentalness", min_value=0, max_value=1
+    )
+    validator.expect_column_values_to_be_of_type("instrumentalness", type_="float64")
+    # loudness
+    validator.expect_column_values_to_be_of_type("loudness", type_="float64")
+    validator.expect_column_values_to_be_between("loudness", min_value=-60)
+
+    validator.save_expectation_suite(discard_failed_expectations=False)
+    checkpoint = context.add_or_update_checkpoint(
+        name="my_checkpoint",
+        validator=validator
+    )
+    checkpoint_result = checkpoint.run()
+    print(checkpoint_result.items())
+    if checkpoint_result.success:
+        exit(0)
+    exit(1)
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "preprocess_data":
         preprocess_data()
     elif len(sys.argv) == 3 and sys.argv[1] == "sample_data":
         sample_data(int(sys.argv[2]))
+    elif len(sys.argv) == 2 and sys.argv[1] == 'validate_initial_data':
+        validate_initial_data()
