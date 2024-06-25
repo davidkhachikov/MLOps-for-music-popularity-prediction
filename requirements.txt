@@ -8,3 +8,4 @@ seaborn
 scipy
 numpy
 great_expectations
+scikit-learn

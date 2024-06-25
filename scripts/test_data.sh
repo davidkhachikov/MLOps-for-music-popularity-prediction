@@ -1,31 +1,67 @@
 #!/bin/bash
 
-# Запуск функции sample_data
-echo "Sampling data..."
-python src/data.py
+PYTHON_SCRIPT_PATH="./src/data.py"
 
-# Запуск тестов
-echo "Running tests..."
-pytest tests/sample_test.py tests/validate_sample_test.py
+sample_test() {
+  echo "Starting tests from sample_data..."
+  pytest -v "./tests/sample_test.py"
+  return $?
+}
 
-# Переход в директорию с данными
-cd data
+validate() {
+  echo "Starting data validation..."
+  pytest -v "./tests/validate_sample_data_test.py"
+  return $?
+}
 
-# Добавление образца данных в DVC
-echo "Adding data to DVC..."
-dvc add.
+sample_data() {
+    local i=$1
+    echo "Calling sample_data with argument $((i - 1))..."
+    python $PYTHON_SCRIPT_PATH sample_data $((i - 1))
+}
 
-# Коммит изменений в Git
-echo "Committing changes to Git..."
-git add.
-git commit -m "Add data sample"
+# Data preprocessing function
+preprocess_data() {
+    echo "Data preprocessing..."
+    python $PYTHON_SCRIPT_PATH preprocess_data
+}
 
-# Тегирование коммита в Git
-COMMIT_HASH=$(git rev-parse HEAD)
-git tag $COMMIT_HASH
+main() {
+  mkdir -p ./data/samples/
+  chmod 777 ./data/samples/
+    for i in {1..5}; do
+        sample_data "$i"
 
-# Пуш изменений в удаленный репозиторий
-echo "Pushing changes to remote repository..."
-git push && git push --tags
+        if sample_test; then
+            echo "Tests for sample_data passed successfully."
+        else
+            echo "Tests for sample_data failed!"
+            read -p "Press Enter to exit..."
+            exit 1
+        fi
 
-echo "Process completed successfully."
+        preprocess_data
+
+        if validate; then
+            echo "Validation passed successfully."
+        else
+            echo "Validation failed!"
+            read -p "Press Enter to continue..."
+            continue
+        fi
+
+        # Saving to DVC and committing to GitHub
+        echo "Saving to DVC and committing to GitHub..."
+        dvc add. || { echo "Failed to save data to DVC"; exit 1; }
+        dvc push. || { echo "Failed to push data to remote DVC repository"; exit 1; }
+        git add. || { echo "Failed to stage changes for commit"; exit 1; }
+        git commit -m "Save validated data" || { echo "Failed to commit changes"; exit 1; }
+        git tag -a "$(date +%Y-%m-%d)" -m "Version tag" || { echo "Failed to create tag"; exit 1; }
+        git push --tags || { echo "Failed to push tags to remote repository"; exit 1; }
+        rm "./data/samples/sample.csv"
+        echo "Commit and tag added for file number ${i}."
+    done
+}
+
+# Call the main function
+main
