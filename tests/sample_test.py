@@ -1,12 +1,11 @@
 """
 import of tested functions and types for tests
 """
+from math import ceil
 from hydra import initialize, compose
 from omegaconf import DictConfig
 import pytest
 import pandas as pd
-import numpy as np
-from math import ceil
 
 samples_data = [
     ("./data/samples/sample.csv")
@@ -25,7 +24,7 @@ def test_size_of_sample(data):
     # Initialize Hydra to read the configuration
     with initialize(config_path="../configs", version_base=None):
         cfg: DictConfig = compose(config_name='main')
-    assert np.abs(data.shape[0] - ceil(cfg.data.data_size/cfg.data.num_files)) < cfg.data.num_files
+    assert data.shape[0] == ceil(cfg.data.data_size/cfg.data.num_files)
 
 @pytest.mark.parametrize("data", data_list)
 def test_number_of_columns(data):
