@@ -5,6 +5,7 @@ from hydra import initialize, compose
 from omegaconf import DictConfig
 import great_expectations as gx
 import dvc.api
+import zenml
 
 
 def sample_data(num=0):
@@ -221,7 +222,7 @@ def read_datastore(project_path:str):
     data_path = "data/samples/sample.csv"
     df = pd.read_csv(project_path + data_path)
     version = "" #TODO
-    
+
     return df, version
 
 
@@ -237,7 +238,31 @@ def validate_features(X: pd.DataFrame, y: pd.DataFrame):
 
 def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
     """Load and version the features X and the target y in artifact store of ZenML"""
-    pass
+    
+    # Save the artifact
+    zenml.save_artifact(data=(X, y), name="features_target", tags=[version])
+
+    # Retrieve the client to interact with the ZenML store
+    client = Client()
+
+    # Verify the artifact was saved correctly
+    try:
+        l = client.list_artifact_versions(name="features_target", tag=version, sort_by="version").items
+
+        # Descending order
+        l.reverse()
+
+        # Retrieve the latest version of the artifact
+        if l:
+            retrieved_X, retrieved_y = l[0].load()
+            return retrieved_X, retrieved_y
+        else:
+            print("No artifacts found with the specified version tag.")
+
+    except Exception as e:
+        print(f"An error occurred while retrieving the artifact: {e}")
+
+    return X, y
 
 
 
