@@ -1,9 +1,6 @@
 data:
-  version: v0.0
-  path: ../data/tracks.csv
+  sample_num: 1
+  path_to_raw: ../data/raw/tracks.csv
   repo: .
   remote: mlops_remote
-  num_files: 5
-  data_size: 899702
-  column_number: 33
-  is_remote: False
+  num_samples: 5

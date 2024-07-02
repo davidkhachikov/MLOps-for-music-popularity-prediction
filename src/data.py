@@ -4,11 +4,10 @@ import pandas as pd
 from hydra import initialize, compose
 from omegaconf import DictConfig
 import great_expectations as gx
-import dvc.api
 import zenml
 
 
-def sample_data(num=0):
+def sample_data():
     """
     Loads a sample of music popularity data from a CSV file using DVC for version control and stores 
     it locally, split into multiple files as specified in the configuration.
@@ -24,26 +23,10 @@ def sample_data(num=0):
         with initialize(config_path="../configs", version_base=None):
             cfg: DictConfig = compose(config_name='main')
 
-        if cfg.data.is_remote:
-            # Remote sampling
-            file = dvc.api.read(
-                path=os.path.join(cfg.data.path),
-                repo=cfg.data.repo,
-                rev=cfg.data.version,
-                remote=cfg.data.remote,
-                encoding='utf-8'
-            )
-            df = pd.read_csv(file)
-        else:
-            # Local sampling
-            with dvc.api.open(
-                    cfg.data.path,
-                    rev=cfg.data.version,
-                    encoding='utf-8'
-            ) as f:
-                df = pd.read_csv(f)
-
+        df = pd.read_csv(cfg.data.path_to_raw)
+        
         num_files = cfg.data.num_files
+        num = max(min(num_files, cfg.data.sample_num), 1) - 1 
         start = num * int(len(df) / num_files)
         end = min((num + 1) * int(len(df) / num_files), len(df))
         chunk = df[start:end]
@@ -56,7 +39,7 @@ def sample_data(num=0):
         print(f"An error occurred while saving the sampled data: {e}")
 
 
-def preprocess_data():
+def handle_initial_data():
     """
     Preprocesses the music popularity dataset by cleaning and transforming raw data into a suitable format for analysis.
     
@@ -77,15 +60,8 @@ def preprocess_data():
                                               errors="coerce")
     df["added_at"] = pd.to_datetime(df["added_at"], yearfirst=True, errors="coerce")
 
-    # Let's try to find some patterns in the data
-    # First, let's restore the categorical data genres, available_markets
-    pattern_df = df.copy()
-    print("genres restored")
-    pattern_df.drop(columns=["genres", "available_markets"], inplace=True)
-    print(f"Dataset restored with {pattern_df.shape[1]} columns")
-
     # Now we will drop some columns
-    pattern_df.drop(columns=[
+    df.drop(columns=[
         "track_id",  # unique identifier
         "streams",  # Too many missing values
         "track_artists",  # Too many missing values
@@ -99,21 +75,20 @@ def preprocess_data():
         "trend",  # Too many missing values and dependent of chart
         "name",  # This is text data, and we do not do data transformation in this phase
     ], inplace=True)
-    print(f"Dataset reduced to {pattern_df.shape[1]} columns")
 
     # Replace nan chart with 0, top200 with 1 and top50 with 2
-    pattern_df["chart"] = pattern_df["chart"].map({"top200": 1, "top50": 2})
-    pattern_df["chart"] = pattern_df["chart"].fillna(0)
-    print("Chart restored")
+    df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
+    df["chart"] = df["chart"].fillna(0)
 
     # Convert album_release_date
-    pattern_df["album_release_date"] = pattern_df["album_release_date"].astype("int64")
+    df["album_release_date"] = df["album_release_date"].astype("int64")
 
     # Now we will impute the missing values
     # Since the number of missing values is small, it is safe to use the median value
-    pattern_df.fillna(pattern_df.median(), inplace=True)
+    df.fillna(df.median(), inplace=True)
     print("Missing values imputed")
-    pattern_df.to_csv(data_path, index=False)
+    df.to_csv(data_path, index=False)
+
 
 def validate_initial_data():
     current_dir = os.getcwd()

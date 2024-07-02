@@ -8,3 +8,13 @@ seaborn
 scipy
 numpy
 great_expectations
+zenml[server]
+apache-airflow[cncf.kubernetes] == 2.7.3
+feast
+shyaml
+mlflow
+giskard
+evidently
+Flask
+flask-session2
+psycopg2-binary
