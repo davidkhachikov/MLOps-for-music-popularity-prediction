@@ -1,3 +1,4 @@
+from multiprocessing.connection import Client
 import os
 import sys
 import pandas as pd
@@ -238,13 +239,3 @@ def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
         print(f"An error occurred while retrieving the artifact: {e}")
 
     return X, y
-
-
-
-if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1] == "preprocess_data":
-        preprocess_data()
-    elif len(sys.argv) == 3 and sys.argv[1] == "sample_data":
-        sample_data(int(sys.argv[2]))
-    elif len(sys.argv) == 2 and sys.argv[1] == 'validate_initial_data':
-        validate_initial_data()
