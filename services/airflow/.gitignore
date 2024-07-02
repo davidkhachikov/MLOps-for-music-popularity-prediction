@@ -1,0 +1,8 @@
+airflow.cfg
+unittests.cfg
+logs/
+dagbag_import_errors.txt
+airflow.db
+airflow*
+!airflow/dags/
+!airflow/plugins/
