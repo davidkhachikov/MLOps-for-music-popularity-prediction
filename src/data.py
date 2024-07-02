@@ -213,10 +213,16 @@ def validate_initial_data():
     exit(1)
 
 
-def read_datastore():
+def read_datastore(project_path:str):
     """
+    Takes the project path
     Makes sample dataframe and reads the data version from ./configs/data_version.yaml"""
-    pass
+
+    data_path = "data/samples/sample.csv"
+    df = pd.read_csv(project_path + data_path)
+    version = "" #TODO
+    
+    return df, version
 
 
 # def preprocess_data(df: pd.DataFrame):
