@@ -1,8 +1,7 @@
-airflow.cfg
+# Ignore Airflow specific files
+airflow*
 unittests.cfg
 logs/
 dagbag_import_errors.txt
-airflow.db
-airflow*
-!airflow/dags/
-!airflow/plugins/
+standalone_admin_password.txt
+webserver_config.py
