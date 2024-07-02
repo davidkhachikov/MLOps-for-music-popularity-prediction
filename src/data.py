@@ -213,6 +213,28 @@ def validate_initial_data():
     exit(1)
 
 
+def read_datastore():
+    """
+    Makes sample dataframe and reads the data version from ./configs/data_version.yaml"""
+    pass
+
+
+# def preprocess_data(df: pd.DataFrame):
+#     """ Performs data transformation and returns X, y tuple"""
+#     pass
+
+
+def validate_features(X: pd.DataFrame, y: pd.DataFrame):
+    """ Performs feature validation using new expectations"""
+    pass
+
+
+def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
+    """Load and version the features X and the target y in artifact store of ZenML"""
+    pass
+
+
+
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "preprocess_data":
         preprocess_data()
