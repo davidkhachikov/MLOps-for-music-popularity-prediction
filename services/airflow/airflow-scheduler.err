@@ -1,5 +1,0 @@
-[2024-06-30 11:14:03 +0300] [33178] [INFO] Starting gunicorn 22.0.0
-[2024-06-30 11:14:03 +0300] [33178] [INFO] Listening at: http://[::]:8793 (33178)
-[2024-06-30 11:14:03 +0300] [33178] [INFO] Using worker: sync
-[2024-06-30 11:14:03 +0300] [33179] [INFO] Booting worker with pid: 33179
-[2024-06-30 11:14:03 +0300] [33180] [INFO] Booting worker with pid: 33180
