@@ -1,6 +1,6 @@
 data:
-  sample_num: 1
-  path_to_raw: ./data/raw/tracks.csv
-  repo: .
-  remote: mlops_remote
   num_samples: 5
+  path_to_raw: ./data/raw/tracks.csv
+  remote: mlops_remote
+  repo: .
+  sample_num: 155
