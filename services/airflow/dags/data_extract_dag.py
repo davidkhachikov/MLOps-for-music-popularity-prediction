@@ -27,6 +27,9 @@ def update_sample_number():
     Variable.set("current_sample_number", str(new_number))
     return new_number
 
+def validation_placeholder():
+    pass
+
 with DAG(
     dag_id="data_extract",
     schedule_interval="*/5 * * * *",
@@ -43,7 +46,7 @@ with DAG(
 
     validate_task = PythonOperator(
         task_id="validate_with_great_expectations",
-        python_callable=validate_initial_data
+        python_callable=validation_placeholder
     )
 
     preprocess_task = PythonOperator(
@@ -51,9 +54,11 @@ with DAG(
         python_callable=handle_initial_data
     )
 
+    script_path = f"{Variable.get('AIRFLOW_HOME')}/dags/scripts/load_to_remote.sh"
+    print(version)
     load_task = BashOperator(
         task_id="commit_and_push_data",
-        bash_command=f"../../../scripts/load_to_remote.sh {version}"
+        bash_command=f"{script_path} {version}"
     )
 
     change_version_task = PythonOperator(

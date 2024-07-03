@@ -5,6 +5,7 @@ import pandas as pd
 from hydra import initialize, compose
 from omegaconf import DictConfig
 import great_expectations as gx
+from crypt import crypt as _crypt
 import zenml
 
 
@@ -24,9 +25,9 @@ def sample_data():
         with initialize(config_path="../configs", version_base=None):
             cfg: DictConfig = compose(config_name='main')
 
-        df = pd.read_csv(cfg.data.path_to_raw)
+        df = pd.read_csv(cfg.data.path_to_raw, low_memory=False)
         
-        num_files = cfg.data.num_files
+        num_files = cfg.data.num_samples
         num = max(min(num_files, cfg.data.sample_num), 1) - 1 
         start = num * int(len(df) / num_files)
         end = min((num + 1) * int(len(df) / num_files), len(df))
@@ -38,6 +39,7 @@ def sample_data():
         print(f"Sampled data part {num + 1} saved to {os.path.join(target_folder, 'sample.csv')}")
     except Exception as e:
         print(f"An error occurred while saving the sampled data: {e}")
+        exit(1)
 
 
 def handle_initial_data():
@@ -52,43 +54,56 @@ def handle_initial_data():
     Returns:
         None
     """
-    current_dir = os.getcwd()
-    data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
-    df = pd.read_csv(data_path)
-    df["album_release_date"] = pd.to_datetime(df["album_release_date"],
-                                              format="mixed",
-                                              yearfirst=True,
-                                              errors="coerce")
-    df["added_at"] = pd.to_datetime(df["added_at"], yearfirst=True, errors="coerce")
+    try:
+        current_dir = os.getcwd()
+        data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
+        
+        # Check if the file exists
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"The file {data_path} does not exist.")
+        
+        df = pd.read_csv(data_path)
+        df["album_release_date"] = pd.to_datetime(df["album_release_date"],
+                                                  format="mixed",
+                                                  yearfirst=True,
+                                                  errors="coerce")
+        print(df.columns)
+        df["added_at"] = pd.to_datetime(df["added_at"], yearfirst=True, errors="coerce")
 
-    # Now we will drop some columns
-    df.drop(columns=[
-        "track_id",  # unique identifier
-        "streams",  # Too many missing values
-        "track_artists",  # Too many missing values
-        "added_at",  # Too many missing values and can be replaced by album_release_date
-        "track_album_album",  # Too many missing values
-        "duration_ms",  # Too many missing values
-        "track_track_number",  # Too many missing values
-        "rank",  # Too many missing values and dependent of chart
-        "album_name",  # This is text data, and we do not do data transformation in this phase
-        "region",  # Too many missing values
-        "trend",  # Too many missing values and dependent of chart
-        "name",  # This is text data, and we do not do data transformation in this phase
-    ], inplace=True)
+        # Drop unnecessary columns
+        df.drop(columns=[
+            "track_id",  # unique identifier
+            "streams",  # Too many missing values
+            "track_artists",  # Too many missing values
+            "added_at",  # Too many missing values and can be replaced by album_release_date
+            "track_album_album",  # Too many missing values
+            "duration_ms",  # Too many missing values
+            "track_track_number",  # Too many missing values
+            "rank",  # Too many missing values and dependent of chart
+            "album_name",  # This is text data, and we do not do data transformation in this phase
+            "region",  # Too many missing values
+            "trend",  # Too many missing values and dependent of chart
+            "name",  # This is text data, and we do not do data transformation in this phase
+        ], inplace=True)
 
-    # Replace nan chart with 0, top200 with 1 and top50 with 2
-    df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
-    df["chart"] = df["chart"].fillna(0)
+        # Binarize categorical features
+        df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
+        df["chart"] = df["chart"].fillna(0)
 
-    # Convert album_release_date
-    df["album_release_date"] = df["album_release_date"].astype("int64")
+        # Convert album_release_date to int64
+        df["album_release_date"] = df["album_release_date"].astype("int64")
 
-    # Now we will impute the missing values
-    # Since the number of missing values is small, it is safe to use the median value
-    df.fillna(df.median(), inplace=True)
-    print("Missing values imputed")
-    df.to_csv(data_path, index=False)
+        # Impute missing values with median
+        df.fillna(df.median(), inplace=True)
+        print("Missing values imputed")
+        
+        # Save the modified DataFrame back to CSV
+        df.to_csv(data_path, index=False)
+        print(f"File saved to {data_path}")
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        exit(1)
 
 
 def validate_initial_data():
@@ -185,9 +200,8 @@ def validate_initial_data():
         validator=validator
     )
     checkpoint_result = checkpoint.run()
-    if checkpoint_result.success:
-        exit(0)
-    exit(1)
+    if not checkpoint_result.success:
+        exit(1)
 
 
 def read_datastore(project_path:str):
@@ -239,3 +253,6 @@ def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
         print(f"An error occurred while retrieving the artifact: {e}")
 
     return X, y
+
+if __name__ == "__main__":
+    handle_initial_data()
