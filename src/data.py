@@ -6,6 +6,7 @@ from hydra import initialize, compose
 from omegaconf import DictConfig
 import great_expectations as gx
 from crypt import crypt as _crypt
+import dvc.api
 import zenml
 
 
@@ -210,9 +211,17 @@ def read_datastore(project_path:str):
     Makes sample dataframe and reads the data version from ./configs/data_version.yaml"""
 
     data_path = "data/samples/sample.csv"
-    df = pd.read_csv(project_path + data_path)
-    version = "" #TODO
+    conf_path = "./configs/"
+    with initialize(config_path=project_path + conf_path, version_base=None):
+        cfg: DictConfig = compose(config_name='data_version')
+    version = cfg.data.version
 
+    with dvc.api.open(
+                    data_path,
+                    rev=version,
+                    encoding='utf-8'
+            ) as f:
+                df = pd.read_csv(f)
     return df, version
 
 
@@ -253,6 +262,3 @@ def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
         print(f"An error occurred while retrieving the artifact: {e}")
 
     return X, y
-
-if __name__ == "__main__":
-    handle_initial_data()
