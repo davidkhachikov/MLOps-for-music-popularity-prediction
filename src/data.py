@@ -8,6 +8,7 @@ import great_expectations as gx
 from crypt import crypt as _crypt
 import dvc.api
 import zenml
+from sklearn.preprocessing import MultiLabelBinarizer
 
 
 def sample_data():
@@ -225,9 +226,20 @@ def read_datastore(project_path:str):
     return df, version
 
 
-# def preprocess_data(df: pd.DataFrame):
-#     """ Performs data transformation and returns X, y tuple"""
-#     pass
+def preprocess_data(df: pd.DataFrame):
+    """ Performs data transformation and returns X, y tuple"""
+    X = df.drop(columns="popularity")
+    y = df["popularity"]
+    
+    mlb = MultiLabelBinarizer()
+    # Genres and available markets are initially stored as lists
+    # Genres are categorical data so we encode them
+    genres_categories = pd.DataFrame(mlb.fit_transform(X["genres"].apply(eval)), columns=mlb.classes_, index=X.index)
+    available_markets_categories = pd.DataFrame(mlb.fit_transform(X["available_markets"].apply(eval)), columns=mlb.classes_, index=X.index)
+    # We will not touch available_markets as they are distributed more or less evenly
+    g_count = {}
+    
+
 
 
 def validate_features(X: pd.DataFrame, y: pd.DataFrame):
