@@ -263,7 +263,7 @@ def preprocess_data(df: pd.DataFrame):
     total_raw_features = genres_column + av_markets_column + key_timesig_columns + normal_features + uniform_features + unchanged_features
     # Check if df has all the listed columns
     if len(df.columns) != len(total_raw_features) or len(set(total_raw_features) - set(df.columns)) or len(set(df.columns) - set(total_raw_features)):
-        raise ValueError(f"The input DataFrame should have only the following features:{'\n- '.join(total_raw_features)}")
+        raise ValueError(f"The input DataFrame should have only the following features:{'- '.join(total_raw_features)}")
     
     transformed_genres = transform_genres(df[genres_column])
     transformed_markets = transform_available_markets(df[av_markets_column])
@@ -455,7 +455,7 @@ def transform_normallike_features(df:pd.DataFrame):
 
     # Check if df has all the listed features
     if len(df.columns) != len(features_to_transform) or len(set(df.columns) - set(features_to_transform)) or len(set(features_to_transform) - set(df.columns)):
-        raise ValueError(f"The input DataFrame should have only the following features:{'\n- '.join(features_to_transform)}")
+        raise ValueError(f"The input DataFrame should have only the following features:{'- '.join(features_to_transform)}")
     
     std_scaler = StandardScaler()
     res = pd.DataFrame(std_scaler.fit_transform(df), columns=df.columns, index=df.index)
@@ -485,7 +485,7 @@ def transform_uniformlike_features(df:pd.DataFrame):
 
     # Check if df has all the listed features
     if len(df.columns) != len(features_to_transform) or len(set(df.columns) - set(features_to_transform)) or len(set(features_to_transform) - set(df.columns)):
-        raise ValueError(f"The input DataFrame should have only the following features:{'\n- '.join(features_to_transform)}")
+        raise ValueError(f"The input DataFrame should have only the following features:{'- '.join(features_to_transform)}")
     
     mm_scaler = MinMaxScaler()
     res = pd.DataFrame(mm_scaler.fit_transform(df), columns=df.columns, index=df.index)
@@ -518,7 +518,7 @@ def transform_unchanged_features(df:pd.DataFrame):
 
     # Check if df has all the listed features
     if len(df.columns) != len(unchanged_features) or len(set(df.columns) - set(unchanged_features)) or len(set(unchanged_features) - set(df.columns)):
-        raise ValueError(f"The input DataFrame should have only the following features:{'\n- '.join(unchanged_features)}")
+        raise ValueError(f"The input DataFrame should have only the following features:{'- '.join(unchanged_features)}")
     
     # Sort the columns by name length and alphabetically (just in case)
     res = df.reindex(sorted(df.columns, key=lambda x: (len(x), x)))
