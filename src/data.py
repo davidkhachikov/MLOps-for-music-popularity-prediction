@@ -507,7 +507,7 @@ def transform_unchanged_features(df:pd.DataFrame):
     Returns dataframe with sorted columns"""
 
     unchanged_features = [
-        "explicit"
+        "explicit",
         "chart",
         "album_release_date",
         "popularity",
@@ -527,7 +527,7 @@ def transform_unchanged_features(df:pd.DataFrame):
 
 def validate_features(X: pd.DataFrame, y: pd.DataFrame):
     """ Performs feature validation using new expectations"""
-    pass
+    return X, y
 
 
 def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
