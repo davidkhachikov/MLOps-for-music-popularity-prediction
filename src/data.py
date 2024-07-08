@@ -201,8 +201,10 @@ def validate_initial_data():
         validator=validator
     )
     checkpoint_result = checkpoint.run()
+    print(checkpoint_result.get_statistics)
     if not checkpoint_result.success:
         exit(1)
+    print("Success")
 
 
 def read_datastore(project_path:str):
@@ -262,3 +264,6 @@ def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
         print(f"An error occurred while retrieving the artifact: {e}")
 
     return X, y
+
+if __name__ == '__main__':
+    validate_initial_data()

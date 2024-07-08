@@ -68,4 +68,4 @@ with DAG(
         op_args=[os.path.join(project_root, 'configs/main.yaml'), update_sample_number()]
     )
 
-    extract_task >> validate_task >> preprocess_task >> load_task >> change_version_task
+    extract_task >> preprocess_task >> validate_task >> load_task >> change_version_task
