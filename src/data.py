@@ -112,97 +112,29 @@ def handle_initial_data():
 def validate_initial_data():
     current_dir = os.getcwd()
     data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
-    df = pd.read_csv(data_path)
+    context_path = os.path.join(current_dir, 'services', 'gx')
+    # df = pd.read_csv(data_path)
 
-    context = gx.get_context(context_root_dir="../services")
-    validator = context.sources.add_pandas("sample").read_dataframe(
-        df
-    )
+    context = gx.get_context(context_root_dir=context_path)
 
-    for column in df.columns:
-        validator.expect_column_values_to_not_be_null(column)
+    ds = context.sources.add_or_update_pandas(name="sample_data")
+    da = ds.add_csv_asset(name="sample_asset", filepath_or_buffer=data_path)
 
-    # artist_followers
-    validator.expect_column_values_to_be_between("artist_followers", min_value=0)
-    validator.expect_column_values_to_be_of_type("artist_followers", type_="NUMBER")
-
-    # genres
-
-    # album_total_tracks
-    # artist_popularity
-    validator.expect_column_values_to_be_between(
-        "artist_popularity", min_value=0, max_value=100
-    )
-    validator.expect_column_values_to_be_of_type("artist_popularity", type_="float64")
-    # explicit
-    # tempo
-    validator.expect_column_values_to_be_between("artist_followers", min_value=0)
-    validator.expect_column_values_to_be_of_type("artist_followers", type_="float64")
-    # chart
-    validator.expect_column_values_to_be_in_set("chart", value_set=[0, 1, 2])
-    # album_release_date
-
-    # energy
-    validator.expect_column_values_to_be_between(
-        "energy", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("energy", type_="float64")
-    # key
-    validator.expect_column_values_to_be_in_set(
-        "key", value_set=list(range(-1, 12))
-    )
-    # popularity
-    validator.expect_column_values_to_be_between(
-        "popularity", min_value=0, max_value=100
-    )
-    validator.expect_column_values_to_be_of_type("popularity", type_="float64")
-    # available_markets
-    # mode
-    validator.expect_column_values_to_be_in_set(
-        "mode", value_set=[0, 1]
-    )
-    # time_signature
-    validator.expect_column_values_to_be_in_set(
-        "time_signature", value_set=[0, 1, 2, 3, 4, 5, 6, 7]
-    )
-    # speechiness
-    validator.expect_column_values_to_be_between(
-        "speechiness", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("speechiness", type_="float64")
-    # danceability
-    validator.expect_column_values_to_be_between(
-        "danceability", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("danceability", type_="float64")
-    # valence
-    validator.expect_column_values_to_be_between(
-        "valence", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("valence", type_="float64")
-    # acousticness
-    validator.expect_column_values_to_be_between(
-        "acousticness", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("acousticness", type_="float64")
-    # liveness
-    validator.expect_column_values_to_be_of_type("liveness", type_="float64")
-    validator.expect_column_values_to_be_between("liveness", min_value=0)
-    # instrumentalness
-    validator.expect_column_values_to_be_between(
-        "instrumentalness", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("instrumentalness", type_="float64")
-    # loudness
-    validator.expect_column_values_to_be_of_type("loudness", type_="float64")
-    validator.expect_column_values_to_be_between("loudness", min_value=-60)
-
-    validator.save_expectation_suite(discard_failed_expectations=False)
+    batch_request = da.build_batch_request()
     checkpoint = context.add_or_update_checkpoint(
-        name="my_checkpoint",
-        validator=validator
+        name="test_checkpoint",
+        validations=[ # A list of validations
+            {
+                "batch_request": batch.batch_request,
+                "expectation_suite_name": "expectation_suite",
+            }
+            for batch in da.get_batch_list_from_batch_request(batch_request)
+        ],
     )
+    
     checkpoint_result = checkpoint.run()
+    
+    # checkpoint_result = checkpoint.run()
     print(checkpoint_result.get_statistics)
     if not checkpoint_result.success:
         exit(1)

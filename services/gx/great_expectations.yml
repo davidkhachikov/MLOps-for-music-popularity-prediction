@@ -94,11 +94,21 @@ data_docs_sites:
       class_name: DefaultSiteIndexBuilder
 
 anonymous_usage_statistics:
-  data_context_id: 7ba34468-9b99-4332-83f5-544df52e08b2
+  data_context_id: 658ab671-7357-4b71-8760-718815eecf13
   enabled: true
 fluent_datasources:
   sample:
     type: pandas
+    assets:
+      asset:
+        type: csv
+        filepath_or_buffer: ../data/samples/sample.csv
+  sample_data:
+    type: pandas
+    assets:
+      sample_asset:
+        type: csv
+        filepath_or_buffer: /home/saveliy/study/MLOps/MLOps-for-music-popularity-prediction/data/samples/sample.csv
 notebooks:
 include_rendered_content:
   globally: false
