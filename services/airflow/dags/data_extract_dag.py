@@ -28,10 +28,10 @@ def validation_placeholder():
 
 with DAG(
     dag_id="data_extract",
-    schedule_interval="*/10 * * * *",
+    schedule_interval="*/5 * * * *",
     catchup=False,
-    start_date=datetime(2024, 7, 10, 16, 50),
-    max_active_tasks = 1,
+    start_date=datetime(2024, 7, 10, 19, 55),
+    max_active_runs=1
 ) as dag:
 
     extract_task = PythonOperator(

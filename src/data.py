@@ -82,7 +82,10 @@ def handle_initial_data(project_path):
         for feature in cfg.data.timedate_features:
             df[feature] = pd.to_datetime(df[feature], format="mixed", yearfirst=True, errors="coerce")
             df[feature] = df[feature].astype("int64")
-        
+
+        df['genres'] = df['genres'].apply(lambda d: d if isinstance(d, list) else [])
+        df['available_markets'] = df['available_markets'].apply(lambda d: d if isinstance(d, list) else [])
+
         # Binarize categorical features
         df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
         df["chart"] = df["chart"].fillna(0)
