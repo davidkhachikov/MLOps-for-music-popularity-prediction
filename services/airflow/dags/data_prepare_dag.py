@@ -11,11 +11,11 @@ with DAG(
     schedule_interval="*/5 * * * *",
     catchup=False,
     start_date=datetime(2024, 6, 30, 10, 45),
+    max_active_tasks = 1,
 ) as dag:
     sensor = ExternalTaskSensor(
         task_id = "wait_extraction",
-        external_dag_id="data_extract",
-        dag=dag
+        external_dag_id="data_extract"
     )
 
     run_prepare = PythonOperator(

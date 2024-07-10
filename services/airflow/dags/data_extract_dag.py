@@ -1,12 +1,10 @@
 import os
 from datetime import datetime
 from airflow import DAG
-from airflow.decorators import task
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from data import sample_data, validate_initial_data, handle_initial_data
 from airflow.models import Variable
-from dotenv import load_dotenv
 import yaml
 
 project_root_relative = './'
@@ -16,7 +14,7 @@ def update_sample_num(yaml_file_path, new_sample_num):
     with open(yaml_file_path, 'r') as file:
         data = yaml.safe_load(file)
     
-    data['data']['sample_num'] = new_sample_num
+    data['data']['sample_num'] = new_sample_num % data['data']['num_samples']
 
     with open(yaml_file_path, 'w') as file:
         yaml.safe_dump(data, file)
@@ -37,26 +35,30 @@ with DAG(
     schedule_interval="*/5 * * * *",
     catchup=False,
     start_date=datetime(2024, 6, 30, 10, 45),
+    max_active_tasks = 1,
 ) as dag:
 
     version = Variable.get("current_sample_number", "0")
 
     extract_task = PythonOperator(
         task_id="extract_data_sample",
-        python_callable=sample_data
+        python_callable=sample_data,
+        op_args=[project_root]
     )
 
     validate_task = PythonOperator(
         task_id="validate_with_great_expectations",
-        python_callable=validation_placeholder
+        python_callable=validate_initial_data,
+        op_args=[project_root]
     )
 
     preprocess_task = PythonOperator(
         task_id="preprocess_data_sample",
-        python_callable=handle_initial_data
+        python_callable=handle_initial_data,
+        op_args=[project_root]
     )
 
-    script_path = f"{project_root}/services/airflow/dags/scripts/load_to_remote.sh"
+    script_path = f"{project_root}/scripts/load_to_remote.sh"
     load_task = BashOperator(
         task_id="commit_and_push_data",
         bash_command=f"{script_path} {version} {project_root}",

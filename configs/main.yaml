@@ -3,4 +3,4 @@ data:
   path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
   repo: .
-  sample_num: 155
+  sample_num: 0

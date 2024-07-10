@@ -7,3 +7,4 @@ data:
   uniform_features: ["energy","valence","acousticness","instrumentalness"]
   all_set_features: ["explicit","chart","mode"]
   timedate_features: ["album_release_date"]
+  low_features_number: ["track_id","streams","track_artists","added_at","track_album_album","duration_ms", "track_track_number", "rank", "region", "trend"]

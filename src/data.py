@@ -1,19 +1,17 @@
 from multiprocessing.connection import Client
 import os
-import sys
 import numpy as np
 import pandas as pd
 from hydra import initialize, compose
 from omegaconf import DictConfig
 import great_expectations as gx
-from crypt import crypt as _crypt
 import dvc.api
 import zenml
 import ast
 from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler, MinMaxScaler
 from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.utils.validation import check_is_fitted, NotFittedError
+from sklearn.utils.validation import NotFittedError
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
@@ -22,7 +20,7 @@ import re
 
 from typing import Literal
 
-def sample_data():
+def sample_data(project_path):
     """
     Loads a sample of music popularity data from a CSV file using DVC for version control and stores 
     it locally, split into multiple files as specified in the configuration.
@@ -41,21 +39,20 @@ def sample_data():
         df = pd.read_csv(cfg.data.path_to_raw, low_memory=False)
         
         num_files = cfg.data.num_samples
-        num = max(min(num_files, cfg.data.sample_num), 1) - 1 
+        num = cfg.data.sample_num % num_files
         start = num * int(len(df) / num_files)
         end = min((num + 1) * int(len(df) / num_files), len(df))
         chunk = df[start:end]
 
-        current_dir = os.getcwd()
-        target_folder = os.path.join(current_dir, 'data', 'samples')
+        target_folder = os.path.join(project_path, 'data', 'samples')
         chunk.to_csv(os.path.join(target_folder, 'sample.csv'), index=False)
         print(f"Sampled data part {num + 1} saved to {os.path.join(target_folder, 'sample.csv')}")
     except Exception as e:
-        print(f"An error occurred while saving the sampled data: {e}")
+        print(f"An error during saving sample: {e}")
         exit(1)
 
 
-def handle_initial_data():
+def handle_initial_data(project_path):
     """
     Preprocesses the music popularity dataset by cleaning and transforming raw data into a suitable format for analysis.
     
@@ -68,43 +65,27 @@ def handle_initial_data():
         None
     """
     try:
-        current_dir = os.getcwd()
-        data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
+        data_path = os.path.join(project_path, 'data', 'samples', 'sample.csv')
         
         # Check if the file exists
         if not os.path.exists(data_path):
             raise FileNotFoundError(f"The file {data_path} does not exist.")
         
+        with initialize(config_path="../configs", version_base=None):
+            cfg: DictConfig = compose(config_name='data_features')
+
         df = pd.read_csv(data_path)
-        df["album_release_date"] = pd.to_datetime(df["album_release_date"],
-                                                  format="mixed",
-                                                  yearfirst=True,
-                                                  errors="coerce")
-        print(df.columns)
-        df["added_at"] = pd.to_datetime(df["added_at"], yearfirst=True, errors="coerce")
-
         # Drop unnecessary columns
-        df.drop(columns=[
-            "track_id",  # unique identifier
-            "streams",  # Too many missing values
-            "track_artists",  # Too many missing values
-            "added_at",  # Too many missing values and can be replaced by album_release_date
-            "track_album_album",  # Too many missing values
-            "duration_ms",  # Too many missing values
-            "track_track_number",  # Too many missing values
-            "rank",  # Too many missing values and dependent of chart
-            "album_name",  # This is text data, and we do not do data transformation in this phase
-            "region",  # Too many missing values
-            "trend",  # Too many missing values and dependent of chart
-            "name",  # This is text data, and we do not do data transformation in this phase
-        ], inplace=True)
+        df.drop(columns=cfg.data.low_features_number, inplace=True)
 
+        # preprocess datetime features
+        for feature in cfg.data.timedate_features:
+            df[feature] = pd.to_datetime(df[feature], format="mixed", yearfirst=True, errors="coerce")
+            df[feature] = df[feature].astype("int64")
+        
         # Binarize categorical features
         df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
         df["chart"] = df["chart"].fillna(0)
-
-        # Convert album_release_date to int64
-        df["album_release_date"] = df["album_release_date"].astype("int64")
 
         # Impute missing values with median
         df.fillna(df.median(), inplace=True)
@@ -119,12 +100,19 @@ def handle_initial_data():
         exit(1)
 
 
-def validate_initial_data():
-    current_dir = os.getcwd()
-    data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
-    context_path = os.path.join(current_dir, 'services', 'gx')
-    # df = pd.read_csv(data_path)
+def validate_initial_data(project_path):
+    data_path = os.path.join(project_path, 'data', 'samples', 'sample.csv')
 
+    # Check if the sample exists
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"The sample {data_path} does not exist.")
+
+    context_path = os.path.join(project_path, 'services', 'gx')
+
+    # Check if the context exists
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"The context {data_path} does not exist.")
+    
     context = gx.get_context(context_root_dir=context_path)
 
     ds = context.sources.add_or_update_pandas(name="sample_data")
@@ -143,22 +131,22 @@ def validate_initial_data():
     )
     
     checkpoint_result = checkpoint.run()
-    
-    # checkpoint_result = checkpoint.run()
+
+    # Outputs failed general statistics about validation
     print(checkpoint_result.get_statistics)
+
     if not checkpoint_result.success:
         exit(1)
     print("Success")
 
 
-def read_datastore(project_path:str):
+def read_datastore(project_path):
     """
     Takes the project path
-    Makes sample dataframe and reads the data version from ./configs/data_version.yaml"""
-
-    data_path = "data/samples/sample.csv"
-    conf_path = "./configs/"
-    with initialize(config_path=project_path + conf_path, version_base=None):
+    Makes sample dataframe and reads the data version from ./configs/data_version.yaml
+    """
+    data_path = os.path.join(project_path, "data/samples/sample.csv")
+    with initialize(config_path="../configs", version_base=None):
         cfg: DictConfig = compose(config_name='data_version')
     version = cfg.data.version
 
@@ -174,9 +162,8 @@ def read_datastore(project_path:str):
 def preprocess_data(df: pd.DataFrame):
     """ Performs data transformation and returns X, y tuple"""
 
-    conf_path = "../configs/"
-    with initialize(config_path=conf_path, version_base=None):
-        cfg: DictConfig = compose(config_name='data_features.yaml')
+    with initialize(config_path="../configs", version_base=None):
+        cfg: DictConfig = compose(config_name='data_features')
 
 
     X = df.drop(columns=cfg.data.target_features)
@@ -493,4 +480,4 @@ def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
     return X, y
 
 if __name__ == '__main__':
-    validate_initial_data()
+    validate_initial_data("/home/user/project/MLOps-for-music-popularity-prediction")
