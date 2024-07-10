@@ -179,8 +179,8 @@ def preprocess_data(df: pd.DataFrame):
         cfg: DictConfig = compose(config_name='data_features.yaml')
 
 
-    X = df.drop(columns="popularity")
-    y = df["popularity"]
+    X = df.drop(columns=cfg.data.target_features)
+    y = df[cfg.data.target_features]
 
     
     # Define the base preprocessing pipeline for the multilabel columns
@@ -221,7 +221,22 @@ def preprocess_data(df: pd.DataFrame):
         ('scaler', MinMaxScaler())
     ])
 
+    # Defien the column transformer
+    column_transformer = ColumnTransformer(
+        transformers=[
+            ('genres', genres_transformer, cfg.data.genres_features),
+            ('multilabel', multilabel_transformer, cfg.data.multilabel_features),
+            ('categorical', categorical_transformer, cfg.data.categorical_features),
+            ('normal', normal_transformer, cfg.data.normal_features),
+            ('uniform', uniform_transformer, cfg.data.uniform_features)
+            ('', 'passthrough', cfg.data.all_set_features)
+        ],
+        remainder='drop'
+    )
 
+    column_transformer.set_output(transform="pandas")
+
+    X = column_transformer.fit_transform(X)
     
     return X, y
 
