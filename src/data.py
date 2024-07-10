@@ -80,8 +80,8 @@ def handle_initial_data(project_path):
 
         # preprocess datetime features
         for feature in cfg.data.timedate_features:
-            df[feature] = pd.to_datetime(df[feature], format="mixed", yearfirst=True, errors="coerce")
-            df[feature] = df[feature].astype("int64")
+            df[feature] = pd.to_datetime(df[feature], yearfirst=True, errors="coerce")
+            df[feature].fillna(pd.Timestamp('1970-01-01'), inplace=True)
 
         df['genres'] = df['genres'].apply(lambda d: d if d is not np.nan else [])
         df['available_markets'] = df['available_markets'].apply(lambda d: d if d is not np.nan else [])
@@ -483,4 +483,4 @@ def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
     return X, y
 
 if __name__ == '__main__':
-    validate_initial_data("/home/user/project/MLOps-for-music-popularity-prediction")
+    handle_initial_data("/home/user/project/MLOps-for-music-popularity-prediction")
