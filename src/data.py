@@ -173,6 +173,12 @@ def read_datastore(project_path:str):
 
 def preprocess_data(df: pd.DataFrame):
     """ Performs data transformation and returns X, y tuple"""
+
+    conf_path = "../configs/"
+    with initialize(config_path=conf_path, version_base=None):
+        cfg: DictConfig = compose(config_name='data_features.yaml')
+
+
     X = df.drop(columns="popularity")
     y = df["popularity"]
 

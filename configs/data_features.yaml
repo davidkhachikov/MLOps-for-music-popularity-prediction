@@ -1,0 +1,9 @@
+data:
+  target_features: ["popularity"]
+  genres_features: ["genres"]
+  multilabel_features: ["available_markets"]
+  categorical_features: ["key", "time_signature"]
+  normal_features: ["artist_followers","album_total_tracks","artist_popularity","tempo","speechiness","danceability","liveness","loudness"]
+  uniform_features: ["energy","valence","acousticness","instrumentalness"]
+  all_set_features: ["explicit","chart","mode"]
+  timedate_features: ["album_release_date"]
