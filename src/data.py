@@ -9,7 +9,9 @@ import great_expectations as gx
 from crypt import crypt as _crypt
 import dvc.api
 import zenml
+import ast
 from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler, MinMaxScaler
+from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted, NotFittedError
 from sklearn.compose import ColumnTransformer
@@ -173,6 +175,46 @@ def preprocess_data(df: pd.DataFrame):
     """ Performs data transformation and returns X, y tuple"""
     X = df.drop(columns="popularity")
     y = df["popularity"]
+
+    
+    # Define the base preprocessing pipeline for the multilabel columns
+    multilabel_prep_pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists
+        ('to_list', FunctionTransformer(lambda x: pd.DataFrame(x).applymap(lambda k: ast.literal_eval(k)))) # Convert the string representation of lists to actual lists
+    ])
+
+    # Define the transformation pipeline for the genres column
+    genres_transformer = Pipeline([
+        ("preprocess", multilabel_prep_pipeline), # Preprocess the data
+        ("decompose", GenreDecomposer()), # Replace composite genres with their atomic components
+        ("encode", MultiHotEncoder()) # Binarize the genres
+    ])
+
+    # Define the transformation pipeline for other multilabel columns
+    multilabel_transformer = Pipeline([
+        ("preprocess", multilabel_prep_pipeline),
+        ("encode", MultiHotEncoder())
+    ])
+
+
+    # Define the transformation pipeline for the categorical columns
+    categorical_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='most_frequent')),
+        ('onehot', OneHotEncoder(sparse_output=False))
+    ])
+
+    # Define the transformation pipeline for the normal features
+    normal_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('scaler', StandardScaler())
+    ])
+
+    # Define the transformation pipeline for the uniform features
+    uniform_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('scaler', MinMaxScaler())
+    ])
+
 
     
     return X, y
