@@ -30,7 +30,7 @@ with DAG(
     dag_id="data_extract",
     schedule_interval="*/5 * * * *",
     catchup=False,
-    start_date=datetime(2024, 7, 10, 19, 55),
+    start_date=datetime(2023, 7, 10, 19, 55),
     max_active_runs=1
 ) as dag:
 
