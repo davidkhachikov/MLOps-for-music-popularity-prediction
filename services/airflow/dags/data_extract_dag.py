@@ -4,41 +4,35 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 from data import sample_data, validate_initial_data, handle_initial_data
-from airflow.models import Variable
 import yaml
 
 project_root_relative = './'
 project_root = os.path.abspath(project_root_relative)
 
-def update_sample_num(yaml_file_path, new_sample_num):
+with open("configs/main.yaml", 'r') as file:
+    data = yaml.safe_load(file)
+current_version = data['data']['sample_num']
+
+def update_sample_number(yaml_file_path):
     with open(yaml_file_path, 'r') as file:
         data = yaml.safe_load(file)
-    
-    data['data']['sample_num'] = new_sample_num % data['data']['num_samples']
-
+    current_number = data['data']['sample_num']
+    new_number = (current_number + 1)
+    current_version = new_number
+    data['data']['sample_num'] = new_number
     with open(yaml_file_path, 'w') as file:
         yaml.safe_dump(data, file)
-
-    print(f"Updated sample_num to {new_sample_num}")
-
-def update_sample_number():
-    current_number = int(Variable.get("current_sample_number", "0"))
-    new_number = current_number + 1
-    Variable.set("current_sample_number", str(new_number))
-    return new_number
 
 def validation_placeholder():
     pass
 
 with DAG(
     dag_id="data_extract",
-    schedule_interval="*/5 * * * *",
+    schedule_interval="*/10 * * * *",
     catchup=False,
-    start_date=datetime(2024, 6, 30, 10, 45),
+    start_date=datetime(2024, 7, 10, 16, 50),
     max_active_tasks = 1,
 ) as dag:
-
-    version = Variable.get("current_sample_number", "0")
 
     extract_task = PythonOperator(
         task_id="extract_data_sample",
@@ -61,13 +55,13 @@ with DAG(
     script_path = f"{project_root}/scripts/load_to_remote.sh"
     load_task = BashOperator(
         task_id="commit_and_push_data",
-        bash_command=f"{script_path} {version} {project_root}",
+        bash_command=f"{script_path} {current_version} {project_root}",
     )
 
     change_version_task = PythonOperator(
         task_id="update_version_number",
-        python_callable=update_sample_num,
-        op_args=[os.path.join(project_root, 'configs/main.yaml'), update_sample_number()]
+        python_callable=update_sample_number,
+        op_args=[os.path.join(project_root, 'configs/main.yaml')]
     )
 
     extract_task >> preprocess_task >> validate_task >> load_task >> change_version_task
