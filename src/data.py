@@ -270,14 +270,14 @@ def preprocess_data(df: pd.DataFrame):
     # Defien the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
-            ('genres', genres_transformer, cfg.data.genres_features),
-            ('multilabel', multilabel_transformer, cfg.data.multilabel_features),
-            ('categorical', categorical_transformer, cfg.data.categorical_features),
-            ('normal', normal_transformer, cfg.data.normal_features),
-            ('uniform', uniform_transformer, cfg.data.uniform_features),
-            ('dates', date_transformer, cfg.data.date_features),
-            ('text', text_transformer, cfg.data.text_features),
-            ('', 'passthrough', cfg.data.all_set_features)
+            ('genres', genres_transformer, list(cfg.data.genres_features)),
+            ('multilabel', multilabel_transformer, list(cfg.data.multilabel_features)),
+            ('categorical', categorical_transformer, list(cfg.data.categorical_features)),
+            ('normal', normal_transformer, list(cfg.data.normal_features)),
+            ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
+            ('dates', date_transformer, list(cfg.data.timedate_features)),
+            ('text', text_transformer, list(cfg.data.text_features)),
+            ('', 'passthrough', list(cfg.data.all_set_features))
         ],
         remainder='drop',
         verbose_feature_names_out=False
