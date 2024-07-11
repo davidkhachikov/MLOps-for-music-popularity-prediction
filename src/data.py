@@ -175,14 +175,14 @@ def preprocess_data(df: pd.DataFrame):
     
     # Define the base preprocessing pipeline for the multilabel columns
     multilabel_prep_pipeline = Pipeline([
-        ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists
+        ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists if any
         ('to_list', FunctionTransformer(lambda x: pd.DataFrame(x).applymap(lambda k: ast.literal_eval(k)))) # Convert the string representation of lists to actual lists
     ])
 
-    # Define the transformation pipeline for the genres column
+    # Define the transformation pipeline for the genres column (this order is more memory efficient)
     genres_transformer = Pipeline([
         ("preprocess", multilabel_prep_pipeline), # Preprocess the data
-        ("decompose", GenreDecomposer()), # Replace composite genres with their atomic components
+        ("decompose", GenreDecomposer()), # Replace composite genres with their atomic components 
         ("encode", MultiHotEncoder()) # Binarize the genres
     ])
 
@@ -211,6 +211,43 @@ def preprocess_data(df: pd.DataFrame):
         ('scaler', MinMaxScaler())
     ])
 
+    # Define the transformation pipeline for the date features
+    date_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='constant', fill_value=pd.Timestamp('1970-01-01'))),
+        # all dates are Year-Month-Day. Split them into 3 columns
+        ('str_to_datetime', FunctionTransformer(lambda x: pd.to_datetime(x.squeeze()))),
+        ("year_month_day_weekday", FunctionTransformer(lambda x: pd.DataFrame(
+            {
+                "year": x.dt.year,
+                "month": x.dt.month,
+                "day": x.dt.day,
+                "weekday": x.dt.weekday,
+            }
+        ))),
+        # Convert to cyclical features
+        ('cyclic_convert', ColumnTransformer(
+            transformers=[
+                ('month_sin', sin_transformer(12), ['month']),
+                ('month_cos', cos_transformer(12), ['month']),
+                ('day_sin', sin_transformer(31), ['day']),
+                ('day_cos', cos_transformer(31), ['day']),
+                ('weekday_sin', sin_transformer(7), ['weekday']),
+                ('weekday_cos', cos_transformer(7), ['weekday']),
+                ('year', 'passthrough', ['year'])
+            ], 
+            remainder='drop'
+        )),
+        ('rename', FunctionTransformer(lambda x: x.rename(columns={
+            "month_sin__month": "month_sin",
+            "month_cos__month": "month_cos",
+            "day_sin__day": "day_sin",
+            "day_cos__day": "day_cos",
+            "weekday_sin__weekday": "weekday_sin",
+            "weekday_cos__weekday": "weekday_cos",
+            "year__year": "year"
+        }))),
+    ])
+
     # Defien the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
@@ -219,9 +256,11 @@ def preprocess_data(df: pd.DataFrame):
             ('categorical', categorical_transformer, cfg.data.categorical_features),
             ('normal', normal_transformer, cfg.data.normal_features),
             ('uniform', uniform_transformer, cfg.data.uniform_features)
+            ('dates', date_transformer, cfg.data.date_features)
             ('', 'passthrough', cfg.data.all_set_features)
         ],
-        remainder='drop'
+        remainder='drop',
+        verbose_feature_names_out=False
     )
 
     column_transformer.set_output(transform="pandas")
@@ -229,6 +268,14 @@ def preprocess_data(df: pd.DataFrame):
     X = column_transformer.fit_transform(X)
     
     return X, y
+
+# Define the cyclical feature transformers
+def sin_transformer(period):
+    return FunctionTransformer(lambda x: np.sin(x.astype(float) / period * 2 * np.pi))
+
+def cos_transformer(period):
+    return FunctionTransformer(lambda x: np.cos(x.astype(float) / period * 2 * np.pi))
+
 
     
 class MultiHotEncoder(BaseEstimator, TransformerMixin):
