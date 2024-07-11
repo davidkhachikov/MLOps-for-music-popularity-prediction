@@ -15,6 +15,7 @@ from sklearn.utils.validation import NotFittedError
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.pipeline import FeatureUnion
 from joblib import Parallel, delayed
 import re
 
@@ -248,6 +249,24 @@ def preprocess_data(df: pd.DataFrame):
         }))),
     ])
 
+    # Define feature extraction pipeline for text features
+    text_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="constant", fill_value="")),
+        # For each column, extract the length of the string and the number of words
+        ("extractor", FeatureUnion([
+            ("length", FunctionTransformer(lambda x: pd.DataFrame(
+                {
+                    f"{col}_length": x[col].apply(len)
+                    for col in x.columns
+                }))),
+            ("word_count", FunctionTransformer(lambda x: pd.DataFrame(
+                {
+                    f"{col}_word_count": x[col].apply(lambda x: len(x.split()))
+                    for col in x.columns
+                })))
+        ]))
+    ])
+
     # Defien the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
@@ -255,8 +274,9 @@ def preprocess_data(df: pd.DataFrame):
             ('multilabel', multilabel_transformer, cfg.data.multilabel_features),
             ('categorical', categorical_transformer, cfg.data.categorical_features),
             ('normal', normal_transformer, cfg.data.normal_features),
-            ('uniform', uniform_transformer, cfg.data.uniform_features)
-            ('dates', date_transformer, cfg.data.date_features)
+            ('uniform', uniform_transformer, cfg.data.uniform_features),
+            ('dates', date_transformer, cfg.data.date_features),
+            ('text', text_transformer, cfg.data.text_features),
             ('', 'passthrough', cfg.data.all_set_features)
         ],
         remainder='drop',
