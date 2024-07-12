@@ -109,6 +109,12 @@ fluent_datasources:
       sample_asset:
         type: csv
         filepath_or_buffer: /home/saveliy/study/MLOps/MLOps-for-music-popularity-prediction/data/samples/sample.csv
+  features:
+    type: pandas
+    assets:
+      features_dataframe:
+        type: dataframe
+        batch_metadata: {}
 notebooks:
 include_rendered_content:
   globally: false
