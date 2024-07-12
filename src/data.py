@@ -191,15 +191,14 @@ def preprocess_data(df: pd.DataFrame):
     # Define the transformation pipeline for other multilabel columns
     multilabel_transformer = Pipeline([
         ("preprocess", multilabel_prep_pipeline),
-        ("encode", MultiHotEncoder()),
-        ("to_int", FunctionTransformer(lambda x: x.astype(int)))
+        ("encode", MultiHotEncoder())
     ])
 
 
     # Define the transformation pipeline for the categorical columns
     categorical_transformer = Pipeline([
         ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('onehot', OneHotEncoder(sparse_output=False))
+        ('onehot', OneHotEncoder(sparse_output=False, dtype=bool, handle_unknown='ignore'))
     ])
 
     # Define the transformation pipeline for the normal features
@@ -279,10 +278,10 @@ def preprocess_data(df: pd.DataFrame):
             ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
             ('dates', date_transformer, list(cfg.data.timedate_features)),
             ('text', text_transformer, list(cfg.data.text_features)),
-            ('float_to_int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.convert_to_int))
+            ('int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.ordinal_features)),
+            ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
         ],
         remainder='drop',
-        verbose_feature_names_out=False
     )
 
     column_transformer.set_output(transform="pandas")
@@ -362,7 +361,7 @@ class MultiHotEncoder(BaseEstimator, TransformerMixin):
     def __init__(self, input_format: Literal["pandas", "numpy"] = "pandas", handle_unknown="drop"):
         self.mlbs = {}
         self.input_format = input_format
-        self._output_dtype = None
+        self._output_dtype = bool
         self._output_format = "pandas"
         self._features_order = []
         self.classes_ = []
@@ -431,17 +430,17 @@ class MultiHotEncoder(BaseEstimator, TransformerMixin):
             # Check if the number of columns in X match the number of columns in the fitted data
             if not len(self.mlbs) == X.shape[1]:
                 raise ValueError("Number of columns in X does not match the number of columns in the fitted data")
-            res = np.empty((X.shape[0], 0))
+            res = np.empty((X.shape[0], 0), dtype=self._output_dtype)
             for i in self._features_order:
                 if self.handle_unknown == "drop":
                     # Some entries may contain unseen classes, so we need to filter them out
                     filtered = [set(entry).intersection(self.mlbs[i].classes_) for entry in X[:, i]]
-                    res = np.concatenate([res, self.mlbs[i].transform(filtered)], axis=1, dtype=int)
+                    res = np.concatenate([res, self.mlbs[i].transform(filtered)], axis=1, dtype=self._output_dtype)
                 else:
-                    res = np.concatenate([res, self.mlbs[i].transform(X[:, i])], axis=1, dtype=int)
+                    res = np.concatenate([res, self.mlbs[i].transform(X[:, i])], axis=1, dtype=self._output_dtype)
 
         if self._output_format == "pandas":
-            return pd.DataFrame(res, columns=self.classes_, dtype=int)
+            return pd.DataFrame(res, columns=self.classes_, dtype=self._output_dtype)
         else:
             return res
         
