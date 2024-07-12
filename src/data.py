@@ -191,7 +191,8 @@ def preprocess_data(df: pd.DataFrame):
     # Define the transformation pipeline for other multilabel columns
     multilabel_transformer = Pipeline([
         ("preprocess", multilabel_prep_pipeline),
-        ("encode", MultiHotEncoder())
+        ("encode", MultiHotEncoder()),
+        ("to_int", FunctionTransformer(lambda x: x.astype(int)))
     ])
 
 
