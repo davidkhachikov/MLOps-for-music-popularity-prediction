@@ -185,7 +185,7 @@ def preprocess_data(df: pd.DataFrame):
         ("preprocess", multilabel_prep_pipeline), # Preprocess the data
         ("decompose", GenreDecomposer()), # Replace composite genres with their atomic components 
         ("encode", MultiHotEncoder()), # Binarize the genres
-        ("minority_drop", CategoricalMinorityDropper(count_threshold=21)) # Drop genres that appear in less than 1% of the data
+        ("minority_drop", CategoricalMinorityDropper(count_threshold=100)) # Drop genres that appear in less than 1% of the data
     ])
 
     # Define the transformation pipeline for other multilabel columns
@@ -575,6 +575,27 @@ class GenreDecomposer(BaseEstimator, TransformerMixin):
 
 def validate_features(X: pd.DataFrame, y: pd.DataFrame):
     """ Performs feature validation using new expectations"""
+    
+    context = gx.get_context(context_root_dir="../services/gx")
+    data_asset = context.get_datasource("features").get_asset("features_dataframe")
+    batch_request = data_asset.build_batch_request(dataframe=X)
+
+    checkpoint = context.add_or_update_checkpoint(
+        name="features_validation",
+        validations=[
+            {
+                "batch_request": batch.batch_request,
+                "expectation_suite_name": "features_expectations"
+            } for batch in data_asset.get_batch_list_from_batch_request(batch_request)
+        ]
+    )
+
+    checkpoint_result = checkpoint.run()
+    
+    if not checkpoint_result.success:
+        print("Validation failed")
+        print(checkpoint_result.get_statistics())
+        exit(1)
     return X, y
 
 
