@@ -60,5 +60,6 @@ $DVC_PATH push || { echo "Failed to push data to remote DVC repository"; exit 1;
 $GIT_PATH commit -m "Save validated data number ${i} (testing airflow)"
 $GIT_PATH tag -a "AIRFLOW2.${i}" -m "Version tag" || { echo "Failed to create tag"; exit 1; }
 $GIT_PATH push --tags || { echo "Failed to push tags to remote repository"; exit 1; }
+$GIT_PATH push
 rm "$SAMPLE_CSV_PATH"
 echo "Commit and tag added for file number ${i}."
