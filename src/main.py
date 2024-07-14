@@ -3,8 +3,7 @@ from model import train, load_features, log_metadata
 from omegaconf import OmegaConf
 
 
-def run(args):
-    cfg = args
+def run(cfg):
 
     train_data_version = cfg.train_data_version
 
@@ -20,7 +19,7 @@ def run(args):
 
     log_metadata(cfg, gs, X_train, y_train, X_test, y_test)
 
-    
+
 @hydra.main(config_path="../configs", config_name="main", version_base=None) # type: ignore
 def main(cfg=None):
 

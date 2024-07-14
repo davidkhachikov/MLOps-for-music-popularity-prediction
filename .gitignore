@@ -166,3 +166,7 @@ cython_debug/
 .idea/modules.xml
 .idea/vcs.xml
 .idea/inspectionProfiles/profiles_settings.xml
+
+# MLflow run files
+mlruns/
+multirun/
