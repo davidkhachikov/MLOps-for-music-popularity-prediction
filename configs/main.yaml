@@ -1,26 +1,17 @@
-defaults: # TODO: check correctness and correspondents of params
-  - _self_
-  # - data/sample
-  - data_features
-  - model/model
-  - experiment
-  # - override hydra/launcher: joblib # submitit_local #joblib
-  # - override hydra/sweeper: optuna
-  # - override hydra/sweeper/sampler: grid
-
-hydra:
-  mode: MULTIRUN
-  # launcher:
-  #   n_jobs: -1
-  sweeper:
-    params:
-      +model: "rf, lr"
-      # +model: "rf"
-
 data:
   num_samples: 5
   path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
   repo: .
-  sample_num: 0
+  sample_num: 2
   version: AIRFLOW2.0
+defaults:
+- _self_
+- data_features
+- model/model
+- experiment
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: rf, lr

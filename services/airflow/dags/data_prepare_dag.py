@@ -10,7 +10,8 @@ with DAG(
     dag_id="data_prepare",
     schedule_interval="*/5 * * * *",
     catchup=False,
-    start_date=datetime(2024, 6, 30, 10, 45),
+    start_date=datetime(2024, 7, 14, 16, 25),
+    max_active_runs=1
 ) as dag:
     sensor = ExternalTaskSensor(
         task_id = "wait_extraction",

@@ -14,7 +14,6 @@ data_shape = pd.read_csv(data_path, low_memory=False).shape
 test_tuples = [(sample_path, data_shape)]
 BASE_PATH = os.getenv('PROJECTPATH')
 
-
 sample_data(BASE_PATH)
 
 @pytest.mark.parametrize("sample_path, data_shape", test_tuples)
