@@ -11,7 +11,7 @@ from zenml import step, pipeline, ArtifactConfig
 from data import read_datastore, validate_features, load_features, preprocess_data
 import os
 
-BASE_PATH = os.path.expandvars("$PROJECTPATH")
+BASE_PATH = os.getenv('PROJECTPATH')
 
 @step(enable_cache=False)
 def extract()-> Tuple[
@@ -24,8 +24,7 @@ def extract()-> Tuple[
                         ArtifactConfig(name="data_version",
                                        tags=["data_preparation"])]
                     ]:
-    
-    df, version = read_datastore(BASE_PATH)
+    df, version = read_datastore()
 
     return df, version
 

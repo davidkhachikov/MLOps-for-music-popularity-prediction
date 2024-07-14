@@ -20,7 +20,7 @@ TARGET_COLUMN = cfg.data.target_cols[0]
 
 CATEGORICAL_COLUMNS = list(cfg.data.cat_cols) + list(cfg.data.bin_cols)
 
-dataset_name = cfg.data.dataset_name
+dataset_name = cfg.data.dataset_name + "." + cfg.data.version
 
 
 # Wrap your Pandas DataFrame with giskard.Dataset (validation or test set)

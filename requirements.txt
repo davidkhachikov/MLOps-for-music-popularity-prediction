@@ -19,3 +19,4 @@ Flask
 flask-session2
 psycopg2-binary
 mlflow
+pytest-mock

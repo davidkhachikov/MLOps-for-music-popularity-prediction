@@ -1,7 +1,7 @@
 defaults: # TODO: check correctness and correspondents of params
   - _self_
   # - data/sample
-  - data_version
+  - data_features
   - model/model
   - experiment
   # - override hydra/launcher: joblib # submitit_local #joblib
@@ -22,4 +22,5 @@ data:
   path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
   repo: .
-  sample_num: 6
+  sample_num: 0
+  version: AIRFLOW2.0

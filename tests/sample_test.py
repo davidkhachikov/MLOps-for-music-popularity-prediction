@@ -1,36 +1,36 @@
-"""
-import of tested functions and types for tests
-"""
-from hydra import initialize, compose
-from omegaconf import DictConfig
+# test_sample_data.py
 import pytest
 import pandas as pd
-import numpy as np
+from data import sample_data
+from utils import init_hydra
 from math import ceil
+import numpy as np
+import os
 
-samples_data = [
-    ("./data/samples/sample.csv")
-]
+sample_path = "./data/samples/sample.csv"
+data_path = "./data/raw/tracks.csv"
 
-data_list = [pd.read_csv(path) for path in samples_data]
+data_shape = pd.read_csv(data_path, low_memory=False).shape
+test_tuples = [(sample_path, data_shape)]
+BASE_PATH = os.getenv('PROJECTPATH')
 
-@pytest.mark.parametrize("data", data_list)
-def test_is_not_empty(data):
-    """test of sampled data fails if it is empty"""
-    assert not data.empty
 
-@pytest.mark.parametrize("data", data_list)
-def test_size_of_sample(data):
+sample_data(BASE_PATH)
+
+@pytest.mark.parametrize("sample_path, data_shape", test_tuples)
+def test_size_of_sample(sample_path, data_shape):
     """test of sampled data fails if number of rows in sample does not correspond with configs"""
     # Initialize Hydra to read the configuration
-    with initialize(config_path="../configs", version_base=None):
-        cfg: DictConfig = compose(config_name='main')
-    assert np.abs(data.shape[0] - ceil(cfg.data.data_size/cfg.data.num_files)) < cfg.data.num_files
+    cfg = init_hydra()
+    sample_len = pd.read_csv(sample_path).shape[0]
+    data_len = data_shape[0]
+    assert np.abs(sample_len - ceil(data_len/cfg.data.num_samples)) < cfg.data.num_samples
 
-@pytest.mark.parametrize("data", data_list)
-def test_number_of_columns(data):
+@pytest.mark.parametrize("sample_path, data_shape", test_tuples)
+def test_number_of_columns(sample_path, data_shape):
     """test of sampled data fails if number of columns in sample does not correspond with configs"""
-    # Initialize Hydra to read the configuration
-    with initialize(config_path="../configs", version_base=None):
-        cfg: DictConfig = compose(config_name='main')
-    assert data.shape[1] == cfg.data.column_number
+    sample_data(BASE_PATH)
+    sample = pd.read_csv(sample_path, nrows=0)
+    sample_columns_num = sample.shape[1]
+    data_columns_num = data_shape[1]
+    assert sample_columns_num == data_columns_num
