@@ -13,7 +13,7 @@ apache-airflow[cncf.kubernetes] == 2.7.3
 feast
 shyaml
 mlflow
-giskard
+giskard==2.14.0
 evidently
 Flask
 flask-session2
