@@ -5,7 +5,15 @@
 if ! grep -q "export PROJECTPATH=" ~/.bashrc; then
     # Append the PROJECTPATH variable to .bashrc if it's not already present
     echo "export PROJECTPATH=$(pwd)" >> ~/.bashrc
-    export AIRFLOW_HOME=$PWD/services/airflow
+    
+    
+fi
+
+if ! grep -q "export AIRFLOW_HOME=" ~/.bashrc; then
+    
+    
+    echo "export AIRFLOW_HOME=$PWD/services/airflow" >> ~/.bashrc
+    
 fi
 # Reload .bashrc to apply the changes made to it
 source ~/.bashrc
