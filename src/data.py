@@ -14,8 +14,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
+from gensim.models import Word2Vec
 from joblib import Parallel, delayed
 from utils import init_hydra
+
 import re
 
 from typing import Literal
@@ -174,19 +176,13 @@ def preprocess_data(df: pd.DataFrame):
     X = df.drop(columns=cfg.data.target_features)
     y = df[cfg.data.target_features]
 
+    clean_genres = X[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    X = X.drop(columns=cfg.data.genres_feature)
     
     # Define the base preprocessing pipeline for the multilabel columns
     multilabel_prep_pipeline = Pipeline([
         ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists if any
         ('to_list', FunctionTransformer(lambda x: pd.DataFrame(x).applymap(lambda k: ast.literal_eval(k)))) # Convert the string representation of lists to actual lists
-    ])
-
-    # Define the transformation pipeline for the genres column (this order is more memory efficient)
-    genres_transformer = Pipeline([
-        ("preprocess", multilabel_prep_pipeline), # Preprocess the data
-        ("decompose", GenreDecomposer()), # Replace composite genres with their atomic components 
-        ("encode", MultiHotEncoder()), # Binarize the genres
-        ("minority_drop", CategoricalMinorityDropper(count_threshold=100)) # Drop genres that appear in less than 1% of the data
     ])
 
     # Define the transformation pipeline for other multilabel columns
@@ -272,7 +268,6 @@ def preprocess_data(df: pd.DataFrame):
     # Defien the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
-            ('genres', genres_transformer, list(cfg.data.genres_features)),
             ('multilabel', multilabel_transformer, list(cfg.data.multilabel_features)),
             ('categorical', categorical_transformer, list(cfg.data.categorical_features)),
             ('normal', normal_transformer, list(cfg.data.normal_features)),
@@ -283,11 +278,18 @@ def preprocess_data(df: pd.DataFrame):
             ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
         ],
         remainder='drop',
+        verbose=True
     )
 
     column_transformer.set_output(transform="pandas")
 
     X = column_transformer.fit_transform(X)
+
+    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
+
+    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 100)
+    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(100)])
+    X = pd.concat([X, genres2vec_features], axis=1)
     
     return X, y
 
@@ -459,119 +461,28 @@ class MultiHotEncoder(BaseEstimator, TransformerMixin):
             return self.classes_
         else:
             return None
-    
-    
-    
-class GenreDecomposer(BaseEstimator, TransformerMixin):
-    """Takes a column of lists of genres and replaces the composite genres with their atomic components."""
-    def __init__(self, n_jobs=-1, input_format: Literal["pandas", "numpy"] = "pandas"):
-        self.n_jobs = n_jobs
-        self.composite_to_atomic = {}
-        self.atomic_genres = []
-        self._output_format = "pandas"
-        self.input_format = input_format
-
-    def fit(self, X, y=None):
-        self.composite_to_atomic = {}
-        self.atomic_genres = []
-
-        # if X has wrong format, raise an error
-        if self.input_format == "pandas" and not isinstance(X, pd.DataFrame):
-            raise ValueError("Input format is pandas, but X is not a pandas DataFrame")
-        if self.input_format == "numpy" and not isinstance(X, np.ndarray):
-            raise ValueError("Input format is numpy, but X is not a numpy array")
         
-        # X must be one column
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2 or X.shape[1] != 1:
-            raise ValueError("Input must one column of lists of genres")
-        
-        features = set()
-
-        # Get all the unique genres
-        for entry in X.iloc[:, 0] if self.input_format == "pandas" else X[:, 0]:
-            features.update(entry)
-
-        features = sorted(features, key=len)
-
-        # List to store the found pairs
-        found_pairs = []
-
-        # Use Parallel and delayed to parallelize the computation
-        found_pairs = Parallel(n_jobs=self.n_jobs, backend="multiprocessing")(
-            delayed(self.process_genres_pair)(i, j, features) for i in range(len(features)) for j in range(i + 1, len(features))
-        )
-
-        # Convert results to DataFrame for better readability
-        substring_pairs = pd.DataFrame(found_pairs, columns=['Feature1', 'Feature2', 'IsSubstring'])
-
-        # Filter only the pairs where one is a substring of the other
-        substring_pairs = substring_pairs[substring_pairs['IsSubstring']]
-
-        # Populate composite_to_atomic dictionary
-        for _, row in substring_pairs.iterrows():
-            if row['Feature2'] not in self.composite_to_atomic:
-                self.composite_to_atomic[row['Feature2']] = []
-            self.composite_to_atomic[row['Feature2']].append(row['Feature1'])
-        
-        self.atomic_genres = list(set(features) - set(self.composite_to_atomic.keys()))
-
-        return self
-
-    def transform(self, X):
-        # if X has wrong format, raise an error
-        if self.input_format == "pandas" and not isinstance(X, pd.DataFrame):
-            raise ValueError("Input format is pandas, but X is not a pandas DataFrame")
-        if self.input_format == "numpy" and not isinstance(X, np.ndarray):
-            raise ValueError("Input format is numpy, but X is not a numpy array")
-        
-        # X must be one column
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2 or X.shape[1] != 1:
-            raise ValueError("Input must one column of lists of genres")
-        
-        # Check if the estimator has been fitted
-        if not self.composite_to_atomic:
-            raise NotFittedError("This GenreDecomposer instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.")
-
-        # For each entry in the column, replace the composite genres with the atomic genres
-        res = []
-        for entry in X.iloc[:, 0] if self.input_format == "pandas" else X[:, 0]:
-            new_entry = set()
-            for genre in entry:
-                if genre in self.atomic_genres:
-                    new_entry.add(genre)
-                else:
-                    new_entry.update(self.composite_to_atomic.get(genre, []))
-            res.append(list(new_entry))
-        
-        # Convert the result to the expected format
-        # Result must be a 2D array
-        if self._output_format == "pandas":
-            return pd.DataFrame(np.array(res, dtype=list).reshape(-1, 1))
-        else:
-            return np.array(res, dtype=list).reshape(-1, 1)
+# Create a function to average the word vectors
+def average_word_vectors(words, model, vocabulary, num_features):
+    feature_vector = np.zeros((num_features,), dtype="float64")
+    nwords = 0.
     
-    def fit_transform(self, X, y=None):
-        self.fit(X)
-        return self.transform(X)
+    for word in words:
+        if word in vocabulary:
+            nwords = nwords + 1
+            feature_vector = np.add(feature_vector, model.wv[word])
     
-    def set_output(self, *, transform=None):
-        if transform is not None:
-            self._output_format = transform
-        return self
+    if nwords:
+        feature_vector = np.divide(feature_vector, nwords)
     
-    # Function to check if one string is a substring of another with delimiters
-    def check_if_subgenre(self, feature1, feature2):
-        pattern1 = r'\b' + re.escape(feature1) + r'\b'
-        return re.search(pattern1, feature2) is not None
+    return feature_vector
 
-    # Function to process a pair of features
-    def process_genres_pair(self, i, j, features):
-        return (features[i], features[j], self.check_if_subgenre(features[i], features[j]))
-    
+# Create a function to iterate over the dataset
+def averaged_word_vectorizer(corpus, model, num_features):
+    vocabulary = set(model.wv.index_to_key)
+    features = [average_word_vectors(tokenized_sentence, model, vocabulary, num_features) for tokenized_sentence in corpus]
+    return np.array(features)
+
 
 
 def validate_features(X: pd.DataFrame, y: pd.DataFrame):

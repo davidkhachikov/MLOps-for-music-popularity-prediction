@@ -1,6 +1,6 @@
 data:
   target_features: ["popularity"]
-  genres_features: ["genres"]
+  genres_feature: "genres"
   multilabel_features: ["available_markets"]
   categorical_features: ["key", "time_signature"]
   normal_features: ["artist_followers","album_total_tracks","artist_popularity","tempo","speechiness","danceability","liveness","loudness"]
