@@ -186,7 +186,7 @@ def preprocess_data(df: pd.DataFrame):
         ("preprocess", multilabel_prep_pipeline), # Preprocess the data
         ("decompose", GenreDecomposer()), # Replace composite genres with their atomic components 
         ("encode", MultiHotEncoder()), # Binarize the genres
-        ("minority_drop", CategoricalMinorityDropper(count_threshold=1000)) # Drop genres that appear in less than 1% of the data
+        ("minority_drop", CategoricalMinorityDropper(count_threshold=100)) # Drop genres that appear in less than 1% of the data
     ])
 
     # Define the transformation pipeline for other multilabel columns
