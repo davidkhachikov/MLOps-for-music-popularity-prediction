@@ -1,4 +1,4 @@
-from multiprocessing.connection import Client
+from zenml.client import Client
 import os
 import numpy as np
 import pandas as pd
@@ -15,7 +15,6 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
 from gensim.models import Word2Vec
-from joblib import Parallel, delayed
 from utils import init_hydra
 
 import re
@@ -284,13 +283,12 @@ def preprocess_data(df: pd.DataFrame):
     column_transformer.set_output(transform="pandas")
 
     X = column_transformer.fit_transform(X)
-
+    print(len(clean_genres))
     genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
 
     genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 100)
     genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(100)])
     X = pd.concat([X, genres2vec_features], axis=1)
-    
     return X, y
 
 # Define the cyclical feature transformers
@@ -488,7 +486,7 @@ def averaged_word_vectorizer(corpus, model, num_features):
 def validate_features(X: pd.DataFrame, y: pd.DataFrame):
     """ Performs feature validation using new expectations"""
     
-    context = gx.get_context(context_root_dir="../services/gx")
+    context = gx.get_context(context_root_dir=f"{BASE_PATH}/services/gx")
     data_asset = context.get_datasource("features").get_asset("features_dataframe")
     batch_request = data_asset.build_batch_request(dataframe=X)
 
@@ -511,12 +509,12 @@ def validate_features(X: pd.DataFrame, y: pd.DataFrame):
     return X, y
 
 
-def load_features(X:pd.DataFrame, y:pd.DataFrame, version: str):
+def load_features(X: pd.DataFrame, y: pd.DataFrame, version: str):
     """Load and version the features X and the target y in artifact store of ZenML"""
     
     # Save the artifact
     zenml.save_artifact(data=(X, y), name="features_target", tags=[version])
-
+    
     # Retrieve the client to interact with the ZenML store
     client = Client()
 
