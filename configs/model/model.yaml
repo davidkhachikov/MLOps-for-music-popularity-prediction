@@ -3,15 +3,15 @@ defaults: # TODO: check correctness of params
 
 folds: 3
 
-evaluation_metric: "mean_absolute_error"
-cv_evaluation_metric: "mean_mean_test_f1"
+evaluation_metric: "neg_mean_absolute_error"
+cv_evaluation_metric: "neg_mean_mean_test_f1"
 
 pyfunc_predict_fn: "predict_proba"
 
 metrics:
-  mean_absolute_error: "mean_absolute_error"
-  mean_squared_error: "mean_squared_error"
-  r2: "r2_score"
+  mean_absolute_error: "neg_mean_absolute_error"
+  mean_squared_error: "neg_mean_squared_error"
+  r2: "r2"
 
 
 # hydra:
