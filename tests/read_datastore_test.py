@@ -4,6 +4,7 @@ from data import read_datastore
 from unittest.mock import MagicMock
 from io import StringIO
 import pandas as pd
+from utils import init_hydra
 
 @pytest.fixture
 def mock_dvc_open(mocker):
@@ -24,5 +25,7 @@ def mock_dvc_open(mocker):
 def test_read_datastore_success():
     """Test read_datastore succeeds with correct main.yaml and data."""
     df, version = read_datastore()
+    cfg = init_hydra()
+    
     assert isinstance(df, pd.DataFrame)
-    assert version == 'AIRFLOW2.0'
+    assert version == 'AIRFLOW2.'+str(cfg.data.sample_num-1)
