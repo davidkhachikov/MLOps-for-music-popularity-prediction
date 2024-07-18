@@ -153,10 +153,11 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 eval_data["predictions"] = predictions
 
                 results = mlflow.evaluate(
+                    model_uri,
                     data=eval_data,
-                    model_type="classifier",
-                    targets="label",
-                    predictions="predictions",
+                    model_type="regressor",
+                    
+                    
                     evaluators=["default"]
                 )
 
