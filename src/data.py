@@ -156,8 +156,8 @@ def read_datastore():
     """
     data_path = "data/samples/sample.csv"
     cfg = init_hydra()
-    version = cfg.data.version
-
+    version = cfg.data.version[:-1]
+    version += str(cfg.data.sample_num-1)
     with dvc.api.open(
                     data_path,
                     rev=version,

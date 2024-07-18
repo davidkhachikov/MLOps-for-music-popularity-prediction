@@ -1,0 +1,71 @@
+data:
+  num_samples: 5
+  path_to_raw: ./data/raw/tracks.csv
+  remote: mlops_remote
+  repo: .
+  sample_num: 2
+  version: AIRFLOW2.0
+  target_features:
+  - popularity
+  genres_feature: genres
+  multilabel_features:
+  - available_markets
+  categorical_features:
+  - key
+  - time_signature
+  normal_features:
+  - artist_followers
+  - album_total_tracks
+  - artist_popularity
+  - tempo
+  - speechiness
+  - danceability
+  - liveness
+  - loudness
+  uniform_features:
+  - energy
+  - valence
+  - acousticness
+  - instrumentalness
+  convert_to_bool:
+  - explicit
+  ordinal_features:
+  - chart
+  - mode
+  timedate_features:
+  - album_release_date
+  low_features_number:
+  - track_id
+  - streams
+  - track_artists
+  - added_at
+  - track_album_album
+  - duration_ms
+  - track_track_number
+  - rank
+  - region
+  - trend
+  text_features:
+  - album_name
+  - name
+  missing_list:
+  - genres
+  - available_markets
+  missing_strings:
+  - album_name
+  - name
+model:
+  folds: 3
+  evaluation_metric: f1
+  cv_evaluation_metric: mean_test_f1
+  pyfunc_predict_fn: predict_proba
+  metrics:
+    accuracy: accuracy
+    f1: f1
+experiment_name: mlops_experiment
+run_name: multi_run
+test_size: 0.2
+random_state: 88
+cv_n_jobs: -1
+train_data_version: AIRFLOW2.0
+test_data_version: AIRFLOW2.1
