@@ -1,10 +1,10 @@
 defaults: # TODO: check correctness of params
   - _self_
 
-folds: 3
+folds: 2
 
 evaluation_metric: "neg_mean_absolute_error"
-cv_evaluation_metric: "neg_mean_mean_test_f1"
+cv_evaluation_metric: "mean_test_neg_mean_squared_error"
 
 pyfunc_predict_fn: "predict_proba"
 

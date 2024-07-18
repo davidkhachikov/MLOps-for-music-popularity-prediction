@@ -38,6 +38,7 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
     # print(cv_results, cv_results.columns)
 
     params = best_metrics_dict
+    print(best_metrics_keys)
 
     df_train = pd.concat([X_train, y_train], axis = 1)
     df_test = pd.concat([X_test, y_test], axis = 1)
@@ -66,10 +67,10 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
     # Parent run
     with mlflow.start_run(run_name = run_name, experiment_id = experiment_id) as run:
 
-        df_train_dataset = mlflow.data.pandas_dataset.from_pandas(df = df_train, targets = cfg.data.target_cols[0]) # type: ignore
-        df_test_dataset = mlflow.data.pandas_dataset.from_pandas(df = df_test, targets = cfg.data.target_cols[0]) # type: ignore
-        mlflow.log_input(df_train_dataset, "training")
-        mlflow.log_input(df_test_dataset, "testing")
+        # df_train_dataset = mlflow.data.pandas_dataset.from_pandas(df = df_train, targets = cfg.data.target_cols[0]) # type: ignore
+        # df_test_dataset = mlflow.data.pandas_dataset.from_pandas(df = df_test, targets = cfg.data.target_cols[0]) # type: ignore
+        # mlflow.log_input(df_train_dataset, "training")
+        # mlflow.log_input(df_test_dataset, "testing")
 
         # Log the hyperparameters
         mlflow.log_params(gs.best_params_)
