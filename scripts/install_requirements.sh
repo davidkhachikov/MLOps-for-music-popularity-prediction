@@ -9,12 +9,13 @@ if ! grep -q "export PROJECTPATH=" ~/.bashrc; then
     
 fi
 
-if ! grep -q "export AIRFLOW_HOME=" ~/.bashrc; then
+export AIRFLOW_HOME=$PWD/services/airflow
+# if ! grep -q "export AIRFLOW_HOME=" ~/.bashrc; then
     
     
-    echo "export AIRFLOW_HOME=$PWD/services/airflow" >> ~/.bashrc
+#     echo "export AIRFLOW_HOME=$PWD/services/airflow" >> ~/.bashrc
     
-fi
+# fi
 # Reload .bashrc to apply the changes made to it
 source ~/.bashrc
 

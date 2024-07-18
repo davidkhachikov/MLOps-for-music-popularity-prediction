@@ -16,7 +16,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
 from gensim.models import Word2Vec
 from utils import init_hydra
-
+import joblib
 import re
 
 from typing import Literal
@@ -156,8 +156,8 @@ def read_datastore():
     """
     data_path = "data/samples/sample.csv"
     cfg = init_hydra()
-    version = cfg.data.version
-
+    version = cfg.data.version[:-1]
+    version += str(cfg.data.sample_num-1)
     with dvc.api.open(
                     data_path,
                     rev=version,
@@ -172,16 +172,46 @@ def preprocess_data(df: pd.DataFrame):
 
     cfg = init_hydra()
 
+    # Splitting the data into features and targets
     X = df.drop(columns=cfg.data.target_features)
     y = df[cfg.data.target_features]
 
-    clean_genres = X[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    X = X.drop(columns=cfg.data.genres_feature)
-    
+    # Fit transformers if they don't exist
+    transformers_dir = os.path.join(BASE_PATH, 'models', 'transformers')
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.pkl')
+
+    if not os.path.exists(genres2vec_model_path):
+        fit_transformers(X, cfg, transformers_dir)
+
+    # Transform the data
+    X_transformed = transform_data(X, cfg, transformers_dir)
+
+    return X_transformed, y
+
+
+def apply_literal_eval(df: pd.DataFrame):
+    """ Applies literal_eval to all values in the DataFrame"""
+    for col in df.columns:
+        df[col] = df[col].apply(ast.literal_eval)
+    return df
+
+def decompose_dates(df: pd.DataFrame):
+    """ Decomposes the date features into year, month, day, and weekday"""
+    res = pd.DataFrame(columns=["year", "month", "day", "weekday"])
+    df = df.squeeze()
+    df = pd.to_datetime(df)
+    res["year"] = df.dt.year
+    res["month"] = df.dt.month
+    res["day"] = df.dt.day
+    res["weekday"] = df.dt.weekday
+
+    return res
+
+def get_column_transformer(cfg):
     # Define the base preprocessing pipeline for the multilabel columns
     multilabel_prep_pipeline = Pipeline([
         ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists if any
-        ('to_list', FunctionTransformer(lambda x: pd.DataFrame(x).applymap(lambda k: ast.literal_eval(k)))) # Convert the string representation of lists to actual lists
+        ('to_list', FunctionTransformer(apply_literal_eval)) # Convert the string representation of lists to actual lists
     ])
 
     # Define the transformation pipeline for other multilabel columns
@@ -212,16 +242,8 @@ def preprocess_data(df: pd.DataFrame):
     # Define the transformation pipeline for the date features
     date_transformer = Pipeline([
         ('imputer', SimpleImputer(strategy='constant', fill_value=pd.Timestamp('1970-01-01'))),
-        # all dates are Year-Month-Day. Split them into 3 columns
-        ('str_to_datetime', FunctionTransformer(lambda x: pd.to_datetime(x.squeeze()))),
-        ("year_month_day_weekday", FunctionTransformer(lambda x: pd.DataFrame(
-            {
-                "year": x.dt.year,
-                "month": x.dt.month,
-                "day": x.dt.day,
-                "weekday": x.dt.weekday,
-            }
-        ))),
+        # all dates are Year-Month-Day. Split them into 4 columns
+        ("year_month_day_weekday", FunctionTransformer(decompose_dates)),
         # Convert to cyclical features
         ('cyclic_convert', ColumnTransformer(
             transformers=[
@@ -282,14 +304,44 @@ def preprocess_data(df: pd.DataFrame):
 
     column_transformer.set_output(transform="pandas")
 
-    X = column_transformer.fit_transform(X)
-    print(len(clean_genres))
-    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
+    return column_transformer
 
+
+
+def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
+    """Fits the transformers on the initial data sample and saves them as artifacts."""        
+    # Fit the Word2Vec model
+    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
+    with open(genres2vec_model_path, 'wb') as f:
+        joblib.dump(genres2vec_model, f)
+
+
+def transform_data(features: pd.DataFrame, cfg, transformers_dir):
+    """Loads the fitted transformers and applies them to new data samples."""
+
+    # Load the fitted column transformer
+    column_transformer = get_column_transformer(cfg)
+    
+    # Load the fitted Word2Vec model
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
+    with open(genres2vec_model_path, 'rb') as f:
+        genres2vec_model = joblib.load(f)
+
+    # Apply the column transformer
+    X_transformed = column_transformer.fit_transform(features)
+
+    # Apply the Word2Vec model
+    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
     genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 100)
     genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(100)])
-    X = pd.concat([X, genres2vec_features], axis=1)
-    return X, y
+    
+    # Concatenate the transformed features with the Word2Vec features
+    X_final = pd.concat([X_transformed, genres2vec_features], axis=1)
+    
+    return X_final
+
 
 # Define the cyclical feature transformers
 def sin_transformer(period):

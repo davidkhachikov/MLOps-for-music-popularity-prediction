@@ -4156,9 +4156,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_0",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_1"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_1",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4170,9 +4186,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_2",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_3"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_3",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4184,9 +4216,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_4",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_5"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_5",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4198,9 +4246,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_6",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_7"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_7",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4212,9 +4276,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_8",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_9"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_9",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4226,9 +4306,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_10",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_11"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_11",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4240,9 +4336,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_12",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_13"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_13",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4254,9 +4366,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_14",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_15"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_15",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4268,9 +4396,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_16",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_17"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_17",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4282,9 +4426,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_18",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_19"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_19",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4296,9 +4456,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_20",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_21"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_21",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4310,9 +4486,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_22",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_23"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_23",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4324,9 +4516,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_24",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_25"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_25",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4338,9 +4546,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_26",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_27"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_27",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4352,9 +4576,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_28",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_29"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_29",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4366,9 +4606,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_30",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_31"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_31",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4380,9 +4636,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_32",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_33"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_33",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4394,9 +4666,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_34",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_35"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_35",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4408,9 +4696,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_36",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_37"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_37",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4422,9 +4726,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_38",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_39"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_39",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4436,9 +4756,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_40",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_41"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_41",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4450,9 +4786,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_42",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_43"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_43",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4464,9 +4816,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_44",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_45"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_45",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4478,9 +4846,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_46",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_47"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_47",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4492,9 +4876,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_48",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_49"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_49",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4506,9 +4906,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_50",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_51"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_51",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4520,9 +4936,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_52",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_53"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_53",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4534,9 +4966,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_54",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_55"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_55",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4548,9 +4996,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_56",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_57"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_57",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4562,9 +5026,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_58",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_59"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_59",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4576,9 +5056,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_60",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_61"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_61",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4590,9 +5086,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_62",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_63"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_63",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4604,9 +5116,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_64",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_65"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_65",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4618,9 +5146,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_66",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_67"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_67",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4632,9 +5176,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_68",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_69"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_69",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4646,9 +5206,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_70",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_71"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_71",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4660,9 +5236,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_72",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_73"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_73",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4674,9 +5266,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_74",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_75"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_75",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4688,9 +5296,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_76",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_77"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_77",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4702,9 +5326,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_78",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_79"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_79",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4716,9 +5356,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_80",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_81"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_81",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4730,9 +5386,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_82",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_83"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_83",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4744,9 +5416,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_84",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_85"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_85",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4758,9 +5446,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_86",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_87"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_87",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4772,9 +5476,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_88",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_89"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_89",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4786,9 +5506,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_90",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_91"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_91",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4800,9 +5536,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_92",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_93"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_93",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4814,9 +5566,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_94",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_95"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_95",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4828,9 +5596,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_96",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_97"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_97",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -4842,9 +5626,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_98",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "g_vec_99"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "g_vec_99",
+        "type_": "float"
       },
       "meta": {}
     }

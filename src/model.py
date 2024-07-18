@@ -11,8 +11,10 @@ def load_features(name, version, size = 1):
     client = Client()
     l = client.list_artifact_versions(name = name, tag = version, sort_by="version").items
     l.reverse
-
-    df = l[0].load()
+    
+    X, y = l[0].load()
+    df = X
+    df["y"] = y
     df = df.sample(frac = size, random_state = 88)
 
     print("size of df is ", df.shape)

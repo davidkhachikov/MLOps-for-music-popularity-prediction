@@ -68,7 +68,10 @@ def load(X:pd.DataFrame, y:pd.DataFrame, version: str)-> Tuple[
                             ArtifactConfig(name="target",
                                            tags=["data_preparation"])]
                                     ]:
-    
+    print("____________________________")
+    print(version)
+    print("___________________________")
+
     load_features(X, y, version)
 
     return X, y
@@ -77,6 +80,7 @@ def load(X:pd.DataFrame, y:pd.DataFrame, version: str)-> Tuple[
 @pipeline()
 def prepare_data_pipeline():
     df, version = extract()
+    print(version)
     X, y = transform(df)
     X, y = validate(X, y)
     X, y = load(X, y, version)

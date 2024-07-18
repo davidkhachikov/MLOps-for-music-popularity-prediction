@@ -5,6 +5,8 @@ from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.operators.python import PythonOperator
 from data_prepare import prepare_data_pipeline
 
+def run_pipeline():
+    prepare_data_pipeline()
 
 with DAG(
     dag_id="data_prepare",
@@ -20,7 +22,7 @@ with DAG(
 
     run_prepare = PythonOperator(
         task_id="prepare_data",
-        python_callable=prepare_data_pipeline
+        python_callable=run_pipeline,
     )
 
     sensor >> run_prepare
