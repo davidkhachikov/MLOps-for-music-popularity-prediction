@@ -38,7 +38,6 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
     # print(cv_results, cv_results.columns)
 
     params = best_metrics_dict
-    print(best_metrics_keys)
 
     df_train = pd.concat([X_train, y_train], axis = 1)
     df_test = pd.concat([X_test, y_test], axis = 1)
@@ -153,11 +152,11 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 eval_data["predictions"] = predictions
 
                 results = mlflow.evaluate(
-                    model_uri,
+                    # model_uri,
                     data=eval_data,
                     model_type="regressor",
-                    
-                    
+                    targets="popularity",
+                    # predictions="predictions",
                     evaluators=["default"]
                 )
 
