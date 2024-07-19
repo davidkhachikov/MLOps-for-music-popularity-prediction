@@ -7,6 +7,7 @@ import pandas as pd
 import mlflow
 import mlflow.sklearn
 import importlib
+import giskard
 
 def load_features(name, version, size = 1):
     client = Client()
@@ -151,8 +152,8 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                     # model_uri,
                     data=eval_data,
                     model_type="regressor",
-                    targets="popularity",
-                    # predictions="predictions",
+                    targets="label",
+                    predictions="predictions",
                     evaluators=["default"]
                 )
 
