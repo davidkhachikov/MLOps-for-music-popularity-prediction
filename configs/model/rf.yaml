@@ -1,22 +1,13 @@
-model_name: random_forest # TODO: make our model
+model_name: random_forest
 artifact_path: basic_rf
 
 tag_key: "model"
 tag_value: "basic RF"
 
 module_name: "sklearn.ensemble"
-class_name: "HistGradientBoostingRegressor"
+class_name: "RandomForestClassifier"
 
 params:
-  loss: ['squared_error', 'absolute_error', 'gamma']
-  learning_rate: [0.1, 0.01, 0.001]
-  max_leaf_nodes: [31, 63, 127]
-  random_state: [88] #, 100, 44]
-
-
-# hydra:
-#   sweeper:
-#       params:
-#         +params.n_estimators: "100, 200, 500"
-#         +params.criterion: "'gini', 'entropy', 'log_loss'"
-#         +params.random_state: 88
+  n_estimators: [100, 200, 500]
+  criterion: ['gini', 'entropy', 'log_loss']
+  random_state: [88, 100, 44]

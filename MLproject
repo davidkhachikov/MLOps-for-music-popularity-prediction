@@ -1,13 +1,9 @@
-name: Popularity_prediction # TODO: check project name
-
-# python_env: python_env.yaml
+name: Popularity_prediction 
 
 entry_points:
 
   main:
     command: "python src/main.py --multirun"
-    # command: "python src/main.py"
-
   
   evaluate:
     command: "python src/evaluate.py"

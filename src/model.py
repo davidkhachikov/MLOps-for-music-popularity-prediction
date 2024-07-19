@@ -1,5 +1,6 @@
 import warnings
 warnings.filterwarnings('ignore')
+from sklearn.exceptions import NotFittedError
 from sklearn.model_selection import GridSearchCV
 from zenml.client import Client
 import pandas as pd
@@ -35,12 +36,7 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
     best_metrics_keys = [metric for metric in gs.cv_results_]
     best_metrics_dict = {k:v for k,v in zip(best_metrics_keys, best_metrics_values) if 'mean' in k or 'std' in k}
 
-    # print(cv_results, cv_results.columns)
-
     params = best_metrics_dict
-
-    df_train = pd.concat([X_train, y_train], axis = 1)
-    df_test = pd.concat([X_test, y_test], axis = 1)
 
     experiment_name = cfg.model.model_name + "_" + cfg.experiment_name 
 
@@ -168,9 +164,9 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
 
 
 def train(X_train, y_train, cfg):
-
     # Define the model hyperparameters
     params = cfg.model.params
+    
 
     # Train the model
     module_name = cfg.model.module_name # e.g. "sklearn.linear_model"
@@ -181,7 +177,6 @@ def train(X_train, y_train, cfg):
 
     # Load "module.submodule.MyClass"
     class_instance = getattr(importlib.import_module(module_name), class_name)
-
     estimator = class_instance(**params)
 
     # Grid search with cross validation
@@ -201,10 +196,9 @@ def train(X_train, y_train, cfg):
         n_jobs = cfg.cv_n_jobs,
         refit = evaluation_metric,
         cv = cv,
-        verbose = 1,
+        verbose = 2,
         return_train_score = True
     )
-
     gs.fit(X_train, y_train)
 
     return gs
