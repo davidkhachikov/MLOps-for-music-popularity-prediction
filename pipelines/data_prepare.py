@@ -8,10 +8,15 @@
 import pandas as pd
 from typing_extensions import Tuple, Annotated
 from zenml import step, pipeline, ArtifactConfig
-from data import read_datastore, validate_features, load_features, preprocess_data
+import sys
 import os
 
 BASE_PATH = os.getenv('PROJECTPATH')
+sys.path.append(f'{BASE_PATH}/src')
+
+
+from data import read_datastore, validate_features, load_features, preprocess_data
+import os
 
 @step(enable_cache=False)
 def extract()-> Tuple[

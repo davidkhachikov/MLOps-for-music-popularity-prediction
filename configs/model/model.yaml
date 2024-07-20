@@ -1,13 +1,16 @@
 defaults:
   - _self_
 
-folds: 3
+folds: 2
 
-evaluation_metric: "f1"
-cv_evaluation_metric: "mean_test_f1"
+evaluation_metric: "neg_mean_squared_error" # Updated to a regression metric
+cv_evaluation_metric: "neg_mean_squared_error"
 
 pyfunc_predict_fn: "predict"
 
 metrics:
-  accuracy: "accuracy"
-  f1: "f1"
+  rmse: "neg_mean_squared_error" # Added RMSE as a metric
+  r2: "r2"
+
+challenger_model_names: ['neural_network', 'neural_network', 'random_forest', 'random_forest']
+rmse_threshold: 20

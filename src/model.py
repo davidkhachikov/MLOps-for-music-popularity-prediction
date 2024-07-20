@@ -9,7 +9,7 @@ import mlflow.sklearn
 import importlib
 import giskard
 
-def load_features(name, version, size = 1):
+def load_features(name, version, size = 0.1):
     client = Client()
     l = client.list_artifact_versions(name = name, tag = version, sort_by="version").items
     l.reverse
@@ -50,7 +50,7 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
     print("experiment-id : ", experiment_id)
 
     cv_evaluation_metric = cfg.model.cv_evaluation_metric
-    run_name = "_".join([cfg.run_name, cfg.model.model_name, cfg.model.evaluation_metric, str(params[cv_evaluation_metric]).replace(".", "_")]) # type: ignore
+    run_name = "_".join([cfg.run_name, cfg.model.model_name, cfg.model.evaluation_metric, str(cv_evaluation_metric).replace(".", "_")]) # type: ignore
     print("run name: ", run_name)
 
     if (mlflow.active_run()):
@@ -118,15 +118,6 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 
                 estimator = class_instance(**ps)
                 estimator.fit(X_train, y_train)
-
-                # from sklearn.model_selection import cross_val_score
-                # scores = cross_val_score(estimator=estimator, 
-                #                          X_train, 
-                #                          y_train, 
-                #                          cv = cfg.model.folds, 
-                #                          n_jobs=cfg.cv_n_jobs,
-                #                          scoring=cfg.model.cv_evaluation_metric)
-                # cv_evaluation_metric = scores.mean()
                 
                 signature = mlflow.models.infer_signature(X_train, estimator.predict(X_train))
 
@@ -148,8 +139,8 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 eval_data.columns = ["label"]
                 eval_data["predictions"] = predictions
 
+                
                 results = mlflow.evaluate(
-                    # model_uri,
                     data=eval_data,
                     model_type="regressor",
                     targets="label",
@@ -158,10 +149,6 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 )
 
                 print(f"metrics:\n{results.metrics}")
-            
-            # mlflow.end_run()  
-    
-    # mlflow.end_run()  
 
 
 def train(X_train, y_train, cfg):

@@ -1,18 +1,20 @@
-name: Popularity_prediction 
+name: Popularity_prediction
 
 entry_points:
-
   main:
     command: "python src/main.py --multirun"
   
   evaluate:
-    command: "python src/evaluate.py"
-
+    parameters:
+      data_version: {type: string, default: "AIRFLOW2.0"}
+      model_alias: {type: string, default: "champion"}
+    command: "python src/evaluate.py --data-version {data_version} --model-alias {model_alias}"
+  
   validate:
     command: "python src/validate.py"
-
+  
   transform:
     command: "python pipelines/data_prepare.py"
-
+  
   extract:
     command: "airflow dags test data_extract"
