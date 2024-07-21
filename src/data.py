@@ -149,15 +149,16 @@ def validate_initial_data(project_path=BASE_PATH):
         raise
 
 
-def read_datastore():
+def read_datastore(version=None):
     """
     Takes the project path
     Makes sample dataframe and reads the data version from ./configs/main.yaml
     """
     data_path = "data/samples/sample.csv"
     cfg = init_hydra()
-    version = cfg.data.version[:-1]
-    version += str(cfg.data.sample_num-1)
+    if version is None:
+        version = cfg.data.version
+        
     with dvc.api.open(
                     data_path,
                     rev=version,

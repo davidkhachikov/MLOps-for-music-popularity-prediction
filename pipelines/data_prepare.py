@@ -85,7 +85,6 @@ def load(X:pd.DataFrame, y:pd.DataFrame, version: str)-> Tuple[
 @pipeline()
 def prepare_data_pipeline():
     df, version = extract()
-    print(version)
     X, y = transform(df)
     X, y = validate(X, y)
     X, y = load(X, y, version)

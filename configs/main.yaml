@@ -6,6 +6,7 @@ data:
   sample_num: 16
   version: AIRFLOW2.0
   dataset_name: music_popularity
+
 defaults:
 - _self_
 - data_features
@@ -16,3 +17,7 @@ hydra:
   sweeper:
     params:
       +model: nn, rf
+
+mlflow_port: 5000
+model_port: 5151
+transformer_version: v1
