@@ -5,7 +5,7 @@ tag_key: "model"
 tag_value: "basic RF"
 
 module_name: "sklearn.ensemble"
-class_name: "RandomForestClassifier"
+class_name: "RandomForestRegressor"
 
 params:
   n_estimators: [25, 50, 100]

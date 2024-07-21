@@ -1,0 +1,13 @@
+model_name: hist_gradient_boosting
+artifact_path: basic_hgb
+
+tag_key: "model"
+tag_value: "basic HGB"
+
+module_name: "sklearn.ensemble"
+class_name: "HistGradientBoostingRegressor"
+
+params:
+  learning_rate: [0.01, 0.1, 1]
+  max_iter: [100, 200, 300]
+  random_state: [88, 100, 44]
