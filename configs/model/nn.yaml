@@ -1,4 +1,4 @@
-model_name: neural_network # TODO: make our model
+model_name: neural_network
 artifact_path: basic_nn
 
 tag_key: "model"

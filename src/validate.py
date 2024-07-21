@@ -6,7 +6,6 @@ import pickle
 import numpy as np
 from model import load_features  # custom module
 # from transform_data import transform_data  # custom module
-from model import retrieve_model_with_alias  # custom module
 from utils import init_hydra  # custom module
 from sklearn.metrics import mean_squared_error
 

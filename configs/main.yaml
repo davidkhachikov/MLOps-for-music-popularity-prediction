@@ -16,7 +16,7 @@ hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: nn, rf
+      +model: rf, nn, svr
 
 mlflow_port: 5000
 model_port: 5151

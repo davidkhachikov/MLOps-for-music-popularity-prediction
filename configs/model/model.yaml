@@ -12,5 +12,5 @@ metrics:
   rmse: "neg_mean_squared_error" # Added RMSE as a metric
   r2: "r2"
 
-challenger_model_names: ['neural_network', 'neural_network', 'random_forest', 'random_forest']
+challenger_model_names: ['neural_network', 'neural_network', 'random_forest', 'random_forest', 'support_vector_regression', 'support_vector_regression']
 rmse_threshold: 20
