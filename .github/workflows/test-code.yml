@@ -1,4 +1,4 @@
-name: pyrhon bkack linter
+name: Example test
 
 on:
   push:
@@ -7,16 +7,77 @@ on:
     branches: [main]
 
 
+# Tasks
 jobs:
-  black:
-    runs-on: ubuntu-22.04
+
+  # Task name
+  test-code:
+
+    # OS to run the task
+    runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
+    # for more info about the given resources, check this link below
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    
+    defaults: # Set working directory of the job
+      run:
+        shell: bash # Set the default shell
+        working-directory: .
+
+    # The steps of the task/job
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+    
+        # Task name
+      - name: Checking out our code
+        # Action type
+        # This action check out the repository in the runner.
+        uses: actions/checkout@v4
+        # for more info, check the link below
+        # https://github.com/actions/checkout
+        
+        # Install a version of Python
+      - name: setup python
+        uses: actions/setup-python@v5
+        # for more info, check the link below
+        # https://github.com/actions/setup-python
+        
+        # Install this specific version 3.11.0 of Python
         with:
-          python-version: '3.10'
-      - run: |
-          python -m pip install --upgrade pip
-          pip install black
-      - run: |
-          black --check --verbose .
+          python-version: '3.11.0'
+          cache: 'pip' # caching pip dependencies
+          
+        # Install Python packages  
+      - name: install python packages
+      
+        # `run` allows to run shell commands
+        # We can use operator `|` for a multi-line command
+        run: |
+            python3.11 -m pip install --upgrade pip 
+            pip3.11 install -r requirements.txt 
+        
+        # You do not need to create a virtual environment here, just use the global installation of Python
+        # Check if requirements.txt file is there
+        #    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      
+      # Task name
+      # - name: Run your app
+      
+      # # A one-line shell command
+      # # This will run the application in the background 
+      # # It is useful for apps which block the shell
+      # # to allow next commands to run
+      #   run: python3.11 src/app.py &
+      
+      - name: Export variables
+        run: | 
+          echo $PWD
+          export ZENML_CONFIG_PATH=$PWD/services/zenml
+          export PROJECTPATH=$PWD
+          export AIRFLOW_HOME=$PWD/services/airflow
+          export PYTHONPATH=$PWD/src
+
+      - name: Run ZenML server  
+        run: zenml down && zenml up
+        
+      # Run pytest on tests folder
+      - name: Test with pytest
+        run: pytest tests
