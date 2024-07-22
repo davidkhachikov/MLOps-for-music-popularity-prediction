@@ -63,5 +63,4 @@ main() {
     done
 }
 
-# Call the main function
 main
