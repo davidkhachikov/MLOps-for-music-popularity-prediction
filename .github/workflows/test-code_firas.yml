@@ -1,8 +1,14 @@
-on:
-  push:
+name: Example testing
+
+# Trigger when?
+on: # Event
+  push: # this will trigger the workflow/pipeline only if there is push on `main` branch
     branches: [main]
-  pull_request:
-    branches: [main]
+    paths: # the push should be specifically to the folders `src` or `scripts` to trigger this workflow, otherwise, the workflow will not be triggered
+      - 'src'
+      - 'scripts'
+  schedule: # Run this workflow on a scheduled manner given the cron expression (This is a second event to trigger the workflow)
+    - cron: '*/5 * * * *'
 
 # Allows to only read the contents of the repository
 # `contents: read` permits an action to list the commits

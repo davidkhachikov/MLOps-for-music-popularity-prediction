@@ -1,24 +1,11 @@
-name: Example testing
+name: Example test
 
-# Trigger when?
-on: # Event
-  push: # this will trigger the workflow/pipeline only if there is push on `main` branch
+on:
+  push:
     branches: [main]
-    paths: # the push should be specifically to the folders `src` or `scripts` to trigger this workflow, otherwise, the workflow will not be triggered
-      - 'src'
-      - 'scripts'
-  schedule: # Run this workflow on a scheduled manner given the cron expression (This is a second event to trigger the workflow)
-    - cron: '*/5 * * * *'
+  pull_request:
+    branches: [main]
 
-# Allows to only read the contents of the repository
-# `contents: read` permits an action to list the commits
-# `contents: write` allows the action to create a release
-permissions:
-  contents: read
-
-# Decalre environment variables to be used in this workflow file
-env:
-  message: "Testing code!"
 
 # Tasks
 jobs:
