@@ -1,9 +1,23 @@
 data:
-  version: v0.0
-  path: ../data/tracks.csv
-  repo: .
+  num_samples: 5
+  path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
-  num_files: 5
-  data_size: 899702
-  column_number: 33
-  is_remote: False
+  repo: .
+  sample_num: 16
+  version: AIRFLOW2.0
+  dataset_name: music_popularity
+
+defaults:
+- _self_
+- data_features
+- model/model
+- experiment
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      +model: rf, nn, svr, hgb
+
+mlflow_port: 5000
+model_port: 5151
+transformer_version: v1

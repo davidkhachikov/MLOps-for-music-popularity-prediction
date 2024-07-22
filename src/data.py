@@ -1,13 +1,29 @@
+from zenml.client import Client
 import os
-import sys
+import numpy as np
 import pandas as pd
-from hydra import initialize, compose
-from omegaconf import DictConfig
 import great_expectations as gx
 import dvc.api
+import zenml
+import ast
+from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler, MinMaxScaler
+from sklearn.impute import SimpleImputer
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.utils.validation import NotFittedError
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.pipeline import FeatureUnion
+from gensim.models import Word2Vec
+from utils import init_hydra
+import joblib
+import re
 
+from typing import Literal
 
-def sample_data(num=0):
+BASE_PATH = os.getenv('PROJECTPATH')
+
+def sample_data(project_path=BASE_PATH):
     """
     Loads a sample of music popularity data from a CSV file using DVC for version control and stores 
     it locally, split into multiple files as specified in the configuration.
@@ -20,42 +36,25 @@ def sample_data(num=0):
         None
     """
     try:
-        with initialize(config_path="../configs", version_base=None):
-            cfg: DictConfig = compose(config_name='main')
+        cfg = init_hydra()
 
-        if cfg.data.is_remote:
-            # Remote sampling
-            file = dvc.api.read(
-                path=os.path.join(cfg.data.path),
-                repo=cfg.data.repo,
-                rev=cfg.data.version,
-                remote=cfg.data.remote,
-                encoding='utf-8'
-            )
-            df = pd.read_csv(file)
-        else:
-            # Local sampling
-            with dvc.api.open(
-                    cfg.data.path,
-                    rev=cfg.data.version,
-                    encoding='utf-8'
-            ) as f:
-                df = pd.read_csv(f)
-
-        num_files = cfg.data.num_files
+        df = pd.read_csv(cfg.data.path_to_raw, low_memory=False)
+        
+        num_files = cfg.data.num_samples
+        num = cfg.data.sample_num % num_files
         start = num * int(len(df) / num_files)
         end = min((num + 1) * int(len(df) / num_files), len(df))
         chunk = df[start:end]
 
-        current_dir = os.getcwd()
-        target_folder = os.path.join(current_dir, 'data', 'samples')
+        target_folder = os.path.join(project_path, 'data', 'samples')
         chunk.to_csv(os.path.join(target_folder, 'sample.csv'), index=False)
         print(f"Sampled data part {num + 1} saved to {os.path.join(target_folder, 'sample.csv')}")
     except Exception as e:
-        print(f"An error occurred while saving the sampled data: {e}")
+        print(f"An error during saving sample: {e}")
+        raise
 
 
-def preprocess_data():
+def handle_initial_data(project_path=BASE_PATH):
     """
     Preprocesses the music popularity dataset by cleaning and transforming raw data into a suitable format for analysis.
     
@@ -67,156 +66,526 @@ def preprocess_data():
     Returns:
         None
     """
-    current_dir = os.getcwd()
-    data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
-    df = pd.read_csv(data_path)
-    df["album_release_date"] = pd.to_datetime(df["album_release_date"],
-                                              format="mixed",
-                                              yearfirst=True,
-                                              errors="coerce")
-    df["added_at"] = pd.to_datetime(df["added_at"], yearfirst=True, errors="coerce")
+    try:
+        data_path = os.path.join(project_path, 'data', 'samples', 'sample.csv')
+        
+        # Check if the file exists
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"The file {data_path} does not exist.")
+        
+        cfg = init_hydra()
 
-    # Let's try to find some patterns in the data
-    # First, let's restore the categorical data genres, available_markets
-    pattern_df = df.copy()
-    print("genres restored")
-    pattern_df.drop(columns=["genres", "available_markets"], inplace=True)
-    print(f"Dataset restored with {pattern_df.shape[1]} columns")
+        df = pd.read_csv(data_path)
+        # Drop unnecessary columns
+        df.drop(columns=cfg.data.low_features_number, inplace=True)
 
-    # Now we will drop some columns
-    pattern_df.drop(columns=[
-        "track_id",  # unique identifier
-        "streams",  # Too many missing values
-        "track_artists",  # Too many missing values
-        "added_at",  # Too many missing values and can be replaced by album_release_date
-        "track_album_album",  # Too many missing values
-        "duration_ms",  # Too many missing values
-        "track_track_number",  # Too many missing values
-        "rank",  # Too many missing values and dependent of chart
-        "album_name",  # This is text data, and we do not do data transformation in this phase
-        "region",  # Too many missing values
-        "trend",  # Too many missing values and dependent of chart
-        "name",  # This is text data, and we do not do data transformation in this phase
-    ], inplace=True)
-    print(f"Dataset reduced to {pattern_df.shape[1]} columns")
+        # preprocess datetime features
+        for feature in cfg.data.timedate_features:
+            df[feature] = pd.to_datetime(df[feature], yearfirst=True, errors="coerce")
+            df[feature].fillna(pd.Timestamp('1970-01-01'), inplace=True)
 
-    # Replace nan chart with 0, top200 with 1 and top50 with 2
-    pattern_df["chart"] = pattern_df["chart"].map({"top200": 1, "top50": 2})
-    pattern_df["chart"] = pattern_df["chart"].fillna(0)
-    print("Chart restored")
+        for feature in cfg.data.missing_list:
+            df[feature] = df[feature].apply(lambda d: d if d is not np.nan else [])
 
-    # Convert album_release_date
-    pattern_df["album_release_date"] = pattern_df["album_release_date"].astype("int64")
+        for feature in cfg.data.missing_strings:
+            df[feature] = df[feature].fillna(" ")
+        
+        # Binarize categorical features
+        df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
+        df["chart"] = df["chart"].fillna(0)
 
-    # Now we will impute the missing values
-    # Since the number of missing values is small, it is safe to use the median value
-    pattern_df.fillna(pattern_df.median(), inplace=True)
-    print("Missing values imputed")
-    pattern_df.to_csv(data_path, index=False)
+        # Impute missing values with median
+        df.fillna(df.median(), inplace=True)
+        print("Missing values imputed")
+        
+        # Save the modified DataFrame back to CSV
+        df.to_csv(data_path, index=False)
+        print(f"File saved to {data_path}")
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise
 
-def validate_initial_data():
-    current_dir = os.getcwd()
-    data_path = os.path.join(current_dir, 'data', 'samples', 'sample.csv')
-    df = pd.read_csv(data_path)
+def validate_initial_data(project_path=BASE_PATH):
+    try:
+        data_path = os.path.join(project_path, 'data', 'samples', 'sample.csv')
 
-    context = gx.get_context(context_root_dir="../services")
-    validator = context.sources.add_pandas("sample").read_dataframe(
-        df
+        # Check if the sample exists
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"The sample {data_path} does not exist.")
+
+        context_path = os.path.join(project_path, 'services', 'gx')
+
+        # Check if the context exists
+        if not os.path.exists(context_path):
+            raise FileNotFoundError(f"The context {context_path} does not exist.")
+        
+        context = gx.get_context(context_root_dir=context_path)
+
+        ds = context.sources.add_or_update_pandas(name="sample_data")
+        da = ds.add_csv_asset(name="sample_asset", filepath_or_buffer=data_path)
+
+        batch_request = da.build_batch_request()
+        checkpoint = context.add_or_update_checkpoint(
+            name="test_checkpoint",
+            validations=[ # A list of validations
+                {
+                    "batch_request": batch.batch_request,
+                    "expectation_suite_name": "expectation_suite",
+                }
+                for batch in da.get_batch_list_from_batch_request(batch_request)
+            ],
+        )
+        
+        checkpoint_result = checkpoint.run()
+
+        # Outputs failed general statistics about validation
+        print(checkpoint_result.get_statistics)
+        if not checkpoint_result.success:
+            raise Exception()
+        print("Success")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        raise
+
+
+def read_datastore(version=None):
+    """
+    Takes the project path
+    Makes sample dataframe and reads the data version from ./configs/main.yaml
+    """
+    data_path = "data/samples/sample.csv"
+    cfg = init_hydra()
+    if version is None:
+        version = cfg.data.version
+        
+    with dvc.api.open(
+                    data_path,
+                    rev=version,
+                    encoding='utf-8'
+            ) as f:
+                df = pd.read_csv(f)
+    return df, version
+
+
+def preprocess_data(df: pd.DataFrame):
+    """ Performs data transformation and returns X, y tuple"""
+
+    cfg = init_hydra()
+
+    # Splitting the data into features and targets
+    X = df.drop(columns=cfg.data.target_features)
+    y = df[cfg.data.target_features]
+
+    # Fit transformers if they don't exist
+    transformers_dir = os.path.join(BASE_PATH, 'models', 'transformers')
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.pkl')
+
+    if not os.path.exists(genres2vec_model_path):
+        fit_transformers(X, cfg, transformers_dir)
+
+    # Transform the data
+    X_transformed = transform_data(X, cfg, transformers_dir)
+
+    return X_transformed, y
+
+
+def apply_literal_eval(df: pd.DataFrame):
+    """ Applies literal_eval to all values in the DataFrame"""
+    for col in df.columns:
+        df[col] = df[col].apply(ast.literal_eval)
+    return df
+
+def decompose_dates(df: pd.DataFrame):
+    """ Decomposes the date features into year, month, day, and weekday"""
+    res = pd.DataFrame(columns=["year", "month", "day", "weekday"])
+    df = df.squeeze()
+    df = pd.to_datetime(df)
+    res["year"] = df.dt.year
+    res["month"] = df.dt.month
+    res["day"] = df.dt.day
+    res["weekday"] = df.dt.weekday
+
+    return res
+
+def get_column_transformer(cfg):
+    # Define the base preprocessing pipeline for the multilabel columns
+    multilabel_prep_pipeline = Pipeline([
+        ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists if any
+        ('to_list', FunctionTransformer(apply_literal_eval)) # Convert the string representation of lists to actual lists
+    ])
+
+    # Define the transformation pipeline for other multilabel columns
+    multilabel_transformer = Pipeline([
+        ("preprocess", multilabel_prep_pipeline),
+        ("encode", MultiHotEncoder())
+    ])
+
+
+    # Define the transformation pipeline for the categorical columns
+    categorical_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='most_frequent')),
+        ('onehot', OneHotEncoder(sparse_output=False, dtype=bool, handle_unknown='ignore'))
+    ])
+
+    # Define the transformation pipeline for the normal features
+    normal_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('scaler', StandardScaler())
+    ])
+
+    # Define the transformation pipeline for the uniform features
+    uniform_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='mean')),
+        ('scaler', MinMaxScaler())
+    ])
+
+    # Define the transformation pipeline for the date features
+    date_transformer = Pipeline([
+        ('imputer', SimpleImputer(strategy='constant', fill_value=pd.Timestamp('1970-01-01'))),
+        # all dates are Year-Month-Day. Split them into 4 columns
+        ("year_month_day_weekday", FunctionTransformer(decompose_dates)),
+        # Convert to cyclical features
+        ('cyclic_convert', ColumnTransformer(
+            transformers=[
+                ('month_sin', sin_transformer(12), ['month']),
+                ('month_cos', cos_transformer(12), ['month']),
+                ('day_sin', sin_transformer(31), ['day']),
+                ('day_cos', cos_transformer(31), ['day']),
+                ('weekday_sin', sin_transformer(7), ['weekday']),
+                ('weekday_cos', cos_transformer(7), ['weekday']),
+                ('year', 'passthrough', ['year'])
+            ], 
+            remainder='drop'
+        )),
+        ('rename', FunctionTransformer(lambda x: x.rename(columns={
+            "month_sin__month": "month_sin",
+            "month_cos__month": "month_cos",
+            "day_sin__day": "day_sin",
+            "day_cos__day": "day_cos",
+            "weekday_sin__weekday": "weekday_sin",
+            "weekday_cos__weekday": "weekday_cos",
+            "year__year": "year"
+        }))),
+    ])
+
+    # Define feature extraction pipeline for text features
+    text_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="constant", fill_value="")),
+        # For each column, extract the length of the string and the number of words
+        ("extractor", FeatureUnion([
+            ("length", FunctionTransformer(lambda x: pd.DataFrame(
+                {
+                    f"{col}_length": x[col].apply(len)
+                    for col in x.columns
+                }))),
+            ("word_count", FunctionTransformer(lambda x: pd.DataFrame(
+                {
+                    f"{col}_word_count": x[col].apply(lambda x: len(x.split()))
+                    for col in x.columns
+                })))
+        ]))
+    ])
+
+    # Defien the column transformer
+    column_transformer = ColumnTransformer(
+        transformers=[
+            ('multilabel', multilabel_transformer, list(cfg.data.multilabel_features)),
+            ('categorical', categorical_transformer, list(cfg.data.categorical_features)),
+            ('normal', normal_transformer, list(cfg.data.normal_features)),
+            ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
+            ('dates', date_transformer, list(cfg.data.timedate_features)),
+            ('text', text_transformer, list(cfg.data.text_features)),
+            ('int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.ordinal_features)),
+            ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
+        ],
+        remainder='drop',
+        verbose=True
     )
 
-    for column in df.columns:
-        validator.expect_column_values_to_not_be_null(column)
+    column_transformer.set_output(transform="pandas")
 
-    # artist_followers
-    validator.expect_column_values_to_be_between("artist_followers", min_value=0)
-    validator.expect_column_values_to_be_of_type("artist_followers", type_="NUMBER")
+    return column_transformer
 
-    # genres
 
-    # album_total_tracks
-    # artist_popularity
-    validator.expect_column_values_to_be_between(
-        "artist_popularity", min_value=0, max_value=100
-    )
-    validator.expect_column_values_to_be_of_type("artist_popularity", type_="float64")
-    # explicit
-    # tempo
-    validator.expect_column_values_to_be_between("artist_followers", min_value=0)
-    validator.expect_column_values_to_be_of_type("artist_followers", type_="float64")
-    # chart
-    validator.expect_column_values_to_be_in_set("chart", value_set=[0, 1, 2])
-    # album_release_date
 
-    # energy
-    validator.expect_column_values_to_be_between(
-        "energy", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("energy", type_="float64")
-    # key
-    validator.expect_column_values_to_be_in_set(
-        "key", value_set=list(range(-1, 12))
-    )
-    # popularity
-    validator.expect_column_values_to_be_between(
-        "popularity", min_value=0, max_value=100
-    )
-    validator.expect_column_values_to_be_of_type("popularity", type_="float64")
-    # available_markets
-    # mode
-    validator.expect_column_values_to_be_in_set(
-        "mode", value_set=[0, 1]
-    )
-    # time_signature
-    validator.expect_column_values_to_be_in_set(
-        "time_signature", value_set=[0, 1, 2, 3, 4, 5, 6, 7]
-    )
-    # speechiness
-    validator.expect_column_values_to_be_between(
-        "speechiness", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("speechiness", type_="float64")
-    # danceability
-    validator.expect_column_values_to_be_between(
-        "danceability", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("danceability", type_="float64")
-    # valence
-    validator.expect_column_values_to_be_between(
-        "valence", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("valence", type_="float64")
-    # acousticness
-    validator.expect_column_values_to_be_between(
-        "acousticness", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("acousticness", type_="float64")
-    # liveness
-    validator.expect_column_values_to_be_of_type("liveness", type_="float64")
-    validator.expect_column_values_to_be_between("liveness", min_value=0)
-    # instrumentalness
-    validator.expect_column_values_to_be_between(
-        "instrumentalness", min_value=0, max_value=1
-    )
-    validator.expect_column_values_to_be_of_type("instrumentalness", type_="float64")
-    # loudness
-    validator.expect_column_values_to_be_of_type("loudness", type_="float64")
-    validator.expect_column_values_to_be_between("loudness", min_value=-60)
+def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
+    """Fits the transformers on the initial data sample and saves them as artifacts."""        
+    # Fit the Word2Vec model
+    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
+    with open(genres2vec_model_path, 'wb') as f:
+        joblib.dump(genres2vec_model, f)
 
-    validator.save_expectation_suite(discard_failed_expectations=False)
+
+def transform_data(features: pd.DataFrame, cfg, transformers_dir):
+    """Loads the fitted transformers and applies them to new data samples."""
+
+    # Load the fitted column transformer
+    column_transformer = get_column_transformer(cfg)
+    
+    # Load the fitted Word2Vec model
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
+    with open(genres2vec_model_path, 'rb') as f:
+        genres2vec_model = joblib.load(f)
+
+    # Apply the column transformer
+    X_transformed = column_transformer.fit_transform(features)
+
+    # Apply the Word2Vec model
+    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 100)
+    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(100)])
+    
+    # Concatenate the transformed features with the Word2Vec features
+    X_final = pd.concat([X_transformed, genres2vec_features], axis=1)
+    
+    return X_final
+
+
+# Define the cyclical feature transformers
+def sin_transformer(period):
+    return FunctionTransformer(lambda x: np.sin(x.astype(float) / period * 2 * np.pi))
+
+def cos_transformer(period):
+    return FunctionTransformer(lambda x: np.cos(x.astype(float) / period * 2 * np.pi))
+
+
+class CategoricalMinorityDropper(BaseEstimator, TransformerMixin):
+    def __init__(self, percentage_threshold=None, count_threshold=None):
+        if percentage_threshold is None and count_threshold is None:
+            raise ValueError("At least one of percentage_threshold or count_threshold must be specified")
+        self.percentage_threshold = percentage_threshold
+        self.count_threshold = count_threshold
+        self.passed_columns = []
+        self._output_format = "pandas"
+
+    def fit(self, X, y=None):
+        # Check if the input is a DataFrame
+        if not isinstance(X, pd.DataFrame):
+            raise ValueError("Input must be a pandas DataFrame")
+        
+        # X must be 2D
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        elif len(X.shape) != 2:
+            raise ValueError("Input must be 1D or 2D")
+        
+        if self.count_threshold is not None:
+            self.passed_columns = X.columns[X.sum() >= self.count_threshold]
+        else:
+            self.passed_columns = X.columns[(X.sum() / X.shape[0]) >= self.percentage_threshold]
+
+        return self
+    
+    def transform(self, X):
+        # Check if the input is a DataFrame
+        if not isinstance(X, pd.DataFrame):
+            raise ValueError("Input must be a pandas DataFrame")
+        
+        # X must be 2D
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        elif len(X.shape) != 2:
+            raise ValueError("Input must be 1D or 2D")
+        
+        # In case some columns are absent in the input data, we need to fill them with zeros
+        missing_cols = set(self.passed_columns) - set(X.columns)
+        for col in missing_cols:
+            X[col] = 0
+        
+        return X[self.passed_columns]
+    
+    def fit_transform(self, X, y=None):
+        self.fit(X)
+        return self.transform(X)
+    
+    def set_output(self, *, transform=None):
+        if transform is not None:
+            self._output_format = transform
+        return self
+    
+    def get_feature_names_out(self):
+        return self.passed_columns
+    
+class MultiHotEncoder(BaseEstimator, TransformerMixin):
+    """Wraps `MultiLabelBinarizer` to allow for easy use in pipelines.
+    """
+    def __init__(self, input_format: Literal["pandas", "numpy"] = "pandas", handle_unknown="drop"):
+        self.mlbs = {}
+        self.input_format = input_format
+        self._output_dtype = bool
+        self._output_format = "pandas"
+        self._features_order = []
+        self.classes_ = []
+        self.handle_unknown = handle_unknown
+
+    def fit(self, X, y=None):
+        self.mlbs = {}
+        self._features_order = []
+
+        # if X has wrong format, raise an error
+        if self.input_format == "pandas" and not isinstance(X, pd.DataFrame):
+            raise ValueError("Input format is pandas, but X is not a pandas DataFrame")
+        if self.input_format == "numpy" and not isinstance(X, np.ndarray):
+            raise ValueError("Input format is numpy, but X is not a numpy array")
+        
+        # X must be 2D
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        elif len(X.shape) != 2:
+            raise ValueError("Input must be 1D or 2D")
+        
+        if self.input_format == "pandas":
+            for col in X.columns:
+                self._features_order.append(col)
+                self.mlbs[col] = MultiLabelBinarizer()
+                self.mlbs[col].fit(X[col])
+                self.classes_.extend(self.mlbs[col].classes_)
+        else:
+            for i in range(X.shape[1]):
+                self._features_order.append(i)
+                self.mlbs[i] = MultiLabelBinarizer()
+                self.mlbs[i].fit(X[:, i])
+                self.classes_.extend(self.mlbs[i].classes_)
+        return self
+    
+    def transform(self, X):
+        # if X has wrong format, raise an error
+        if self.input_format == "pandas" and not isinstance(X, pd.DataFrame):
+            raise ValueError("Input format is pandas, but X is not a pandas DataFrame")
+        if self.input_format == "numpy" and not isinstance(X, np.ndarray):
+            raise ValueError("Input format is numpy, but X is not a numpy array")
+        
+        # X must be 2D
+        if len(X.shape) == 1:
+            X = X.reshape(-1, 1)
+        elif len(X.shape) != 2:
+            raise ValueError("Input must be 1D or 2D")
+        
+        # Check if the estimator has been fitted
+        if not self.mlbs:
+            raise NotFittedError("This MultiHotEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.")
+        
+        if self.input_format == "pandas":
+            # Check if the columns in X match the columns in the fitted data
+            if not set(X.columns) == set(self.mlbs.keys()):
+                raise ValueError("Columns in X do not match the columns in the fitted data")
+            res = np.empty((X.shape[0], 0))
+            for col in self._features_order:
+                if self.handle_unknown == "drop":
+                    # Some entries may contain unseen classes, so we need to filter them out
+                    filtered = [set(entry).intersection(self.mlbs[col].classes_) for entry in X[col]]
+                    res = np.concatenate([res, self.mlbs[col].transform(filtered)], axis=1)
+                else:
+                    res = np.concatenate([res, self.mlbs[col].transform(X[col])], axis=1)
+        else:
+            # Check if the number of columns in X match the number of columns in the fitted data
+            if not len(self.mlbs) == X.shape[1]:
+                raise ValueError("Number of columns in X does not match the number of columns in the fitted data")
+            res = np.empty((X.shape[0], 0), dtype=self._output_dtype)
+            for i in self._features_order:
+                if self.handle_unknown == "drop":
+                    # Some entries may contain unseen classes, so we need to filter them out
+                    filtered = [set(entry).intersection(self.mlbs[i].classes_) for entry in X[:, i]]
+                    res = np.concatenate([res, self.mlbs[i].transform(filtered)], axis=1, dtype=self._output_dtype)
+                else:
+                    res = np.concatenate([res, self.mlbs[i].transform(X[:, i])], axis=1, dtype=self._output_dtype)
+
+        if self._output_format == "pandas":
+            return pd.DataFrame(res, columns=self.classes_, dtype=self._output_dtype)
+        else:
+            return res
+        
+    def fit_transform(self, X, y=None):
+        self.fit(X)
+        return self.transform(X)
+    
+    def set_output(self, *, transform=None):
+        if transform is not None:
+            self._output_format = transform
+        return self
+
+    def get_feature_names_out(self):
+        if self.mlbs:
+            return self.classes_
+        else:
+            return None
+        
+# Create a function to average the word vectors
+def average_word_vectors(words, model, vocabulary, num_features):
+    feature_vector = np.zeros((num_features,), dtype="float64")
+    nwords = 0.
+    
+    for word in words:
+        if word in vocabulary:
+            nwords = nwords + 1
+            feature_vector = np.add(feature_vector, model.wv[word])
+    
+    if nwords:
+        feature_vector = np.divide(feature_vector, nwords)
+    
+    return feature_vector
+
+# Create a function to iterate over the dataset
+def averaged_word_vectorizer(corpus, model, num_features):
+    vocabulary = set(model.wv.index_to_key)
+    features = [average_word_vectors(tokenized_sentence, model, vocabulary, num_features) for tokenized_sentence in corpus]
+    return np.array(features)
+
+
+
+def validate_features(X: pd.DataFrame, y: pd.DataFrame):
+    """ Performs feature validation using new expectations"""
+    
+    context = gx.get_context(context_root_dir=f"{BASE_PATH}/services/gx")
+    data_asset = context.get_datasource("features").get_asset("features_dataframe")
+    batch_request = data_asset.build_batch_request(dataframe=X)
+
     checkpoint = context.add_or_update_checkpoint(
-        name="my_checkpoint",
-        validator=validator
+        name="features_validation",
+        validations=[
+            {
+                "batch_request": batch.batch_request,
+                "expectation_suite_name": "features_expectations"
+            } for batch in data_asset.get_batch_list_from_batch_request(batch_request)
+        ]
     )
+
     checkpoint_result = checkpoint.run()
-    if checkpoint_result.success:
-        exit(0)
-    exit(1)
+    
+    if not checkpoint_result.success:
+        print("Validation failed")
+        print(checkpoint_result.get_statistics())
+        exit(1)
+    return X, y
 
 
-if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1] == "preprocess_data":
-        preprocess_data()
-    elif len(sys.argv) == 3 and sys.argv[1] == "sample_data":
-        sample_data(int(sys.argv[2]))
-    elif len(sys.argv) == 2 and sys.argv[1] == 'validate_initial_data':
-        validate_initial_data()
+def load_features(X: pd.DataFrame, y: pd.DataFrame, version: str):
+    """Load and version the features X and the target y in artifact store of ZenML"""
+    
+    # Save the artifact
+    zenml.save_artifact(data=(X, y), name="features_target", tags=[version])
+    
+    # Retrieve the client to interact with the ZenML store
+    client = Client()
+
+    # Verify the artifact was saved correctly
+    try:
+        l = client.list_artifact_versions(name="features_target", tag=version, sort_by="version").items
+
+        # Descending order
+        l.reverse()
+
+        # Retrieve the latest version of the artifact
+        if l:
+            retrieved_X, retrieved_y = l[0].load()
+            return retrieved_X, retrieved_y
+        else:
+            print("No artifacts found with the specified version tag.")
+
+    except Exception as e:
+        print(f"An error occurred while retrieving the artifact: {e}")
+
+    return X, y
