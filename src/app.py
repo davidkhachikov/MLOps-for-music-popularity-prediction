@@ -8,7 +8,7 @@ from transform_data import transform_data
 import json
 import requests
 import numpy as np
-import pandas as pd
+import pandas as pd 
 
 cfg = init_hydra()
 
