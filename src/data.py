@@ -26,7 +26,7 @@ BASE_PATH = os.getenv('PROJECTPATH')
 #######################
 # Data Acquisition #
 
-def sample_data(project_path=BASE_PATH):
+def sample_data(project_path=BASE_PATH, path_to_raw=None):
     """
     Loads a sample of music popularity data from a CSV file using DVC for version control and stores 
     it locally, split into multiple files as specified in the configuration.
