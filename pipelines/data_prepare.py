@@ -11,11 +11,11 @@ from zenml import step, pipeline, ArtifactConfig
 import sys
 import os
 
-# BASE_PATH = os.getenv('PROJECTPATH')
-# sys.path.append(f'{BASE_PATH}/src')
+BASE_PATH = os.getenv('PROJECTPATH')
+sys.path.append(f'{BASE_PATH}/src')
 
 
-from src.data import read_datastore, validate_features, load_features, preprocess_data
+from data import read_datastore, validate_features, load_features, preprocess_data
 
 @step(enable_cache=False)
 def extract()-> Tuple[

@@ -54,5 +54,14 @@ jobs:
         run: zenml down && zenml up
       - name: prepare data
         run: python ./pipelines/data_prepare.py 
+        env:
+          ZENML_CONFIG_PATH: ./services/zenml
+          PROJECTPATH: .
+          PYTHONPATH: ./src
       - name: Run validate
         run: python ./src/validate.py
+        env:
+          ZENML_CONFIG_PATH: ./services/zenml
+          PROJECTPATH: .
+          PYTHONPATH: ./src
+
