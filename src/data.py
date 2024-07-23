@@ -269,24 +269,6 @@ def get_column_transformer(cfg):
         }))),
     ])
 
-    # # Define feature extraction pipeline for text features
-    # text_transformer = Pipeline([
-    #     ("imputer", SimpleImputer(strategy="constant", fill_value="")),
-    #     # For each column, extract the length of the string and the number of words
-    #     ("extractor", FeatureUnion([
-    #         ("length", FunctionTransformer(lambda x: pd.DataFrame(
-    #             {
-    #                 f"{col}_length": x[col].apply(len)
-    #                 for col in x.columns
-    #             }))),
-    #         ("word_count", FunctionTransformer(lambda x: pd.DataFrame(
-    #             {
-    #                 f"{col}_word_count": x[col].apply(lambda x: len(x.split()))
-    #                 for col in x.columns
-    #             })))
-    #     ]))
-    # ])
-
     # Defien the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
@@ -295,7 +277,6 @@ def get_column_transformer(cfg):
             ('normal', normal_transformer, list(cfg.data.normal_features)),
             ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
             ('dates', date_transformer, list(cfg.data.timedate_features)),
-            # ('text', text_transformer, list(cfg.data.text_features)),
             ('int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.ordinal_features)),
             ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
         ],
