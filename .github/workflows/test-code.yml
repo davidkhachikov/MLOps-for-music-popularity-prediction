@@ -76,11 +76,11 @@ jobs:
           export PYTHONPATH=$PWD/src
       - name: Run ZenML server  
         run: zenml down && zenml up
+      # Run pytest on tests folder
+      - name: Test with pytest
+        run: pytest tests
         env:
           ZENML_CONFIG_PATH: $PWD/services/zenml
           PROJECTPATH: $PWD
           AIRFLOW_HOME: $PWD/services/airflow
           PYTHONPATH: $PWD/src
-      # Run pytest on tests folder
-      - name: Test with pytest
-        run: pytest tests

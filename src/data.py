@@ -23,7 +23,7 @@ from typing import Literal
 
 BASE_PATH = os.getenv('PROJECTPATH')
 
-def sample_data(project_path=os.getenv('PROJECTPATH')):
+def sample_data(project_path=BASE_PATH):
     """
     Loads a sample of music popularity data from a CSV file using DVC for version control and stores 
     it locally, split into multiple files as specified in the configuration.
