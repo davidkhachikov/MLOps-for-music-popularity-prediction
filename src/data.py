@@ -23,7 +23,7 @@ from typing import Literal
 
 BASE_PATH = os.getenv('PROJECTPATH')
 
-def sample_data(project_path=BASE_PATH):
+def sample_data(project_path=BASE_PATH, path_to_raw=None):
     """
     Loads a sample of music popularity data from a CSV file using DVC for version control and stores 
     it locally, split into multiple files as specified in the configuration.
@@ -37,8 +37,10 @@ def sample_data(project_path=BASE_PATH):
     """
     try:
         cfg = init_hydra()
-
-        df = pd.read_csv(cfg.data.path_to_raw, low_memory=False)
+        if path_to_raw is None:
+            df = pd.read_csv(cfg.data.path_to_raw, low_memory=False)
+        else:
+            df = pd.read_csv(path_to_raw, low_memory=False)
         
         num_files = cfg.data.num_samples
         num = cfg.data.sample_num % num_files

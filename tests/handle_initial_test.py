@@ -17,14 +17,14 @@ BASE_PATH = os.getenv('PROJECTPATH')
 @pytest.mark.parametrize("sample_path", [sample_path])
 def test_handle_initial_data_columns(sample_path):
     cfg = init_hydra()
-    sample_data(BASE_PATH)
+    sample_data(BASE_PATH, data_path)
     handle_initial_data(BASE_PATH)
     sample_columns_num = pd.read_csv(sample_path, nrows=0).shape[1]
     assert sample_columns_num == data_columns_num - len(cfg.data.low_features_number)
 
 @pytest.mark.parametrize("sample_path", [sample_path])
 def test_handle_initial_data_missing_values(sample_path):
-    sample_data(BASE_PATH)
+    sample_data(BASE_PATH, data_path)
     handle_initial_data(BASE_PATH)
     sample = pd.read_csv(sample_path)
     assert not sample.isnull().values.any(), "DataFrame contains NaN values."

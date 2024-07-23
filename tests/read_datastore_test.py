@@ -14,7 +14,7 @@ def mock_dvc_open(mocker):
     # Mock init_hydra to return a configuration matching main.yaml
     mocker.patch('utils.init_hydra', return_value=MagicMock(data={
         'num_samples': 5,
-        'path_to_raw': './data/raw/tracks.csv',
+        'path_to_raw': './data/raw/test_tracks.csv',
         'remote': 'mlops_remote',
         'repo': '.',
         'sample_num': 0,
