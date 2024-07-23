@@ -74,9 +74,6 @@ jobs:
           export PROJECTPATH=$PWD
           export AIRFLOW_HOME=$PWD/services/airflow
           export PYTHONPATH=$PWD/src
-      - name: Download data
-        run: |
-          dvc pull ./data/raw/tracks.csv.dvc
       - name: Run ZenML server  
         run: zenml down && zenml up
         
