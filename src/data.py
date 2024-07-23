@@ -15,7 +15,7 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
 from gensim.models import Word2Vec
-from utils import init_hydra
+from src.utils import init_hydra
 import joblib
 import re
 
