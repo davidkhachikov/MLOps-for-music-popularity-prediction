@@ -3,7 +3,7 @@ from src.data import validate_initial_data, sample_data, handle_initial_data
 import os
 from src.utils import get_test_raw
 
-data_path = "./data/raw/tracks.csv"
+data_path = "./data/raw/test_tracks.csv"
 if not os.path.exists(data_path):
     data = get_test_raw()
     data.to_csv(data_path)
