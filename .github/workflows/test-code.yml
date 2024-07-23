@@ -52,7 +52,7 @@ jobs:
         # We can use operator `|` for a multi-line command
         run: |
             python3.11 -m pip install --upgrade pip 
-            ./scripts/install_requirements.sh 
+            python3.11 -m pip install -r requirements.txt
         
         # You do not need to create a virtual environment here, just use the global installation of Python
         # Check if requirements.txt file is there
