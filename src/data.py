@@ -168,7 +168,7 @@ def read_datastore(version=None):
                     rev=version,
                     encoding='utf-8'
             ) as f:
-                df = pd.read_csv(f)
+                df = pd.read_csv(f, low_memory=False)
     return df, version
 
 
@@ -273,24 +273,6 @@ def get_column_transformer(cfg):
         }))),
     ])
 
-    # Define feature extraction pipeline for text features
-    text_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="constant", fill_value="")),
-        # For each column, extract the length of the string and the number of words
-        ("extractor", FeatureUnion([
-            ("length", FunctionTransformer(lambda x: pd.DataFrame(
-                {
-                    f"{col}_length": x[col].apply(len)
-                    for col in x.columns
-                }))),
-            ("word_count", FunctionTransformer(lambda x: pd.DataFrame(
-                {
-                    f"{col}_word_count": x[col].apply(lambda x: len(x.split()))
-                    for col in x.columns
-                })))
-        ]))
-    ])
-
     # Defien the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
@@ -299,7 +281,6 @@ def get_column_transformer(cfg):
             ('normal', normal_transformer, list(cfg.data.normal_features)),
             ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
             ('dates', date_transformer, list(cfg.data.timedate_features)),
-            ('text', text_transformer, list(cfg.data.text_features)),
             ('int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.ordinal_features)),
             ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
         ],
@@ -317,10 +298,17 @@ def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
     """Fits the transformers on the initial data sample and saves them as artifacts."""        
     # Fit the Word2Vec model
     clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
+    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=10, window=5, min_count=1, workers=4)
     genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
     with open(genres2vec_model_path, 'wb') as f:
         joblib.dump(genres2vec_model, f)
+
+    clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
+    clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    names2vec_model = Word2Vec(clean_names_concat.str.split(), vector_size=10, window=5, min_count=1, workers=4)
+    names2vec_model_path = os.path.join(transformers_dir, 'names2vec_model.sav')
+    with open(names2vec_model_path, 'wb') as f:
+        joblib.dump(names2vec_model, f)  
 
 
 def transform_data(features: pd.DataFrame, cfg, transformers_dir):
@@ -329,21 +317,30 @@ def transform_data(features: pd.DataFrame, cfg, transformers_dir):
     # Load the fitted column transformer
     column_transformer = get_column_transformer(cfg)
     
-    # Load the fitted Word2Vec model
+    # Load the fitted Word2Vec models
     genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
     with open(genres2vec_model_path, 'rb') as f:
         genres2vec_model = joblib.load(f)
 
+    names2vec_model_path = os.path.join(transformers_dir, 'names2vec_model.sav')
+    with open(names2vec_model_path, 'rb') as f:
+        names2vec_model = joblib.load(f)
+
     # Apply the column transformer
     X_transformed = column_transformer.fit_transform(features)
 
-    # Apply the Word2Vec model
+    # Apply the Word2Vec models
     clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 100)
-    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(100)])
+    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 10)
+    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(10)])
+
+    clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
+    clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    names2vec_features = averaged_word_vectorizer(clean_names_concat.str.split(), names2vec_model, 10)
+    names2vec_features = pd.DataFrame(names2vec_features, columns=[f"n_vec_{i}" for i in range(10)])
     
     # Concatenate the transformed features with the Word2Vec features
-    X_final = pd.concat([X_transformed, genres2vec_features], axis=1)
+    X_final = pd.concat([X_transformed, genres2vec_features, names2vec_features], axis=1)
     
     return X_final
 
@@ -355,63 +352,6 @@ def sin_transformer(period):
 def cos_transformer(period):
     return FunctionTransformer(lambda x: np.cos(x.astype(float) / period * 2 * np.pi))
 
-
-class CategoricalMinorityDropper(BaseEstimator, TransformerMixin):
-    def __init__(self, percentage_threshold=None, count_threshold=None):
-        if percentage_threshold is None and count_threshold is None:
-            raise ValueError("At least one of percentage_threshold or count_threshold must be specified")
-        self.percentage_threshold = percentage_threshold
-        self.count_threshold = count_threshold
-        self.passed_columns = []
-        self._output_format = "pandas"
-
-    def fit(self, X, y=None):
-        # Check if the input is a DataFrame
-        if not isinstance(X, pd.DataFrame):
-            raise ValueError("Input must be a pandas DataFrame")
-        
-        # X must be 2D
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2:
-            raise ValueError("Input must be 1D or 2D")
-        
-        if self.count_threshold is not None:
-            self.passed_columns = X.columns[X.sum() >= self.count_threshold]
-        else:
-            self.passed_columns = X.columns[(X.sum() / X.shape[0]) >= self.percentage_threshold]
-
-        return self
-    
-    def transform(self, X):
-        # Check if the input is a DataFrame
-        if not isinstance(X, pd.DataFrame):
-            raise ValueError("Input must be a pandas DataFrame")
-        
-        # X must be 2D
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2:
-            raise ValueError("Input must be 1D or 2D")
-        
-        # In case some columns are absent in the input data, we need to fill them with zeros
-        missing_cols = set(self.passed_columns) - set(X.columns)
-        for col in missing_cols:
-            X[col] = 0
-        
-        return X[self.passed_columns]
-    
-    def fit_transform(self, X, y=None):
-        self.fit(X)
-        return self.transform(X)
-    
-    def set_output(self, *, transform=None):
-        if transform is not None:
-            self._output_format = transform
-        return self
-    
-    def get_feature_names_out(self):
-        return self.passed_columns
     
 class MultiHotEncoder(BaseEstimator, TransformerMixin):
     """Wraps `MultiLabelBinarizer` to allow for easy use in pipelines.

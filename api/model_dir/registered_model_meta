@@ -1,2 +1,2 @@
-model_name: neural_network
-model_version: 122
+model_name: hist_gradient_boosting
+model_version: 24
