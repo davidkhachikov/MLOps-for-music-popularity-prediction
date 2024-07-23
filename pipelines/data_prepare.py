@@ -15,7 +15,7 @@ BASE_PATH = os.getenv('PROJECTPATH')
 sys.path.append(f'{BASE_PATH}/src')
 
 
-from src.data import read_datastore, validate_features, load_features, preprocess_data
+from data import read_datastore, validate_features, load_features, preprocess_data
 import os
 
 @step(enable_cache=False)
