@@ -52,6 +52,8 @@ jobs:
         
       - name: Run ZenML server  
         run: zenml down && zenml up
+        env:
+          ZENML_CONFIG_PATH: ./services/zenml
       - name: prepare data
         run: python ./pipelines/data_prepare.py 
         env:
