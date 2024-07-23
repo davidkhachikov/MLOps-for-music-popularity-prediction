@@ -8,7 +8,8 @@ entry_points:
     parameters:
       data_version: {type: string, default: "AIRFLOW2.0"}
       model_alias: {type: string, default: "champion"}
-    command: "python src/evaluate.py --data-version {data_version} --model-alias {model_alias}"
+      model_name: {type: string, default: "hist_gradient_boosting"}
+    command: "python src/evaluate.py --data-version {data_version} --model-name {model_name} --model-alias {model_alias}"
   
   validate:
     command: "python src/validate.py"
@@ -18,10 +19,10 @@ entry_points:
   
   extract:
     command: "airflow dags test data_extract"
-
+  
   predict:
     parameters:
-      example_version: 
+      version:
         type: string
         default: "AIRFLOW2.0"
       port:
@@ -30,4 +31,8 @@ entry_points:
       random_state:
         type: float
         default: 1
-    command: "python src/predict.py ++example_version={example_version} ++port={port} ++random_state={random_state}"
+    command: "python src/predict.py --version {version} --port {port} --random_state {random_state}"
+  
+  deploy:
+    command: "chmod +x scripts/deploy_docker.sh"
+    command: "./scripts/deploy_docker.sh"

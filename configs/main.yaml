@@ -4,7 +4,7 @@ data:
   remote: mlops_remote
   repo: .
   sample_num: 16
-  version: AIRFLOW2.0
+  version: AIRFLOW2.4
   dataset_name: music_popularity
 
 defaults:
@@ -16,8 +16,10 @@ hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: rf, nn, svr, hgb
+      +model: hgb, nn
 
 mlflow_port: 5000
 model_port: 5151
+docker_port: 5152
+web_ui_port: 5155
 transformer_version: v1

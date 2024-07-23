@@ -164,7 +164,7 @@ def read_datastore(version=None):
                     rev=version,
                     encoding='utf-8'
             ) as f:
-                df = pd.read_csv(f)
+                df = pd.read_csv(f, low_memory=False)
     return df, version
 
 
@@ -313,7 +313,7 @@ def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
     """Fits the transformers on the initial data sample and saves them as artifacts."""        
     # Fit the Word2Vec model
     clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=100, window=5, min_count=1, workers=4)
+    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=10, window=5, min_count=1, workers=4)
     genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
     with open(genres2vec_model_path, 'wb') as f:
         joblib.dump(genres2vec_model, f)
@@ -346,8 +346,8 @@ def transform_data(features: pd.DataFrame, cfg, transformers_dir):
 
     # Apply the Word2Vec models
     clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 100)
-    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(100)])
+    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 10)
+    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(10)])
 
     clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
     clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())

@@ -30,7 +30,6 @@ def extract()-> Tuple[
                                        tags=["data_preparation"])]
                     ]:
     df, version = read_datastore()
-
     return df, version
 
 @step(enable_cache=False)
