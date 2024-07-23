@@ -1,4 +1,4 @@
-artifact_path: basic_nn
+artifact_path: basic_hgb
 flavors:
   python_function:
     env:
@@ -7,16 +7,16 @@ flavors:
     loader_module: mlflow.sklearn
     model_path: model.pkl
     predict_fn: predict
-    python_version: 3.11.9
+    python_version: 3.11.0
   sklearn:
     code: null
     pickled_model: model.pkl
     serialization_format: cloudpickle
-    sklearn_version: 1.5.1
-mlflow_version: 2.14.3
-model_size_bytes: 810084
-model_uuid: 05bbdbc11df24939ac0e2ab6361b7cc8
-run_id: 57c42466f6de4eeea13a436923a2e912
+    sklearn_version: 1.5.0
+mlflow_version: 2.14.1
+model_size_bytes: 2950535
+model_uuid: 0990786ac737465c8a720fa7705b2419
+run_id: 5b2a03d0cf8f4291a95ca6a0b19ce5cd
 saved_input_example_info:
   artifact_path: input_example.json
   format: tf-serving
@@ -191,79 +191,23 @@ signature:
     "dates__day_sin", "required": true}, {"type": "double", "name": "dates__day_cos",
     "required": true}, {"type": "double", "name": "dates__weekday_sin", "required":
     true}, {"type": "double", "name": "dates__weekday_cos", "required": true}, {"type":
-    "long", "name": "dates__year", "required": true}, {"type": "long", "name": "text__album_name_length",
-    "required": true}, {"type": "long", "name": "text__name_length", "required": true},
-    {"type": "long", "name": "text__album_name_word_count", "required": true}, {"type":
-    "long", "name": "text__name_word_count", "required": true}, {"type": "long", "name":
-    "int__chart", "required": true}, {"type": "long", "name": "int__mode", "required":
-    true}, {"type": "boolean", "name": "bool__explicit", "required": true}, {"type":
-    "double", "name": "g_vec_0", "required": true}, {"type": "double", "name": "g_vec_1",
-    "required": true}, {"type": "double", "name": "g_vec_2", "required": true}, {"type":
-    "double", "name": "g_vec_3", "required": true}, {"type": "double", "name": "g_vec_4",
-    "required": true}, {"type": "double", "name": "g_vec_5", "required": true}, {"type":
-    "double", "name": "g_vec_6", "required": true}, {"type": "double", "name": "g_vec_7",
-    "required": true}, {"type": "double", "name": "g_vec_8", "required": true}, {"type":
-    "double", "name": "g_vec_9", "required": true}, {"type": "double", "name": "g_vec_10",
-    "required": true}, {"type": "double", "name": "g_vec_11", "required": true}, {"type":
-    "double", "name": "g_vec_12", "required": true}, {"type": "double", "name": "g_vec_13",
-    "required": true}, {"type": "double", "name": "g_vec_14", "required": true}, {"type":
-    "double", "name": "g_vec_15", "required": true}, {"type": "double", "name": "g_vec_16",
-    "required": true}, {"type": "double", "name": "g_vec_17", "required": true}, {"type":
-    "double", "name": "g_vec_18", "required": true}, {"type": "double", "name": "g_vec_19",
-    "required": true}, {"type": "double", "name": "g_vec_20", "required": true}, {"type":
-    "double", "name": "g_vec_21", "required": true}, {"type": "double", "name": "g_vec_22",
-    "required": true}, {"type": "double", "name": "g_vec_23", "required": true}, {"type":
-    "double", "name": "g_vec_24", "required": true}, {"type": "double", "name": "g_vec_25",
-    "required": true}, {"type": "double", "name": "g_vec_26", "required": true}, {"type":
-    "double", "name": "g_vec_27", "required": true}, {"type": "double", "name": "g_vec_28",
-    "required": true}, {"type": "double", "name": "g_vec_29", "required": true}, {"type":
-    "double", "name": "g_vec_30", "required": true}, {"type": "double", "name": "g_vec_31",
-    "required": true}, {"type": "double", "name": "g_vec_32", "required": true}, {"type":
-    "double", "name": "g_vec_33", "required": true}, {"type": "double", "name": "g_vec_34",
-    "required": true}, {"type": "double", "name": "g_vec_35", "required": true}, {"type":
-    "double", "name": "g_vec_36", "required": true}, {"type": "double", "name": "g_vec_37",
-    "required": true}, {"type": "double", "name": "g_vec_38", "required": true}, {"type":
-    "double", "name": "g_vec_39", "required": true}, {"type": "double", "name": "g_vec_40",
-    "required": true}, {"type": "double", "name": "g_vec_41", "required": true}, {"type":
-    "double", "name": "g_vec_42", "required": true}, {"type": "double", "name": "g_vec_43",
-    "required": true}, {"type": "double", "name": "g_vec_44", "required": true}, {"type":
-    "double", "name": "g_vec_45", "required": true}, {"type": "double", "name": "g_vec_46",
-    "required": true}, {"type": "double", "name": "g_vec_47", "required": true}, {"type":
-    "double", "name": "g_vec_48", "required": true}, {"type": "double", "name": "g_vec_49",
-    "required": true}, {"type": "double", "name": "g_vec_50", "required": true}, {"type":
-    "double", "name": "g_vec_51", "required": true}, {"type": "double", "name": "g_vec_52",
-    "required": true}, {"type": "double", "name": "g_vec_53", "required": true}, {"type":
-    "double", "name": "g_vec_54", "required": true}, {"type": "double", "name": "g_vec_55",
-    "required": true}, {"type": "double", "name": "g_vec_56", "required": true}, {"type":
-    "double", "name": "g_vec_57", "required": true}, {"type": "double", "name": "g_vec_58",
-    "required": true}, {"type": "double", "name": "g_vec_59", "required": true}, {"type":
-    "double", "name": "g_vec_60", "required": true}, {"type": "double", "name": "g_vec_61",
-    "required": true}, {"type": "double", "name": "g_vec_62", "required": true}, {"type":
-    "double", "name": "g_vec_63", "required": true}, {"type": "double", "name": "g_vec_64",
-    "required": true}, {"type": "double", "name": "g_vec_65", "required": true}, {"type":
-    "double", "name": "g_vec_66", "required": true}, {"type": "double", "name": "g_vec_67",
-    "required": true}, {"type": "double", "name": "g_vec_68", "required": true}, {"type":
-    "double", "name": "g_vec_69", "required": true}, {"type": "double", "name": "g_vec_70",
-    "required": true}, {"type": "double", "name": "g_vec_71", "required": true}, {"type":
-    "double", "name": "g_vec_72", "required": true}, {"type": "double", "name": "g_vec_73",
-    "required": true}, {"type": "double", "name": "g_vec_74", "required": true}, {"type":
-    "double", "name": "g_vec_75", "required": true}, {"type": "double", "name": "g_vec_76",
-    "required": true}, {"type": "double", "name": "g_vec_77", "required": true}, {"type":
-    "double", "name": "g_vec_78", "required": true}, {"type": "double", "name": "g_vec_79",
-    "required": true}, {"type": "double", "name": "g_vec_80", "required": true}, {"type":
-    "double", "name": "g_vec_81", "required": true}, {"type": "double", "name": "g_vec_82",
-    "required": true}, {"type": "double", "name": "g_vec_83", "required": true}, {"type":
-    "double", "name": "g_vec_84", "required": true}, {"type": "double", "name": "g_vec_85",
-    "required": true}, {"type": "double", "name": "g_vec_86", "required": true}, {"type":
-    "double", "name": "g_vec_87", "required": true}, {"type": "double", "name": "g_vec_88",
-    "required": true}, {"type": "double", "name": "g_vec_89", "required": true}, {"type":
-    "double", "name": "g_vec_90", "required": true}, {"type": "double", "name": "g_vec_91",
-    "required": true}, {"type": "double", "name": "g_vec_92", "required": true}, {"type":
-    "double", "name": "g_vec_93", "required": true}, {"type": "double", "name": "g_vec_94",
-    "required": true}, {"type": "double", "name": "g_vec_95", "required": true}, {"type":
-    "double", "name": "g_vec_96", "required": true}, {"type": "double", "name": "g_vec_97",
-    "required": true}, {"type": "double", "name": "g_vec_98", "required": true}, {"type":
-    "double", "name": "g_vec_99", "required": true}]'
+    "long", "name": "dates__year", "required": true}, {"type": "long", "name": "int__chart",
+    "required": true}, {"type": "long", "name": "int__mode", "required": true}, {"type":
+    "boolean", "name": "bool__explicit", "required": true}, {"type": "double", "name":
+    "g_vec_0", "required": true}, {"type": "double", "name": "g_vec_1", "required":
+    true}, {"type": "double", "name": "g_vec_2", "required": true}, {"type": "double",
+    "name": "g_vec_3", "required": true}, {"type": "double", "name": "g_vec_4", "required":
+    true}, {"type": "double", "name": "g_vec_5", "required": true}, {"type": "double",
+    "name": "g_vec_6", "required": true}, {"type": "double", "name": "g_vec_7", "required":
+    true}, {"type": "double", "name": "g_vec_8", "required": true}, {"type": "double",
+    "name": "g_vec_9", "required": true}, {"type": "double", "name": "n_vec_0", "required":
+    true}, {"type": "double", "name": "n_vec_1", "required": true}, {"type": "double",
+    "name": "n_vec_2", "required": true}, {"type": "double", "name": "n_vec_3", "required":
+    true}, {"type": "double", "name": "n_vec_4", "required": true}, {"type": "double",
+    "name": "n_vec_5", "required": true}, {"type": "double", "name": "n_vec_6", "required":
+    true}, {"type": "double", "name": "n_vec_7", "required": true}, {"type": "double",
+    "name": "n_vec_8", "required": true}, {"type": "double", "name": "n_vec_9", "required":
+    true}]'
   outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
   params: null
-utc_time_created: '2024-07-20 13:43:28.959462'
+utc_time_created: '2024-07-23 09:43:56.281564'

@@ -1,12 +1,18 @@
 # test_validate_initial_data.py
-from data import validate_initial_data, sample_data, handle_initial_data
+from src.data import validate_initial_data, sample_data, handle_initial_data
 import os
+from src.utils import get_test_raw
+
+data_path = "./data/raw/test_tracks.csv"
+if not os.path.exists(data_path):
+    data = get_test_raw()
+    data.to_csv(data_path)
 
 BASE_PATH = os.getenv('PROJECTPATH')
-sample_data(BASE_PATH)
+sample_data(BASE_PATH, data_path)
 
 def test_validate_initial_data_on_malformed():
-    sample_data(BASE_PATH)
+    sample_data(BASE_PATH, data_path)
     try:
         validate_initial_data(BASE_PATH)
         assert False
@@ -14,7 +20,7 @@ def test_validate_initial_data_on_malformed():
         assert True
 
 def test_validate_initial_data_on_good():
-    sample_data(BASE_PATH)
+    sample_data(BASE_PATH, data_path)
     handle_initial_data(BASE_PATH)
     try:
         validate_initial_data(BASE_PATH)

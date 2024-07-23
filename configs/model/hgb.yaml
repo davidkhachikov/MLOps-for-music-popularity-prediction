@@ -10,4 +10,4 @@ class_name: "HistGradientBoostingRegressor"
 params:
   learning_rate: [0.01, 0.1, 1]
   max_iter: [100, 200, 300]
-  random_state: [88, 100, 44]
+  max_leaf_nodes: [31, 63, 127]

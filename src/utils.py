@@ -1,5 +1,7 @@
 from omegaconf import DictConfig
 from hydra import initialize, compose
+import dvc
+import pandas as pd
 
 def init_hydra():
     try:
@@ -13,3 +15,19 @@ def init_hydra():
         # Catch any other exceptions that might occur
         print(f"An error occurred: {e}")
         raise
+
+def get_test_raw(version=None):
+    """
+    Takes the project path
+    Makes sample dataframe and reads the data version from ./configs/main.yaml
+    """
+    data_path = "data/raw/tracks.csv"
+    
+    with dvc.api.open(
+                    data_path,
+                    
+                    encoding='utf-8'
+            ) as f:
+                df = pd.read_csv(f, nrows=100)
+    df.to_csv("data/raw/test_tracks.csv")
+    return df

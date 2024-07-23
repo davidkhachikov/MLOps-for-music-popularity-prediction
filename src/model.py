@@ -9,7 +9,7 @@ import mlflow.sklearn
 import importlib
 import giskard
 
-def load_features(name, version, random_state=88, size = 0.1):
+def load_features(name, version, random_state=88, size = 1):
     client = Client()
     l = client.list_artifact_versions(name = name, tag = version, sort_by="version").items
     l.reverse
@@ -26,13 +26,10 @@ def load_features(name, version, random_state=88, size = 0.1):
 
 
 def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
-
-    cv_results = pd.DataFrame(gs.cv_results_).filter(regex=r'std_|mean_|param_').sort_index(axis=1)
+    cv_results = pd.DataFrame(gs.cv_results_).filter(regex=r'std_|mean_|param_').sort_index(axis=1).convert_dtypes()
     best_metrics_values = [result[1][gs.best_index_] for result in gs.cv_results_.items()]
     best_metrics_keys = [metric for metric in gs.cv_results_]
     best_metrics_dict = {k:v for k,v in zip(best_metrics_keys, best_metrics_values) if 'mean' in k or 'std' in k}
-
-    params = best_metrics_dict
 
     experiment_name = cfg.model.model_name + "_" + cfg.experiment_name 
 
@@ -47,13 +44,6 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
     cv_evaluation_metric = cfg.model.cv_evaluation_metric
     run_name = "_".join([cfg.run_name, cfg.model.model_name, cfg.model.evaluation_metric, str(cv_evaluation_metric).replace(".", "_")]) # type: ignore
     print("run name: ", run_name)
-
-    if (mlflow.active_run()):
-        mlflow.end_run()
-
-    # Fake run
-    with mlflow.start_run():
-        pass
 
     # Parent run
     with mlflow.start_run(run_name = run_name, experiment_id = experiment_id) as run:
@@ -96,7 +86,6 @@ def log_metadata(cfg, gs, X_train, y_train, X_test, y_test):
                 ps = result.filter(regex='param_').to_dict()
                 ms = result.filter(regex='mean_').to_dict()
                 stds = result.filter(regex='std_').to_dict()
-
                 # Remove param_ from the beginning of the keys
                 ps = {k.replace("param_",""):v for (k,v) in ps.items()}
 

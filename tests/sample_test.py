@@ -1,20 +1,23 @@
 # test_sample_data.py
 import pytest
 import pandas as pd
-from data import sample_data
-from utils import init_hydra
+from src.data import sample_data
+from src.utils import init_hydra, get_test_raw
 from math import ceil
 import numpy as np
 import os
 
 sample_path = "./data/samples/sample.csv"
-data_path = "./data/raw/tracks.csv"
+data_path = "./data/raw/test_tracks.csv"
+if not os.path.exists(data_path):
+    data = get_test_raw()
+    data.to_csv(data_path)
 
 data_shape = pd.read_csv(data_path, low_memory=False).shape
 test_tuples = [(sample_path, data_shape)]
 BASE_PATH = os.getenv('PROJECTPATH')
 
-sample_data(BASE_PATH)
+sample_data(BASE_PATH, data_path)
 
 @pytest.mark.parametrize("sample_path, data_shape", test_tuples)
 def test_size_of_sample(sample_path, data_shape):
@@ -28,7 +31,7 @@ def test_size_of_sample(sample_path, data_shape):
 @pytest.mark.parametrize("sample_path, data_shape", test_tuples)
 def test_number_of_columns(sample_path, data_shape):
     """test of sampled data fails if number of columns in sample does not correspond with configs"""
-    sample_data(BASE_PATH)
+    sample_data(BASE_PATH, data_path)
     sample = pd.read_csv(sample_path, nrows=0)
     sample_columns_num = sample.shape[1]
     data_columns_num = data_shape[1]

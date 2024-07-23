@@ -21,7 +21,7 @@ def predict(cfg = None):
     payload = example
 
     response = requests.post(
-        url=f"http://localhost:{cfg.model_port}/invocations",
+        url=f"http://localhost:{cfg.docker_port}/invocations",
         data=payload,
         headers={"Content-Type": "application/json"},
     )

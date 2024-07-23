@@ -23,3 +23,5 @@ pytest-mock
 gensim
 matplotlib
 shap
+wheel
+gradio

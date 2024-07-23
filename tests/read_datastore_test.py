@@ -1,10 +1,10 @@
 # test_read_datastore.py
 import pytest
-from data import read_datastore
+from src.data import read_datastore
 from unittest.mock import MagicMock
 from io import StringIO
 import pandas as pd
-from utils import init_hydra
+from src.utils import init_hydra
 
 @pytest.fixture
 def mock_dvc_open(mocker):
@@ -14,7 +14,7 @@ def mock_dvc_open(mocker):
     # Mock init_hydra to return a configuration matching main.yaml
     mocker.patch('utils.init_hydra', return_value=MagicMock(data={
         'num_samples': 5,
-        'path_to_raw': './data/raw/tracks.csv',
+        'path_to_raw': './data/raw/test_tracks.csv',
         'remote': 'mlops_remote',
         'repo': '.',
         'sample_num': 0,
