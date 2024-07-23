@@ -2,12 +2,14 @@
 import pytest
 from src.data import handle_initial_data, sample_data
 import pandas as pd
-from src.utils import init_hydra
+from src.utils import init_hydra, get_test_raw
 import os
 
 sample_path = "./data/samples/sample.csv"
 data_path = "./data/raw/tracks.csv"
-
+if not os.path.exists(data_path):
+    data, _ = get_test_raw()
+    data.to_csv(data_path)
 data_columns_num = pd.read_csv(data_path, nrows=0, low_memory=False).shape[1]
 
 BASE_PATH = os.getenv('PROJECTPATH')

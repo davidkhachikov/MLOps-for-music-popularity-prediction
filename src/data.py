@@ -149,6 +149,7 @@ def validate_initial_data(project_path=BASE_PATH):
         raise
 
 
+
 def read_datastore(version=None):
     """
     Takes the project path
