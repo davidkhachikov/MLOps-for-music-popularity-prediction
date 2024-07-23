@@ -4,7 +4,8 @@ import pandas as pd
 from typing import Optional, Tuple
 
 def transform_data(
-        df: pd.DataFrame, 
+        df: pd.DataFrame,
+        cfg=None, 
         return_df: bool = False, 
         only_transform: bool = True, 
         only_X: bool = False
@@ -43,8 +44,8 @@ def transform_data(
 
 def transform_diskard_data(
         giskard_dataset: giskard.Dataset, 
-        return_df: bool = False, 
-        only_transform: bool = True, 
+        return_df: bool = False,
+        only_transform: bool = True,
         only_X: bool = False,
     ) -> Optional[Tuple[pd.DataFrame, pd.Series]]:
     """

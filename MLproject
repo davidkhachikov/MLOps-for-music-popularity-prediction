@@ -27,7 +27,7 @@ entry_points:
         default: "AIRFLOW2.0"
       port:
         type: float
-        default: 5151
+        default: 5152
       random_state:
         type: float
         default: 1

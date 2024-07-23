@@ -179,7 +179,7 @@ def preprocess_data(df: pd.DataFrame):
 
     # Fit transformers if they don't exist
     transformers_dir = os.path.join(BASE_PATH, 'models', 'transformers')
-    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.pkl')
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
 
     if not os.path.exists(genres2vec_model_path):
         fit_transformers(X, cfg, transformers_dir)
@@ -201,10 +201,10 @@ def decompose_dates(df: pd.DataFrame):
     res = pd.DataFrame(columns=["year", "month", "day", "weekday"])
     df = df.squeeze()
     df = pd.to_datetime(df)
-    res["year"] = df.dt.year
-    res["month"] = df.dt.month
-    res["day"] = df.dt.day
-    res["weekday"] = df.dt.weekday
+    res["year"] = df.year
+    res["month"] = df.month
+    res["day"] = df.day
+    res["weekday"] = df.weekday
 
     return res
 
@@ -242,7 +242,7 @@ def get_column_transformer(cfg):
 
     # Define the transformation pipeline for the date features
     date_transformer = Pipeline([
-        ('imputer', SimpleImputer(strategy='constant', fill_value=pd.Timestamp('1970-01-01'))),
+        # ('imputer', SimpleImputer(strategy='constant', fill_value=pd.Timestamp('1970-01-01'))),
         # all dates are Year-Month-Day. Split them into 4 columns
         ("year_month_day_weekday", FunctionTransformer(decompose_dates)),
         # Convert to cyclical features
@@ -269,25 +269,7 @@ def get_column_transformer(cfg):
         }))),
     ])
 
-    # # Define feature extraction pipeline for text features
-    # text_transformer = Pipeline([
-    #     ("imputer", SimpleImputer(strategy="constant", fill_value="")),
-    #     # For each column, extract the length of the string and the number of words
-    #     ("extractor", FeatureUnion([
-    #         ("length", FunctionTransformer(lambda x: pd.DataFrame(
-    #             {
-    #                 f"{col}_length": x[col].apply(len)
-    #                 for col in x.columns
-    #             }))),
-    #         ("word_count", FunctionTransformer(lambda x: pd.DataFrame(
-    #             {
-    #                 f"{col}_word_count": x[col].apply(lambda x: len(x.split()))
-    #                 for col in x.columns
-    #             })))
-    #     ]))
-    # ])
-
-    # Defien the column transformer
+    # Define the column transformer
     column_transformer = ColumnTransformer(
         transformers=[
             ('multilabel', multilabel_transformer, list(cfg.data.multilabel_features)),
@@ -295,7 +277,6 @@ def get_column_transformer(cfg):
             ('normal', normal_transformer, list(cfg.data.normal_features)),
             ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
             ('dates', date_transformer, list(cfg.data.timedate_features)),
-            # ('text', text_transformer, list(cfg.data.text_features)),
             ('int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.ordinal_features)),
             ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
         ],

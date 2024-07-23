@@ -68,9 +68,27 @@ def predict(artist_followers=None,
     
     # Build a dataframe of one row
     raw_df = pd.DataFrame(features, index=[0])
-    
-    # This will read the saved transformers "v4" from ZenML artifact store
-    # And only transform the input data (no fit here).
+    cfg = init_hydra()
+
+    # Drop unnecessary columns
+    raw_df.drop(columns=cfg.data.low_features_number, inplace=True, errors='ignore')
+    # preprocess datetime features
+    for feature in cfg.data.timedate_features:
+        raw_df[feature] = raw_df[feature].apply(lambda d: pd.Timestamp(d) if pd.notnull(d) and d != '' else pd.Timestamp("1970-01-01"))
+
+    for feature in cfg.data.missing_list:
+        raw_df[feature] = raw_df[feature].apply(lambda d: d if pd.notnull(d) and d != '' else '[]')
+
+    for feature in cfg.data.missing_strings:
+        raw_df[feature] = raw_df[feature].apply(lambda d: d if pd.notnull(d) and d != '' else ' ')
+        
+    # Binarize categorical features
+    raw_df["chart"] = raw_df["chart"].map({"top200": 1, "top50": 2})
+    raw_df["chart"] = raw_df["chart"].fillna(0)
+
+    # Impute missing values with median
+    raw_df.fillna(raw_df.median(), inplace=True)
+    raw_df.to_csv('zenml_input.csv')
     X = transform_data(
                         df = raw_df, 
                         cfg = cfg, 
@@ -112,7 +130,7 @@ demo = gr.Interface(
         gr.Checkbox(label="explicit"),
         gr.Number(label="tempo"),
         gr.Text(label="chart"),
-        gr.Date(label="album_release_date"),
+        gr.Text(label="album_release_date"),
         gr.Number(label="energy"),
         gr.Number(label="key"),
         gr.Number(label="popularity"),
@@ -130,7 +148,7 @@ demo = gr.Interface(
         gr.Text(label="name")
     ],
     outputs=gr.Text(label="prediction result"),
-    examples="data/examples"
+    # examples="data/examples"
 )
 
 # Launch the web UI locally on port 5155
