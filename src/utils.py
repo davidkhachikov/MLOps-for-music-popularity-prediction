@@ -21,7 +21,7 @@ def get_test_raw(version=None):
     Takes the project path
     Makes sample dataframe and reads the data version from ./configs/main.yaml
     """
-    data_path = "data/raw/test_tracks.csv"
+    data_path = "data/raw/tracks.csv"
     
     with dvc.api.open(
                     data_path,
