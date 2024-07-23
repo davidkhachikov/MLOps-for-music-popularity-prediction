@@ -1,8 +1,8 @@
 # test_handle_initial_data.py
 import pytest
-from data import handle_initial_data, sample_data
+from src.data import handle_initial_data, sample_data
 import pandas as pd
-from utils import init_hydra
+from src.utils import init_hydra
 import os
 
 sample_path = "./data/samples/sample.csv"

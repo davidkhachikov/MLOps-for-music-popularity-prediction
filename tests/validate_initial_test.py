@@ -1,5 +1,5 @@
 # test_validate_initial_data.py
-from data import validate_initial_data, sample_data, handle_initial_data
+from src.data import validate_initial_data, sample_data, handle_initial_data
 import os
 
 BASE_PATH = os.getenv('PROJECTPATH')

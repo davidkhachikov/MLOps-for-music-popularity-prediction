@@ -1,5 +1,5 @@
 import pytest 
-from data import apply_literal_eval, decompose_dates, MultiHotEncoder, CategoricalMinorityDropper
+from src.data import apply_literal_eval, decompose_dates, MultiHotEncoder, CategoricalMinorityDropper
 import pandas as pd
 
 

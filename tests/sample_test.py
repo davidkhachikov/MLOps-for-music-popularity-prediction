@@ -1,8 +1,8 @@
 # test_sample_data.py
 import pytest
 import pandas as pd
-from data import sample_data
-from utils import init_hydra
+from src.data import sample_data
+from src.utils import init_hydra
 from math import ceil
 import numpy as np
 import os

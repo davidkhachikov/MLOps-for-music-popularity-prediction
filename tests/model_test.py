@@ -1,7 +1,7 @@
-from model import (load_features, log_metadata, train, \
+from src.model import (load_features, log_metadata, train, \
                    retrieve_model_with_alias, retrieve_model_with_version)
 import pandas as pd
-from utils import init_hydra
+from src.utils import init_hydra
 
 def test_load_features():
     pass

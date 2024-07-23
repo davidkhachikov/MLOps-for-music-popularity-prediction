@@ -1,10 +1,10 @@
 # test_read_datastore.py
 import pytest
-from data import read_datastore
+from src.data import read_datastore
 from unittest.mock import MagicMock
 from io import StringIO
 import pandas as pd
-from utils import init_hydra
+from src.utils import init_hydra
 
 @pytest.fixture
 def mock_dvc_open(mocker):
