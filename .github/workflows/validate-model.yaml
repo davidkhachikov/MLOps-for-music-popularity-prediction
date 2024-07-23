@@ -52,6 +52,7 @@ jobs:
         
       - name: Run ZenML server  
         run: zenml down && zenml up
-      
+      - name: prepare data
+        run: python ./pipelines/data_prepare.py 
       - name: Run validate
         run: python ./src/validate.py
