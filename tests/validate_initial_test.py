@@ -5,7 +5,7 @@ from src.utils import get_test_raw
 
 data_path = "./data/raw/tracks.csv"
 if not os.path.exists(data_path):
-    data, _ = get_test_raw()
+    data = get_test_raw()
     data.to_csv(data_path)
 
 BASE_PATH = os.getenv('PROJECTPATH')

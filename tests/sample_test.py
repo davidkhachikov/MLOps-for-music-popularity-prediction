@@ -10,7 +10,7 @@ import os
 sample_path = "./data/samples/sample.csv"
 data_path = "./data/raw/tracks.csv"
 if not os.path.exists(data_path):
-    data, _ = get_test_raw()
+    data = get_test_raw()
     data.to_csv(data_path)
 
 data_shape = pd.read_csv(data_path, low_memory=False).shape
