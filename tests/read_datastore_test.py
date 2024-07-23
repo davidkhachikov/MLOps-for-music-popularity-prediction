@@ -28,4 +28,4 @@ def test_read_datastore_success():
     cfg = init_hydra()
     
     assert isinstance(df, pd.DataFrame)
-    assert version == 'AIRFLOW2.'+str(cfg.data.sample_num-1)
+    assert version == cfg.data.version

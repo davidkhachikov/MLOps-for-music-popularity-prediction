@@ -15,7 +15,7 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
 from gensim.models import Word2Vec
-from src.utils import init_hydra
+from utils import init_hydra
 import joblib
 import re
 
@@ -160,8 +160,7 @@ def read_datastore(version=None):
     data_path = "data/samples/sample.csv"
     cfg = init_hydra()
     if version is None:
-        version = cfg.data.version[:-1]
-        version += str(cfg.data.sample_num-1)
+        version = cfg.data.version
         
     with dvc.api.open(
                     data_path,
