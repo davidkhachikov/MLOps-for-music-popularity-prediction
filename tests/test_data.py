@@ -1,5 +1,5 @@
 import pytest 
-from src.data import apply_literal_eval, decompose_dates, MultiHotEncoder, CategoricalMinorityDropper
+from src.data import apply_literal_eval, decompose_dates, MultiHotEncoder
 import pandas as pd
 
 
@@ -34,19 +34,6 @@ def test_decompose_dates():
     assert decomposed_df["day"].iloc[1] == 2
     assert decomposed_df["weekday"].iloc[1] == 1
 
-
-# Test for CategoricalMinorityDropper class
-def test_categorical_minority_dropper():
-    df = pd.DataFrame({
-        "col1": [1, 1, 1, 2, 2, 2, 3, 3]
-    })
-
-    dropper = CategoricalMinorityDropper(count_threshold=3)
-    dropper.fit(df)
-    transformed_df = dropper.transform(df)
-
-    # Check the columns
-    assert "col1" in transformed_df.columns
 
 
 # Test for MultiHotEncoder class
