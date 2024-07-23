@@ -3,7 +3,7 @@ data:
   path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
   repo: .
-  sample_num: 16
+  sample_num: 4
   version: AIRFLOW2.0
   dataset_name: music_popularity
 
