@@ -1,0 +1,57 @@
+name: Model test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule: # Run this workflow on a scheduled manner given the cron expression (This is a second event to trigger the workflow)
+    - cron: '*/5 * * * *'
+
+# Tasks
+jobs:
+  test-model:
+    # OS to run the task
+    runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
+    # for more info about the given resources, check this link below
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
+    
+    defaults: # Set working directory of the job
+      run:
+        shell: bash # Set the default shell
+        working-directory: .
+    
+    steps:
+      # Task name
+      - name: Checking out our code
+        # Action type
+        # This action check out the repository in the runner.
+        uses: actions/checkout@v4
+        # for more info, check the link below
+        # https://github.com/actions/checkout
+        
+        # Install a version of Python
+      - name: setup python
+        uses: actions/setup-python@v5
+        # for more info, check the link below
+        # https://github.com/actions/setup-python
+        
+        # Install this specific version 3.11.0 of Python
+        with:
+          python-version: '3.11.0'
+          cache: 'pip' # caching pip dependencies
+          
+        # Install Python packages  
+      - name: install python packages
+      
+        # `run` allows to run shell commands
+        # We can use operator `|` for a multi-line command
+        run: |
+            python3.11 -m pip install --upgrade pip 
+            python3.11 -m pip install -r requirements.txt
+        
+      - name: Run ZenML server  
+        run: zenml down && zenml up
+      
+      - name: Run validate
+        run: python ./src/validate.py
