@@ -1,7 +1,7 @@
 # test_validate_initial_data.py
 from src.data import validate_initial_data, sample_data, handle_initial_data
 import os
-from utils import get_test_raw
+from src.utils import get_test_raw
 
 data_path = "./data/raw/tracks.csv"
 if not os.path.exists(data_path):
