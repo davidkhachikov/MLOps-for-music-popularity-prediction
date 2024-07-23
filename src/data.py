@@ -348,63 +348,6 @@ def sin_transformer(period):
 def cos_transformer(period):
     return FunctionTransformer(lambda x: np.cos(x.astype(float) / period * 2 * np.pi))
 
-
-class CategoricalMinorityDropper(BaseEstimator, TransformerMixin):
-    def __init__(self, percentage_threshold=None, count_threshold=None):
-        if percentage_threshold is None and count_threshold is None:
-            raise ValueError("At least one of percentage_threshold or count_threshold must be specified")
-        self.percentage_threshold = percentage_threshold
-        self.count_threshold = count_threshold
-        self.passed_columns = []
-        self._output_format = "pandas"
-
-    def fit(self, X, y=None):
-        # Check if the input is a DataFrame
-        if not isinstance(X, pd.DataFrame):
-            raise ValueError("Input must be a pandas DataFrame")
-        
-        # X must be 2D
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2:
-            raise ValueError("Input must be 1D or 2D")
-        
-        if self.count_threshold is not None:
-            self.passed_columns = X.columns[X.sum() >= self.count_threshold]
-        else:
-            self.passed_columns = X.columns[(X.sum() / X.shape[0]) >= self.percentage_threshold]
-
-        return self
-    
-    def transform(self, X):
-        # Check if the input is a DataFrame
-        if not isinstance(X, pd.DataFrame):
-            raise ValueError("Input must be a pandas DataFrame")
-        
-        # X must be 2D
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2:
-            raise ValueError("Input must be 1D or 2D")
-        
-        # In case some columns are absent in the input data, we need to fill them with zeros
-        missing_cols = set(self.passed_columns) - set(X.columns)
-        for col in missing_cols:
-            X[col] = 0
-        
-        return X[self.passed_columns]
-    
-    def fit_transform(self, X, y=None):
-        self.fit(X)
-        return self.transform(X)
-    
-    def set_output(self, *, transform=None):
-        if transform is not None:
-            self._output_format = transform
-        return self
-    
-    def get_feature_names_out(self):
-        return self.passed_columns
     
 class MultiHotEncoder(BaseEstimator, TransformerMixin):
     """Wraps `MultiLabelBinarizer` to allow for easy use in pipelines.
