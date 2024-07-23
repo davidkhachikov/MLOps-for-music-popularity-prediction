@@ -29,4 +29,5 @@ def get_test_raw(version=None):
                     encoding='utf-8'
             ) as f:
                 df = pd.read_csv(f, nrows=100)
+    df.to_csv("data/raw/test_tracks.csv")
     return df

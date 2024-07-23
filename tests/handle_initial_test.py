@@ -6,7 +6,7 @@ from src.utils import init_hydra, get_test_raw
 import os
 
 sample_path = "./data/samples/sample.csv"
-data_path = "./data/raw/tracks.csv"
+data_path = "./data/raw/test_tracks.csv"
 if not os.path.exists(data_path):
     data = get_test_raw()
     data.to_csv(data_path)
