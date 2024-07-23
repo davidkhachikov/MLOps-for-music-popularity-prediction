@@ -80,7 +80,7 @@ jobs:
       - name: Test with pytest
         run: pytest tests
         env:
-          ZENML_CONFIG_PATH: $PWD/services/zenml
-          PROJECTPATH: $PWD
-          AIRFLOW_HOME: $PWD/services/airflow
-          PYTHONPATH: $PWD/src
+          ZENML_CONFIG_PATH: ./services/zenml
+          PROJECTPATH: .
+          AIRFLOW_HOME: ./services/airflow
+          PYTHONPATH: ./src
