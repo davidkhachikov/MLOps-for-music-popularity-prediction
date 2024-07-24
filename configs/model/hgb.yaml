@@ -8,6 +8,6 @@ module_name: "sklearn.ensemble"
 class_name: "HistGradientBoostingRegressor"
 
 params:
-  learning_rate: [0.01, 0.1, 1]
-  max_iter: [100, 200, 300]
-  max_leaf_nodes: [31, 63, 127]
+  max_depth: [6, 8, 10]
+  loss: ['squared_error', 'absolute_error', 'poisson']
+  learning_rate: [0.1, 0.3, 0.5]
