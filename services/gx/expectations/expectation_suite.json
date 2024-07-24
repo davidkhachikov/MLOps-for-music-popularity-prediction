@@ -5,6 +5,13 @@
     {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
+        "column": "Unnamed: 0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
         "column": "artist_followers"
       },
       "meta": {}
@@ -103,6 +110,13 @@
     {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
+        "column": "album_name"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
         "column": "speechiness"
       },
       "meta": {}
@@ -146,6 +160,13 @@
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "loudness"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "name"
       },
       "meta": {}
     },
@@ -398,6 +419,6 @@
   ],
   "ge_cloud_id": null,
   "meta": {
-    "great_expectations_version": "0.18.18"
+    "great_expectations_version": "0.18.19"
   }
 }
