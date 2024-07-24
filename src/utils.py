@@ -4,6 +4,18 @@ import dvc
 import pandas as pd
 
 def init_hydra():
+    """
+    Initializes the Hydra configuration system and loads the main configuration file.
+
+    This function sets up the Hydra configuration system by specifying the path to the configuration files and loads the main configuration file. It returns the configuration as a DictConfig object, which can be used throughout the project to access configuration parameters.
+
+    Returns:
+        DictConfig: The main configuration object containing all the settings defined in the Hydra configuration files.
+
+    Raises:
+        FileNotFoundError: If the configuration file is not found at the specified path.
+        Exception: Any other exceptions that occur during the initialization process.
+    """
     try:
         with initialize(config_path="../configs", version_base=None):
             cfg: DictConfig = compose(config_name='main')
