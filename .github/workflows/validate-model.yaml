@@ -18,7 +18,8 @@ jobs:
       run:
         shell: bash # Set the default shell
         working-directory: .
-    
+      with: 
+          ref: 'AIRFLOW2.0'
     steps:
       # Task name
       - name: Checking out our code
@@ -57,10 +58,7 @@ jobs:
           
           
       - name: Run validate
-        run: |
-          zenml down
-          zenml up
-          python ./src/validate.py
+        run: python ./src/validate.py
         env:
           ZENML_CONFIG_PATH: ./services/zenml
           PROJECTPATH: .
