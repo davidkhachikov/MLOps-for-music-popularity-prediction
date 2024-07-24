@@ -13,13 +13,11 @@ jobs:
     runs-on: ubuntu-latest # The ubuntu-latest label currently uses the Ubuntu 22.04 runner image
     # for more info about the given resources, check this link below
     # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners#standard-github-hosted-runners-for-public-repositories
-    
+      
     defaults: # Set working directory of the job
       run:
         shell: bash # Set the default shell
         working-directory: .
-      with: 
-          ref: 'AIRFLOW2.0'
     steps:
       # Task name
       - name: Checking out our code
@@ -28,7 +26,8 @@ jobs:
         uses: actions/checkout@v4
         # for more info, check the link below
         # https://github.com/actions/checkout
-        
+        with: 
+          ref: 'AIRFLOW2.0'  
         # Install a version of Python
       - name: setup python
         uses: actions/setup-python@v5
