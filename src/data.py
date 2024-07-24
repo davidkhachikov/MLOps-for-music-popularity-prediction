@@ -276,27 +276,6 @@ def handle_onehot_features(features: pd.DataFrame, transformers_dir):
     return pd.DataFrame(onehot_pipeline.transform(features), columns=onehot_pipeline.named_steps["onehot"].get_feature_names_out(features.columns))            
 
 
-def handle_ordinal_features(features: pd.DataFrame, transformers_dir):
-    """Handles the ordinal features in the dataset."""
-    
-    try:
-        # Load the sklearn pipeline from 
-        ordinal_pipeline = joblib.load(os.path.join(transformers_dir, f"ordinal_pipeline.sav"))
-    except FileNotFoundError:
-        # Define the transformers for the ordinal features
-        ordinal_transformers = [
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("ordinal", OrdinalEncoder())
-        ]
-
-        # Create the pipeline
-        ordinal_pipeline = Pipeline(ordinal_transformers)
-        ordinal_pipeline.fit(features)
-        joblib.dump(ordinal_pipeline, os.path.join(transformers_dir, f"ordinal_pipeline.sav"))
-
-    return pd.DataFrame(ordinal_pipeline.transform(features), columns=features.columns)
-
-
 # Define the cyclical feature transformers
 def sin_transformer(data, period):
     return np.sin(data.astype(float) / period * 2 * np.pi)
@@ -420,9 +399,6 @@ def preprocess_data(df: pd.DataFrame):
     # Handle the one-hot encoded features
     X_onehot = handle_onehot_features(X[cfg.data.categorical_features], transformers_dir)
 
-    # Handle the ordinal features
-    X_ordinal = handle_ordinal_features(X[cfg.data.ordinal_features], transformers_dir)
-
     # Handle the date features
     X_date = handle_date_features(X[cfg.data.timedate_features], transformers_dir)
 
@@ -438,7 +414,7 @@ def preprocess_data(df: pd.DataFrame):
     # Handle the multilabel features
     X_multilabel = handle_multilabel_features(X[cfg.data.multilabel_features], transformers_dir)
 
-    return pd.concat([X_uniform, X_normal, X_onehot, X_ordinal, X_date, X_names, X_genres, X_bool, X_multilabel], axis=1), y
+    return pd.concat([X_uniform, X_normal, X_onehot, X_date, X_names, X_genres, X_bool, X_multilabel], axis=1), y
 
 
     

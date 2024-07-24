@@ -10,9 +10,43 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "energy",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "energy",
+        "max_value": null,
+        "min_value": 0
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "valence"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "valence",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "valence",
+        "max_value": null,
+        "min_value": 0
       },
       "meta": {}
     },
@@ -24,6 +58,23 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "acousticness",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "acousticness",
+        "max_value": null,
+        "min_value": 0
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "instrumentalness"
@@ -31,177 +82,19 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_not_be_null",
+      "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
-        "column": "artist_followers"
+        "column": "instrumentalness",
+        "type_": "float"
       },
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_not_be_null",
+      "expectation_type": "expect_column_min_to_be_between",
       "kwargs": {
-        "column": "album_total_tracks"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "artist_popularity"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "tempo"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "speechiness"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "danceability"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "liveness"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "loudness"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_0.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_1.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_2.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_3.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_4.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_5.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_6.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_7.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_8.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_9.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_10.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "key_11.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "time_signature_0.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "time_signature_1.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "time_signature_3.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "time_signature_4.0"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
-      "kwargs": {
-        "column": "time_signature_5.0"
+        "column": "instrumentalness",
+        "max_value": null,
+        "min_value": 0
       },
       "meta": {}
     },
@@ -213,6 +106,23 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "chart",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "chart",
+        "max_value": null,
+        "min_value": 0
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "mode"
@@ -220,18 +130,452 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_not_be_null",
+      "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
-        "column": "album_release_date_year"
+        "column": "mode",
+        "type_": "float"
       },
       "meta": {}
     },
     {
       "expectation_type": "expect_column_min_to_be_between",
       "kwargs": {
-        "column": "album_release_date_year",
+        "column": "mode",
         "max_value": null,
         "min_value": 0
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "artist_followers"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "artist_followers",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "album_total_tracks"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "album_total_tracks",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "artist_popularity"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "artist_popularity",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "tempo"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "tempo",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "speechiness"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "speechiness",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "danceability"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "danceability",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "liveness"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "liveness",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "loudness"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "loudness",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_0.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_0.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_1.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_1.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_2.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_2.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_3.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_3.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_4.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_4.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_5.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_5.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_6.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_6.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_7.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_7.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_8.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_8.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_9.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "key_9.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "key_10.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "key_10.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "key_11.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "key_11.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "time_signature_0.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "time_signature_0.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "time_signature_1.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "time_signature_1.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "time_signature_3.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "time_signature_3.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "time_signature_4.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "time_signature_4.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "time_signature_5.0"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "time_signature_5.0",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "album_release_date_year"
       },
       "meta": {}
     },
@@ -244,18 +588,9 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_not_be_null",
+      "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
         "column": "album_release_date_month_sin"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_be_between",
-      "kwargs": {
-        "column": "album_release_date_month_sin",
-        "max_value": 1,
-        "min_value": -1
       },
       "meta": {}
     },
@@ -264,6 +599,15 @@
       "kwargs": {
         "column": "album_release_date_month_sin",
         "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "album_release_date_month_sin",
+        "max_value": 1,
+        "min_value": -1
       },
       "meta": {}
     },
@@ -275,7 +619,15 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "album_release_date_month_cos",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
       "kwargs": {
         "column": "album_release_date_month_cos",
         "max_value": 1,
@@ -285,33 +637,25 @@
     },
     {
       "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "album_release_date_month_cos",
-        "type_": "float"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "album_release_date_day_sin"
       },
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
-      "kwargs": {
-        "column": "album_release_date_day_sin",
-        "max_value": 1,
-        "min_value": -1
-      },
-      "meta": {}
-    },
-    {
       "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
         "column": "album_release_date_day_sin",
         "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "album_release_date_day_sin",
+        "max_value": 1,
+        "min_value": -1
       },
       "meta": {}
     },
@@ -323,7 +667,15 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "album_release_date_day_cos",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
       "kwargs": {
         "column": "album_release_date_day_cos",
         "max_value": 1,
@@ -333,33 +685,25 @@
     },
     {
       "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "album_release_date_day_cos",
-        "type_": "float"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "album_release_date_weekday_sin"
       },
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
-      "kwargs": {
-        "column": "album_release_date_weekday_sin",
-        "max_value": 1,
-        "min_value": -1
-      },
-      "meta": {}
-    },
-    {
       "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
         "column": "album_release_date_weekday_sin",
         "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "album_release_date_weekday_sin",
+        "max_value": 1,
+        "min_value": -1
       },
       "meta": {}
     },
@@ -371,19 +715,19 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
-      "kwargs": {
-        "column": "album_release_date_weekday_cos",
-        "max_value": 1,
-        "min_value": -1
-      },
-      "meta": {}
-    },
-    {
       "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
         "column": "album_release_date_weekday_cos",
         "type_": "float"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_min_to_be_between",
+      "kwargs": {
+        "column": "album_release_date_weekday_cos",
+        "max_value": 1,
+        "min_value": -1
       },
       "meta": {}
     },
@@ -395,9 +739,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_0",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "n_vec_1"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_1",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -409,9 +769,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_2",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "n_vec_3"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_3",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -423,9 +799,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_4",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "n_vec_5"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_5",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -437,9 +829,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_6",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "n_vec_7"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_7",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -451,9 +859,25 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_8",
+        "type_": "float"
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "n_vec_9"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "n_vec_9",
+        "type_": "float"
       },
       "meta": {}
     },
@@ -622,9 +1046,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AD",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_AE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -636,9 +1082,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_AL"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AL",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -650,9 +1118,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AM",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_AO"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AO",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -664,9 +1154,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_AT"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AT",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -678,9 +1190,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AU",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_AZ"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_AZ",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -692,9 +1226,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BA",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BB"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BB",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -706,9 +1262,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BD",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -720,9 +1298,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BF",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BG"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BG",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -734,9 +1334,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BH",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BI"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BI",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -748,9 +1370,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BJ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BN"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BN",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -762,9 +1406,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BO",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BR"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BR",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -776,9 +1442,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BS",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BT"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BT",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -790,9 +1478,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BW",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_BY"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BY",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -804,9 +1514,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_BZ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CA"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CA",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -818,9 +1550,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CD",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CG"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CG",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -832,9 +1586,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CH",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CI"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CI",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -846,9 +1622,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CL",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CM"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CM",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -860,9 +1658,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CO",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CR"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CR",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -874,9 +1694,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CV",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CW"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CW",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -888,9 +1730,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CY",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_CZ"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_CZ",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -902,9 +1766,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_DE",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_DJ"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_DJ",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -916,9 +1802,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_DK",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_DM"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_DM",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -930,9 +1838,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_DO",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_DZ"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_DZ",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -944,9 +1874,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_EC",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_EE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_EE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -958,9 +1910,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_EG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_ES"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ES",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -972,9 +1946,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ET",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_FI"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_FI",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -986,9 +1982,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_FJ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_FM"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_FM",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1000,9 +2018,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_FR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_GA"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GA",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1014,9 +2054,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GB",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_GD"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GD",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1028,9 +2090,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GE",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_GH"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GH",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1042,9 +2126,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GM",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_GN"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GN",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1056,9 +2162,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GQ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_GR"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GR",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1070,9 +2198,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GT",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_GW"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GW",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1084,9 +2234,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_GY",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_HK"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_HK",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1098,9 +2270,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_HN",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_HR"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_HR",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1112,9 +2306,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_HT",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_HU"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_HU",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1126,9 +2342,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ID",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_IE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_IE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1140,9 +2378,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_IL",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_IN"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_IN",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1154,9 +2414,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_IQ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_IS"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_IS",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1168,9 +2450,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_IT",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_JM"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_JM",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1182,9 +2486,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_JO",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_JP"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_JP",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1196,9 +2522,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KE",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_KG"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KG",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1210,9 +2558,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KH",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_KI"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KI",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1224,9 +2594,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KM",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_KN"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KN",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1238,9 +2630,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_KW"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KW",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1252,9 +2666,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_KZ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_LA"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LA",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1266,9 +2702,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LB",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_LC"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LC",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1280,9 +2738,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LI",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_LK"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LK",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1294,9 +2774,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_LS"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LS",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1308,9 +2810,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LT",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_LU"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LU",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1322,9 +2846,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LV",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_LY"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_LY",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1336,9 +2882,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MA",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MC"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MC",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1350,9 +2918,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MD",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_ME"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ME",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1364,9 +2954,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MH"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MH",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1378,9 +2990,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MK",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_ML"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ML",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1392,9 +3026,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MN",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MO"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MO",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1406,9 +3062,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MT"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MT",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1420,9 +3098,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MU",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MV"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MV",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1434,9 +3134,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MW",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MX"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MX",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1448,9 +3170,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MY",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_MZ"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_MZ",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1462,9 +3206,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NA",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_NE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1476,9 +3242,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_NI"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NI",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1490,9 +3278,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NL",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_NO"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NO",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1504,9 +3314,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NP",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_NR"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NR",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1518,9 +3350,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_NZ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_OM"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_OM",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1532,9 +3386,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PA",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_PE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1546,9 +3422,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_PH"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PH",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1560,9 +3458,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PK",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_PL"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PL",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1574,9 +3494,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_PS"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PS",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1588,9 +3530,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PT",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_PW"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PW",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1602,9 +3566,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_PY",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_QA"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_QA",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1616,9 +3602,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_RO",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_RS"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_RS",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1630,9 +3638,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_RW",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SA"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SA",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1644,9 +3674,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SB",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SC"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SC",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1658,9 +3710,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SE",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SG"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SG",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1672,9 +3746,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SI",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SK"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SK",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1686,9 +3782,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SL",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SM"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SM",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1700,9 +3818,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SN",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SR"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SR",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1714,9 +3854,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ST",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_SV"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SV",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1728,9 +3890,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_SZ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_TD"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TD",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1742,9 +3926,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_TH"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TH",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1756,9 +3962,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TJ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_TL"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TL",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1770,9 +3998,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TN",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_TO"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TO",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1784,9 +4034,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TR",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_TT"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TT",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1798,9 +4070,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TV",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_TW"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TW",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1812,9 +4106,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_TZ",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_UA"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_UA",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1826,9 +4142,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_UG",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_US"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_US",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1840,9 +4178,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_UY",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_UZ"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_UZ",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1854,9 +4214,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_VC",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_VE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_VE",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1868,9 +4250,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_VN",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_VU"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_VU",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1882,9 +4286,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_WS",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_XK"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_XK",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     },
@@ -1896,6 +4322,17 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ZA",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_ZM"
@@ -1903,9 +4340,31 @@
       "meta": {}
     },
     {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ZM",
+        "value_set": [
+          0,
+          1
+        ]
+      },
+      "meta": {}
+    },
+    {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "available_markets_ZW"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "available_markets_ZW",
+        "value_set": [
+          0,
+          1
+        ]
       },
       "meta": {}
     }
