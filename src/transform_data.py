@@ -1,4 +1,5 @@
 import giskard
+from data import preprocess_data
 from data_prepare import transform, validate
 import pandas as pd
 from typing import Optional, Tuple
@@ -23,8 +24,29 @@ def transform_data(
     Returns:
     A tuple containing the transformed features and target Series/DataFrame, or None if not returning a DataFrame.
     """
-    # Directly calling the transform function without passing a transformer_version parameter
-    X, y = transform(df)
+    df.drop(columns=cfg.data.low_features_number, inplace=True, errors='ignore')
+
+    # preprocess datetime features
+    for feature in cfg.data.timedate_features:
+        df[feature] = df[feature].apply(lambda d: pd.Timestamp(d) if pd.notnull(d) and d != '' else pd.Timestamp("1970-01-01"))
+
+    for feature in cfg.data.missing_list:
+        df[feature] = df[feature].apply(lambda d: d if pd.notnull(d) and d != '' else '[]')
+
+    for feature in cfg.data.missing_strings:
+        df[feature] = df[feature].apply(lambda d: d if pd.notnull(d) and d != '' else ' ')
+        
+    # Binarize categorical features
+    df["chart"] = df["chart"].map({"top200": 1, "top50": 2})
+    df["chart"] = df["chart"].fillna(0)
+
+    # Impute missing values with median
+    df.fillna(df.median(), inplace=True)
+    X, y = None, None
+    if only_X:
+        X = preprocess_data(df, True)
+    else:
+        X, y = preprocess_data(df)
 
     if only_transform:
         if only_X:

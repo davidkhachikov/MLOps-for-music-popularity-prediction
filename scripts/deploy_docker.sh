@@ -6,3 +6,6 @@ cd api
 docker build -t my_ml_service .
 cd $PROJECTPATH
 docker run --rm -p 5152:8080 my_ml_service
+docker login
+docker tag my_ml_service davidkhachikov/my_ml_service:latest
+docker push davidkhachikov/my_ml_service:latest

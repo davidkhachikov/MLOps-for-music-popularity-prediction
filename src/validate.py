@@ -4,25 +4,25 @@ import os
 import pickle
 
 import numpy as np
+from data import read_datastore
 from model import load_features  # custom module
 # from transform_data import transform_data  # custom module
+from transform_data import transform_data
 from utils import init_hydra  # custom module
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+import argparse
 
 import giskard
 import mlflow
 import pandas as pd
 import pickle
 
-def prepare_dataset(cfg):
+def prepare_dataset(cfg, max_rows=1000):
     version = cfg.data.version
-    X, y = load_features(name="features_target", version=version)
+    df, version = read_datastore(version=version)
+    df = df[:max_rows]
     target_column = cfg.data.target_features[0]
     dataset_name = f"{cfg.data.dataset_name}"
-    
-    # Assuming X and y are numpy arrays or similar structures, concatenate them into a DataFrame
-    df = pd.DataFrame(X)
-    df[target_column] = y
     
     giskard_dataset = giskard.Dataset(
         df=df,
@@ -30,50 +30,29 @@ def prepare_dataset(cfg):
         name=dataset_name
     )
     return giskard_dataset, df, version
+    
 
+def load_and_wrap_mlflow_model(model_path, feature_names, cfg):
+    """
+    Loads a model from using mlflow.
+    """
+    model = mlflow.pyfunc.load_model(model_path)
+    def predict(raw_df):
+        X = transform_data(
+                            df = raw_df, 
+                            cfg = cfg, 
+                            return_df = False, 
+                            only_transform = True,
+                            only_X = True
+                        )
 
-def load_and_wrap_pickle_model(file_path, feature_names, cfg):
-    """
-    Loads a model from a .pkl file.
-    """
-    with open(file_path, 'rb') as file:
-        model = pickle.load(file)
+        return model.predict(X)
 
     target_name = cfg.data.target_features[0]
     
     # Wrap the model with giskard.Model
     wrapped_model = giskard.Model(
-        model=model,
-        feature_names=feature_names,
-        target=target_name,
-        model_type="regression"
-    )
-    
-    return wrapped_model
-    
-
-def load_and_wrap_mlflow_model(model_uri, feature_names, cfg):
-    """
-    Loads a scikit-learn model from an MLflow model URI and wraps it with Giskard's Model class.
-    
-    :param model_uri: URI of the scikit-learn model to load.
-    :param feature_names: List of feature names.
-    :param cfg: Configuration object or dictionary containing model configuration.
-    :return: A Giskard model wrapper around the loaded scikit-learn model.
-    """
-    # Load the scikit-learn model using MLflow
-    model = mlflow.sklearn.load_model(model_uri)
-    
-    target_name = cfg.data.target_features[0]
-    
-    # Define a prediction function using the loaded model's predict method
-    def predict_function(X):
-        # Convert input features to the expected format (if necessary)
-        # This step depends on how your model expects inputs
-        return model.predict(X)
-    
-    wrapped_model = giskard.Model(
-        model=predict_function,  # Use the prediction function instead of the model object
+        model=predict,
         feature_names=feature_names,
         target=target_name,
         model_type="regression"
@@ -95,7 +74,6 @@ def create_and_run_test_suite(giskard_model, giskard_dataset, model_name, datase
 
     def mae_test(model, dataset):
         threshold = cfg.mae_threshold
-        print(threshold)
         y_true = dataset.df[dataset.target]
         y_pred = model.predict(dataset).raw
         mae = mean_absolute_error(y_true, y_pred)
@@ -108,19 +86,14 @@ def create_and_run_test_suite(giskard_model, giskard_dataset, model_name, datase
     return test_results
 
 
-def find_model_version_by_alias(model_name, alias):
-    client = mlflow.MlflowClient()
-    # List all versions of the model
-    model_versions = client.get_model_version_by_alias(model_name, alias)
-    return model_versions.version
-
-
-def validate_model(giskard_model, giskard_dataset, version, model_name, cfg):
+def validate_model(giskard_model, giskard_dataset, version, model_name, model_alias, BASE_PATH, cfg):
     test_results = create_and_run_test_suite(giskard_model, giskard_dataset, model_name, giskard_dataset.name, version, cfg)
+    if test_results.passed:
+        run_giskard_scan(giskard_model, giskard_dataset, model_name, model_alias, giskard_dataset.name, BASE_PATH)
     return test_results.passed
-    
 
-def main():
+
+def main(model_path, model_alias, model_name):
     BASE_PATH = os.getenv('PROJECTPATH')
     cfg = init_hydra()
     giskard_dataset, df, version = prepare_dataset(cfg)
@@ -131,9 +104,17 @@ def main():
     target_name = giskard_dataset.target
     feature_names.remove(target_name)
 
-    giskard_champion = load_and_wrap_pickle_model(f'{BASE_PATH}/models/champion.pkl', feature_names, cfg)
-    if not validate_model(giskard_champion, giskard_dataset, version, 'model', cfg):
+    # Construct the full model path using the provided model_path and model_alias
+    full_model_path = os.path.join(BASE_PATH, model_path)
+    giskard_champion = load_and_wrap_mlflow_model(full_model_path, feature_names, cfg)
+    if not validate_model(giskard_champion, giskard_dataset, version, model_name, model_alias, BASE_PATH, cfg):  # Pass model_name instead of 'model'
         raise Exception("Validation failed")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Validate a model.')
+    parser.add_argument('--model-path', type=str, default=f'{os.getenv("PROJECTPATH")}/models/champion', help='Path to the directory containing the model.')
+    parser.add_argument('--model-alias', type=str, default='champion', help='Alias for the model')
+    parser.add_argument('--model-name', type=str, default='hist_gradient_boost', help='Name of the model')  # Default value added here
+    args = parser.parse_args()
+
+    main(args.model_path, args.model_alias, args.model_name)

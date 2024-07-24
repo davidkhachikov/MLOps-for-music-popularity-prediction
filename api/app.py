@@ -1,15 +1,25 @@
 # api/app.py
 
+import logging
+
+# Add this line near the top of your file, after other imports
+logger = logging.getLogger(__name__)
+
+
 from flask import Flask, request, jsonify, abort, make_response
+from model import model_predict
 
 import mlflow
 import mlflow.pyfunc
 import os
 
+import pandas as pd
+
+from utils import init_hydra
+
 BASE_PATH = os.path.expandvars("$PROJECTPATH")
-
-model = mlflow.pyfunc.load_model(os.path.join(BASE_PATH, "api", "model_dir"))
-
+model_path = f'{BASE_PATH}/models/champion'
+model = mlflow.pyfunc.load_model(model_path)
 app = Flask(__name__)
 
 @app.route("/info", methods = ["GET"])
@@ -19,39 +29,25 @@ def info():
 	response.content_type = "text/plain"
 	return response
 
-@app.route("/", methods = ["GET"])
-def home():
-	msg = """
-	Welcome to our ML service to predict Customer satisfaction\n\n
-
-	This API has two main endpoints:\n
-	1. /info: to get info about the deployed model.\n
-	2. /predict: to send predict requests to our deployed model.\n
-
-	"""
-
-	response = make_response(msg, 200)
-	response.content_type = "text/plain"
-	return response
-
-# /predict endpoint
 @app.route("/predict", methods=["POST"])
 def predict():
+    data = None
     try:
         # Load the JSON data from the request
         data = request.json
-        # Extract the 'inputs' dictionary from the JSON
+        logger.info(f"Received data: {data}")
+        
+        # Validate input
+        if 'inputs' not in data:
+            raise ValueError("Missing 'inputs' in request data")
+        
         inputs = data['inputs']
         
         # Convert the dictionary to a DataFrame for easier manipulation
-        df = pd.DataFrame(inputs, index=[0])
-        
-        # Preprocess the data if necessary. This step depends on how your model was trained.
-        # For example, if your model expects numerical columns to be scaled, apply the same scaling here.
+        df = pd.DataFrame([inputs])
         
         # Make a prediction
-        # Note: Ensure your model can handle a DataFrame of shape (1, num_features) where num_features matches the model's expectation
-        prediction = model.predict(df)
+        prediction = model_predict(df, model)
         
         # Assuming the model returns a numpy array, convert it to a list for JSON serialization
         prediction_list = prediction.tolist()
@@ -64,7 +60,10 @@ def predict():
         
         return jsonify(result), 200
     except Exception as e:
-        return jsonify({'error': str(e)}, 400)
+        # Log the data that caused the failure
+        logger.error(f"Error processing data: {data}, Error: {str(e)}")
+        # Send the logged data as part of the error response
+        return jsonify({'error': str(e), 'logged_data': data}), 400
 
 # This will run a local server to accept requests to the API.
 if __name__ == "__main__":

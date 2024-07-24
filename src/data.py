@@ -378,14 +378,16 @@ def convert_types(features: pd.DataFrame, expected_type):
 
 
 
-def preprocess_data(df: pd.DataFrame):
+def preprocess_data(df: pd.DataFrame, only_X=False):
     """ Performs data transformation and returns X, y tuple"""
 
     cfg = init_hydra()
 
     # Splitting the data into features and targets
-    X = df.drop(columns=cfg.data.target_features)
-    y = df[cfg.data.target_features]
+    
+    X = df.drop(columns=cfg.data.target_features, errors='ignore')
+    if not only_X:
+        y = df[cfg.data.target_features]
 
     # Create the transformers directory if it does not exist
     transformers_dir = os.path.join(BASE_PATH, "data", "transformers")
@@ -415,6 +417,17 @@ def preprocess_data(df: pd.DataFrame):
 
     # Handle the multilabel features
     X_multilabel = handle_multilabel_features(X[cfg.data.multilabel_features], transformers_dir)
+    if only_X:
+        return pd.concat([
+        X_uniform, 
+        X_normal, 
+        X_onehot, 
+        X_date, 
+        X_names, 
+        X_genres, 
+        X_bool, 
+        X_multilabel
+        ], axis=1)
 
     return pd.concat([
         X_uniform, 
