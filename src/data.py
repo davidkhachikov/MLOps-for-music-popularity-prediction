@@ -15,6 +15,7 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
 from gensim.models import Word2Vec
+from gensim.parsing.preprocessing import remove_stopwords
 from utils import init_hydra
 import joblib
 import re
@@ -207,6 +208,7 @@ def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
 
     clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
     clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    clean_names_concat = clean_names_concat.apply(remove_stopwords)
     names2vec_model = Word2Vec(clean_names_concat.str.split(), vector_size=10, window=5, min_count=1, workers=4)
     names2vec_model_path = os.path.join(transformers_dir, 'names2vec_model.sav')
     with open(names2vec_model_path, 'wb') as f:
@@ -319,8 +321,8 @@ def handle_names_features(features: pd.DataFrame, transformers_dir):
             joblib.dump(names2vec_model, f)
 
     # Transform the names features
-    names_features = averaged_word_vectorizer(clean_names_concat.str.split(), names2vec_model, 10)
-    return pd.DataFrame(names_features, columns=[f"n_vec_{i}" for i in range(10)])
+    names_features = averaged_word_vectorizer(clean_names_concat.str.split(), names2vec_model, names2vec_model.vector_size)
+    return pd.DataFrame(names_features, columns=[f"n_vec_{i}" for i in range(names2vec_model.vector_size)])
 
 
 def handle_genres_features(features: pd.DataFrame, transformers_dir):
@@ -338,8 +340,8 @@ def handle_genres_features(features: pd.DataFrame, transformers_dir):
             joblib.dump(genres2vec_model, f)
 
     # Transform the genres features
-    genres_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 10)
-    return pd.DataFrame(genres_features, columns=[f"g_vec_{i}" for i in range(10)])
+    genres_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, genres2vec_model.vector_size)
+    return pd.DataFrame(genres_features, columns=[f"g_vec_{i}" for i in range(genres2vec_model.vector_size)])
 
 
 def handle_multilabel_features(features: pd.DataFrame, transformers_dir):
@@ -414,7 +416,16 @@ def preprocess_data(df: pd.DataFrame):
     # Handle the multilabel features
     X_multilabel = handle_multilabel_features(X[cfg.data.multilabel_features], transformers_dir)
 
-    return pd.concat([X_uniform, X_normal, X_onehot, X_date, X_names, X_genres, X_bool, X_multilabel], axis=1), y
+    return pd.concat([
+        X_uniform, 
+        X_normal, 
+        X_onehot, 
+        X_date, 
+        X_names, 
+        X_genres, 
+        X_bool, 
+        X_multilabel
+        ], axis=1), y
 
 
     
