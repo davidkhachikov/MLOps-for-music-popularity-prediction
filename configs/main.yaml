@@ -16,7 +16,7 @@ hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: hgb, nn
+      +model: hgb #, nn
 mae_threshold: 12
 mlflow_port: 5000
 model_port: 5151
