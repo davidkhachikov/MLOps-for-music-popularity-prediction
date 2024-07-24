@@ -30,7 +30,7 @@ jobs:
         # for more info, check the link below
         # https://github.com/actions/checkout
         with: 
-          ref: 'AIRFLOW2.0'
+          ref: 'AIRFLOW2.4'
         # Install a version of Python
       - name: setup python
         uses: actions/setup-python@v5
