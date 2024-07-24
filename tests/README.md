@@ -2,7 +2,7 @@
 `sample_test.py`
 Validates the integrity of sample datasets, ensuring they match expected sizes and column counts as defined in project configurations.
 
-`handle_initial_test.py``
+`handle_initial_test.py`
 Tests preprocessing steps to confirm data integrity and correctness after initial handling and preparation.
 
 `read_datastore_test.py`
