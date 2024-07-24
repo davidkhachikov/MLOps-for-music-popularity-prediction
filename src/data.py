@@ -6,7 +6,7 @@ import great_expectations as gx
 import dvc.api
 import zenml
 import ast
-from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler, MinMaxScaler
+from sklearn.preprocessing import MultiLabelBinarizer, OneHotEncoder, StandardScaler, MinMaxScaler, OrdinalEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import NotFittedError
@@ -15,13 +15,17 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.pipeline import FeatureUnion
 from gensim.models import Word2Vec
-from src.utils import init_hydra
+from gensim.parsing.preprocessing import remove_stopwords
+from utils import init_hydra
 import joblib
 import re
 
 from typing import Literal
 
 BASE_PATH = os.getenv('PROJECTPATH')
+
+#######################
+# Data Acquisition #
 
 def sample_data(project_path=BASE_PATH, path_to_raw=None):
     """
@@ -160,8 +164,7 @@ def read_datastore(version=None):
     data_path = "data/samples/sample.csv"
     cfg = init_hydra()
     if version is None:
-        version = cfg.data.version[:-1]
-        version += str(cfg.data.sample_num-1)
+        version = cfg.data.version
         
     with dvc.api.open(
                     data_path,
@@ -171,291 +174,8 @@ def read_datastore(version=None):
                 df = pd.read_csv(f, low_memory=False)
     return df, version
 
-
-def preprocess_data(df: pd.DataFrame):
-    """ Performs data transformation and returns X, y tuple"""
-
-    cfg = init_hydra()
-
-    # Splitting the data into features and targets
-    X = df.drop(columns=cfg.data.target_features)
-    y = df[cfg.data.target_features]
-
-    # Fit transformers if they don't exist
-    transformers_dir = os.path.join(BASE_PATH, 'models', 'transformers')
-    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.pkl')
-
-    if not os.path.exists(genres2vec_model_path):
-        fit_transformers(X, cfg, transformers_dir)
-
-    # Transform the data
-    X_transformed = transform_data(X, cfg, transformers_dir)
-
-    return X_transformed, y
-
-
-def apply_literal_eval(df: pd.DataFrame):
-    """ Applies literal_eval to all values in the DataFrame"""
-    for col in df.columns:
-        df[col] = df[col].apply(ast.literal_eval)
-    return df
-
-def decompose_dates(df: pd.DataFrame):
-    """ Decomposes the date features into year, month, day, and weekday"""
-    res = pd.DataFrame(columns=["year", "month", "day", "weekday"])
-    df = df.squeeze()
-    df = pd.to_datetime(df)
-    res["year"] = df.dt.year
-    res["month"] = df.dt.month
-    res["day"] = df.dt.day
-    res["weekday"] = df.dt.weekday
-
-    return res
-
-def get_column_transformer(cfg):
-    # Define the base preprocessing pipeline for the multilabel columns
-    multilabel_prep_pipeline = Pipeline([
-        ('imputer', SimpleImputer(strategy='constant', fill_value="[]")), # Fill in missing values with empty lists if any
-        ('to_list', FunctionTransformer(apply_literal_eval)) # Convert the string representation of lists to actual lists
-    ])
-
-    # Define the transformation pipeline for other multilabel columns
-    multilabel_transformer = Pipeline([
-        ("preprocess", multilabel_prep_pipeline),
-        ("encode", MultiHotEncoder())
-    ])
-
-
-    # Define the transformation pipeline for the categorical columns
-    categorical_transformer = Pipeline([
-        ('imputer', SimpleImputer(strategy='most_frequent')),
-        ('onehot', OneHotEncoder(sparse_output=False, dtype=bool, handle_unknown='ignore'))
-    ])
-
-    # Define the transformation pipeline for the normal features
-    normal_transformer = Pipeline([
-        ('imputer', SimpleImputer(strategy='mean')),
-        ('scaler', StandardScaler())
-    ])
-
-    # Define the transformation pipeline for the uniform features
-    uniform_transformer = Pipeline([
-        ('imputer', SimpleImputer(strategy='mean')),
-        ('scaler', MinMaxScaler())
-    ])
-
-    # Define the transformation pipeline for the date features
-    date_transformer = Pipeline([
-        ('imputer', SimpleImputer(strategy='constant', fill_value=pd.Timestamp('1970-01-01'))),
-        # all dates are Year-Month-Day. Split them into 4 columns
-        ("year_month_day_weekday", FunctionTransformer(decompose_dates)),
-        # Convert to cyclical features
-        ('cyclic_convert', ColumnTransformer(
-            transformers=[
-                ('month_sin', sin_transformer(12), ['month']),
-                ('month_cos', cos_transformer(12), ['month']),
-                ('day_sin', sin_transformer(31), ['day']),
-                ('day_cos', cos_transformer(31), ['day']),
-                ('weekday_sin', sin_transformer(7), ['weekday']),
-                ('weekday_cos', cos_transformer(7), ['weekday']),
-                ('year', 'passthrough', ['year'])
-            ], 
-            remainder='drop'
-        )),
-        ('rename', FunctionTransformer(lambda x: x.rename(columns={
-            "month_sin__month": "month_sin",
-            "month_cos__month": "month_cos",
-            "day_sin__day": "day_sin",
-            "day_cos__day": "day_cos",
-            "weekday_sin__weekday": "weekday_sin",
-            "weekday_cos__weekday": "weekday_cos",
-            "year__year": "year"
-        }))),
-    ])
-
-    # Defien the column transformer
-    column_transformer = ColumnTransformer(
-        transformers=[
-            ('multilabel', multilabel_transformer, list(cfg.data.multilabel_features)),
-            ('categorical', categorical_transformer, list(cfg.data.categorical_features)),
-            ('normal', normal_transformer, list(cfg.data.normal_features)),
-            ('uniform', uniform_transformer, list(cfg.data.uniform_features)),
-            ('dates', date_transformer, list(cfg.data.timedate_features)),
-            ('int', FunctionTransformer(lambda x: x.astype(int)), list(cfg.data.ordinal_features)),
-            ('bool', FunctionTransformer(lambda x: x.astype(bool)), list(cfg.data.convert_to_bool))
-        ],
-        remainder='drop',
-        verbose=True
-    )
-
-    column_transformer.set_output(transform="pandas")
-
-    return column_transformer
-
-
-
-def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
-    """Fits the transformers on the initial data sample and saves them as artifacts."""        
-    # Fit the Word2Vec model
-    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=10, window=5, min_count=1, workers=4)
-    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
-    with open(genres2vec_model_path, 'wb') as f:
-        joblib.dump(genres2vec_model, f)
-
-    clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
-    clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    names2vec_model = Word2Vec(clean_names_concat.str.split(), vector_size=10, window=5, min_count=1, workers=4)
-    names2vec_model_path = os.path.join(transformers_dir, 'names2vec_model.sav')
-    with open(names2vec_model_path, 'wb') as f:
-        joblib.dump(names2vec_model, f)  
-
-
-def transform_data(features: pd.DataFrame, cfg, transformers_dir):
-    """Loads the fitted transformers and applies them to new data samples."""
-
-    # Load the fitted column transformer
-    column_transformer = get_column_transformer(cfg)
-    
-    # Load the fitted Word2Vec models
-    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
-    with open(genres2vec_model_path, 'rb') as f:
-        genres2vec_model = joblib.load(f)
-
-    names2vec_model_path = os.path.join(transformers_dir, 'names2vec_model.sav')
-    with open(names2vec_model_path, 'rb') as f:
-        names2vec_model = joblib.load(f)
-
-    # Apply the column transformer
-    X_transformed = column_transformer.fit_transform(features)
-
-    # Apply the Word2Vec models
-    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    genres2vec_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, 10)
-    genres2vec_features = pd.DataFrame(genres2vec_features, columns=[f"g_vec_{i}" for i in range(10)])
-
-    clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
-    clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
-    names2vec_features = averaged_word_vectorizer(clean_names_concat.str.split(), names2vec_model, 10)
-    names2vec_features = pd.DataFrame(names2vec_features, columns=[f"n_vec_{i}" for i in range(10)])
-    
-    # Concatenate the transformed features with the Word2Vec features
-    X_final = pd.concat([X_transformed, genres2vec_features, names2vec_features], axis=1)
-    
-    return X_final
-
-
-# Define the cyclical feature transformers
-def sin_transformer(period):
-    return FunctionTransformer(lambda x: np.sin(x.astype(float) / period * 2 * np.pi))
-
-def cos_transformer(period):
-    return FunctionTransformer(lambda x: np.cos(x.astype(float) / period * 2 * np.pi))
-
-    
-class MultiHotEncoder(BaseEstimator, TransformerMixin):
-    """Wraps `MultiLabelBinarizer` to allow for easy use in pipelines.
-    """
-    def __init__(self, input_format: Literal["pandas", "numpy"] = "pandas", handle_unknown="drop"):
-        self.mlbs = {}
-        self.input_format = input_format
-        self._output_dtype = bool
-        self._output_format = "pandas"
-        self._features_order = []
-        self.classes_ = []
-        self.handle_unknown = handle_unknown
-
-    def fit(self, X, y=None):
-        self.mlbs = {}
-        self._features_order = []
-
-        # if X has wrong format, raise an error
-        if self.input_format == "pandas" and not isinstance(X, pd.DataFrame):
-            raise ValueError("Input format is pandas, but X is not a pandas DataFrame")
-        if self.input_format == "numpy" and not isinstance(X, np.ndarray):
-            raise ValueError("Input format is numpy, but X is not a numpy array")
-        
-        # X must be 2D
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2:
-            raise ValueError("Input must be 1D or 2D")
-        
-        if self.input_format == "pandas":
-            for col in X.columns:
-                self._features_order.append(col)
-                self.mlbs[col] = MultiLabelBinarizer()
-                self.mlbs[col].fit(X[col])
-                self.classes_.extend(self.mlbs[col].classes_)
-        else:
-            for i in range(X.shape[1]):
-                self._features_order.append(i)
-                self.mlbs[i] = MultiLabelBinarizer()
-                self.mlbs[i].fit(X[:, i])
-                self.classes_.extend(self.mlbs[i].classes_)
-        return self
-    
-    def transform(self, X):
-        # if X has wrong format, raise an error
-        if self.input_format == "pandas" and not isinstance(X, pd.DataFrame):
-            raise ValueError("Input format is pandas, but X is not a pandas DataFrame")
-        if self.input_format == "numpy" and not isinstance(X, np.ndarray):
-            raise ValueError("Input format is numpy, but X is not a numpy array")
-        
-        # X must be 2D
-        if len(X.shape) == 1:
-            X = X.reshape(-1, 1)
-        elif len(X.shape) != 2:
-            raise ValueError("Input must be 1D or 2D")
-        
-        # Check if the estimator has been fitted
-        if not self.mlbs:
-            raise NotFittedError("This MultiHotEncoder instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator.")
-        
-        if self.input_format == "pandas":
-            # Check if the columns in X match the columns in the fitted data
-            if not set(X.columns) == set(self.mlbs.keys()):
-                raise ValueError("Columns in X do not match the columns in the fitted data")
-            res = np.empty((X.shape[0], 0))
-            for col in self._features_order:
-                if self.handle_unknown == "drop":
-                    # Some entries may contain unseen classes, so we need to filter them out
-                    filtered = [set(entry).intersection(self.mlbs[col].classes_) for entry in X[col]]
-                    res = np.concatenate([res, self.mlbs[col].transform(filtered)], axis=1)
-                else:
-                    res = np.concatenate([res, self.mlbs[col].transform(X[col])], axis=1)
-        else:
-            # Check if the number of columns in X match the number of columns in the fitted data
-            if not len(self.mlbs) == X.shape[1]:
-                raise ValueError("Number of columns in X does not match the number of columns in the fitted data")
-            res = np.empty((X.shape[0], 0), dtype=self._output_dtype)
-            for i in self._features_order:
-                if self.handle_unknown == "drop":
-                    # Some entries may contain unseen classes, so we need to filter them out
-                    filtered = [set(entry).intersection(self.mlbs[i].classes_) for entry in X[:, i]]
-                    res = np.concatenate([res, self.mlbs[i].transform(filtered)], axis=1, dtype=self._output_dtype)
-                else:
-                    res = np.concatenate([res, self.mlbs[i].transform(X[:, i])], axis=1, dtype=self._output_dtype)
-
-        if self._output_format == "pandas":
-            return pd.DataFrame(res, columns=self.classes_, dtype=self._output_dtype)
-        else:
-            return res
-        
-    def fit_transform(self, X, y=None):
-        self.fit(X)
-        return self.transform(X)
-    
-    def set_output(self, *, transform=None):
-        if transform is not None:
-            self._output_format = transform
-        return self
-
-    def get_feature_names_out(self):
-        if self.mlbs:
-            return self.classes_
-        else:
-            return None
+#######################
+# Data Preprocessing #
         
 # Create a function to average the word vectors
 def average_word_vectors(words, model, vocabulary, num_features):
@@ -472,6 +192,7 @@ def average_word_vectors(words, model, vocabulary, num_features):
     
     return feature_vector
 
+
 # Create a function to iterate over the dataset
 def averaged_word_vectorizer(corpus, model, num_features):
     vocabulary = set(model.wv.index_to_key)
@@ -479,6 +200,255 @@ def averaged_word_vectorizer(corpus, model, num_features):
     return np.array(features)
 
 
+def fit_transformers(features: pd.DataFrame, cfg, transformers_dir):
+    """Fits the transformers on the initial data sample and saves them as artifacts."""        
+    # Fit the Word2Vec model
+    clean_genres = features[cfg.data.genres_feature].apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=10, window=5, min_count=1, workers=4)
+    genres2vec_model_path = os.path.join(transformers_dir, 'genres2vec_model.sav')
+    with open(genres2vec_model_path, 'wb') as f:
+        joblib.dump(genres2vec_model, f)
+
+    clean_names_concat = features[cfg.data.text_features].apply(lambda x: " ".join(x), axis=1)
+    clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    clean_names_concat = clean_names_concat.apply(remove_stopwords)
+    names2vec_model = Word2Vec(clean_names_concat.str.split(), vector_size=10, window=5, min_count=1, workers=4)
+    names2vec_model_path = os.path.join(transformers_dir, 'names2vec_model.sav')
+    with open(names2vec_model_path, 'wb') as f:
+        joblib.dump(names2vec_model, f)  
+
+
+def handle_uniform_features(features: pd.DataFrame, transformers_dir):
+    """Handles the uniform features in the dataset."""
+    
+    try:
+        # Load the sklearn pipeline from 
+        uniform_pipeline = joblib.load(os.path.join(transformers_dir, f"uniform_pipeline.sav"))
+    except FileNotFoundError:
+        # Define the transformers for the uniform features
+        uniform_transformers = [
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", MinMaxScaler())
+        ]
+
+        # Create the pipeline
+        uniform_pipeline = Pipeline(uniform_transformers)
+        uniform_pipeline.fit(features)
+        joblib.dump(uniform_pipeline, os.path.join(transformers_dir, f"uniform_pipeline.sav"))
+
+    return pd.DataFrame(uniform_pipeline.transform(features), columns=features.columns)
+
+
+def handle_normal_features(features: pd.DataFrame, transformers_dir):
+    """Handles the normal features in the dataset."""
+    
+    try:
+        # Load the sklearn pipeline from 
+        normal_pipeline = joblib.load(os.path.join(transformers_dir, f"normal_pipeline.sav"))
+    except FileNotFoundError:
+        # Define the transformers for the normal features
+        normal_transformers = [
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler())
+        ]
+
+        # Create the pipeline
+        normal_pipeline = Pipeline(normal_transformers)
+        normal_pipeline.fit(features)
+        joblib.dump(normal_pipeline, os.path.join(transformers_dir, f"normal_pipeline.sav"))
+
+    return pd.DataFrame(normal_pipeline.transform(features), columns=features.columns)
+
+
+def handle_onehot_features(features: pd.DataFrame, transformers_dir):
+    """Handles the one-hot encoded features in the dataset."""
+    
+    try:
+        # Load the sklearn pipeline from 
+        onehot_pipeline = joblib.load(os.path.join(transformers_dir, f"onehot_pipeline.sav"))
+    except FileNotFoundError:
+        # Define the transformers for the one-hot encoded features
+        onehot_transformers = [
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False))
+        ]
+
+        # Create the pipeline
+        onehot_pipeline = Pipeline(onehot_transformers)
+        onehot_pipeline.fit(features)
+        joblib.dump(onehot_pipeline, os.path.join(transformers_dir, f"onehot_pipeline.sav"))
+
+    return pd.DataFrame(onehot_pipeline.transform(features), columns=onehot_pipeline.named_steps["onehot"].get_feature_names_out(features.columns))            
+
+
+# Define the cyclical feature transformers
+def sin_transformer(data, period):
+    return np.sin(data.astype(float) / period * 2 * np.pi)
+
+def cos_transformer(data, period):
+    return np.cos(data.astype(float) / period * 2 * np.pi)
+
+
+def handle_date_features(features: pd.DataFrame, transformers_dir):
+    """Handles the date features in the dataset."""
+
+    # Split each date feature into year, month, day, and day of the week
+    res = pd.DataFrame(columns = [f"{col}_{i}" for col in features.columns for i in ["year", "month_sin", "month_cos", "day_sin", "day_cos", "weekday_sin", "weekday_cos"]], index=features.index)
+    for col in features.columns:
+        # Convert the column to datetime if it's not already
+        date_col = pd.to_datetime(features[col], yearfirst=True, errors="coerce")
+        # Extract year, month, day, and weekday
+        res[f"{col}_year"] = date_col.dt.year
+        res[f"{col}_month_sin"] = sin_transformer(date_col.dt.month, 12)
+        res[f"{col}_month_cos"] = cos_transformer(date_col.dt.month, 12)
+        res[f"{col}_day_sin"] = sin_transformer(date_col.dt.day, 31)
+        res[f"{col}_day_cos"] = cos_transformer(date_col.dt.day, 31)
+        res[f"{col}_weekday_sin"] = sin_transformer(date_col.dt.weekday, 7)
+        res[f"{col}_weekday_cos"] = cos_transformer(date_col.dt.weekday, 7)
+    return res
+
+def handle_names_features(features: pd.DataFrame, transformers_dir):
+    """Handles the names features in the dataset."""
+    
+    # Concatenate the names features
+    # Clean the text
+    clean_names_concat = features.apply(lambda x: " ".join(x), axis=1)
+    clean_names_concat = clean_names_concat.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+
+    # Load the Word2Vec model
+    try:
+        names2vec_model = joblib.load(os.path.join(transformers_dir, 'names2vec_model.sav'))
+    except FileNotFoundError:
+        names2vec_model = Word2Vec(clean_names_concat.str.split(), vector_size=10, window=5, min_count=1, workers=4)
+        with open(os.path.join(transformers_dir, 'names2vec_model.sav'), 'wb') as f:
+            joblib.dump(names2vec_model, f)
+
+    # Transform the names features
+    names_features = averaged_word_vectorizer(clean_names_concat.str.split(), names2vec_model, names2vec_model.vector_size)
+    return pd.DataFrame(names_features, columns=[f"n_vec_{i}" for i in range(names2vec_model.vector_size)])
+
+
+def handle_genres_features(features: pd.DataFrame, transformers_dir):
+    """Handles the genres features in the dataset."""
+    
+    # Clean the genres
+    clean_genres = features.apply(lambda x: re.sub(r'\W+', ' ', x).lower())
+    
+    # Load the Word2Vec model
+    try:
+        genres2vec_model = joblib.load(os.path.join(transformers_dir, 'genres2vec_model.sav'))
+    except FileNotFoundError:
+        genres2vec_model = Word2Vec(clean_genres.str.split(), vector_size=10, window=5, min_count=1, workers=4)
+        with open(os.path.join(transformers_dir, 'genres2vec_model.sav'), 'wb') as f:
+            joblib.dump(genres2vec_model, f)
+
+    # Transform the genres features
+    genres_features = averaged_word_vectorizer(clean_genres.str.split(), genres2vec_model, genres2vec_model.vector_size)
+    return pd.DataFrame(genres_features, columns=[f"g_vec_{i}" for i in range(genres2vec_model.vector_size)])
+
+
+def handle_multilabel_features(features: pd.DataFrame, transformers_dir):
+    """Handles the multilabel features in the dataset."""
+    
+    res = pd.DataFrame(index=features.index)
+
+    for col in features.columns:
+        # Fill missing values with empty lists
+        features[col] = features[col].apply(lambda x: re.sub(r'\W+', ' ', x)).apply(str.split)
+
+        # Load the MultiLabelBinarizer
+        try:
+            mlb = joblib.load(os.path.join(transformers_dir, f"{col}_mlb.sav"))
+        except FileNotFoundError:
+            mlb = MultiLabelBinarizer()
+            mlb.fit(features[col])
+            joblib.dump(mlb, os.path.join(transformers_dir, f"{col}_mlb.sav"))
+        
+        # Transform the multilabel features
+        transformed = mlb.transform(features[col])
+        res = pd.concat([res, pd.DataFrame(transformed, columns=[f"{col}_{i}" for i in mlb.classes_])], axis=1)
+
+    return res
+
+
+def convert_types(features: pd.DataFrame, expected_type):
+    """Converts the features to the expected type"""
+    
+    # Convert the features to the expected type
+    for col in features.columns:
+        features[col] = features[col].astype(expected_type)
+    return features
+
+
+
+def preprocess_data(df: pd.DataFrame, only_X=False):
+    """ Performs data transformation and returns X, y tuple"""
+
+    cfg = init_hydra()
+
+    # Splitting the data into features and targets
+    
+    X = df.drop(columns=cfg.data.target_features, errors='ignore')
+    if not only_X:
+        y = df[cfg.data.target_features]
+
+    # Create the transformers directory if it does not exist
+    transformers_dir = os.path.join(BASE_PATH, "data", "transformers")
+    if not os.path.exists(transformers_dir):
+        os.makedirs(transformers_dir)
+
+    # Handle the uniform features
+    X_uniform = handle_uniform_features(X[cfg.data.uniform_features], transformers_dir)
+
+    # Handle the normal features
+    X_normal = handle_normal_features(X[cfg.data.normal_features], transformers_dir)
+
+    # Handle the one-hot encoded features
+    X_onehot = handle_onehot_features(X[cfg.data.categorical_features], transformers_dir)
+
+    # Handle the date features
+    X_date = handle_date_features(X[cfg.data.timedate_features], transformers_dir)
+
+    # Handle the names features
+    X_names = handle_names_features(X[cfg.data.text_features], transformers_dir)
+
+    # Handle the genres features
+    X_genres = handle_genres_features(X[cfg.data.genres_feature], transformers_dir)
+
+    # Convert to bool
+    X_bool = convert_types(X[cfg.data.convert_to_bool], bool)
+
+    # Handle the multilabel features
+    X_multilabel = handle_multilabel_features(X[cfg.data.multilabel_features], transformers_dir)
+    if only_X:
+        return pd.concat([
+        X_uniform, 
+        X_normal, 
+        X_onehot, 
+        X_date, 
+        X_names, 
+        X_genres, 
+        X_bool, 
+        X_multilabel
+        ], axis=1)
+
+    return pd.concat([
+        X_uniform, 
+        X_normal, 
+        X_onehot, 
+        X_date, 
+        X_names, 
+        X_genres, 
+        X_bool, 
+        X_multilabel
+        ], axis=1), y
+
+
+    
+
+
+#######################
+# Feature Validation #
 
 def validate_features(X: pd.DataFrame, y: pd.DataFrame):
     """ Performs feature validation using new expectations"""
@@ -505,6 +475,8 @@ def validate_features(X: pd.DataFrame, y: pd.DataFrame):
         exit(1)
     return X, y
 
+#######################
+# Feature Loading #
 
 def load_features(X: pd.DataFrame, y: pd.DataFrame, version: str):
     """Load and version the features X and the target y in artifact store of ZenML"""

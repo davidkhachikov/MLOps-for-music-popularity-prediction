@@ -1,0 +1,18 @@
+active_stack_id: fcfbc570-0bc8-4d14-adf3-b26a08891026
+active_workspace_name: default
+analytics_opt_in: true
+store:
+  backup_directory: ./services/zenml/database_backup
+  backup_strategy: in-memory
+  database: ./services/zenml/local_stores/default_zen_store/zenml.db
+  driver: sqlite
+  max_overflow: 20
+  pool_pre_ping: true
+  pool_size: 20
+  secrets_store:
+    type: sql
+  ssl_verify_server_cert: false
+  type: sql
+  url: sqlite:///./services/zenml/local_stores/default_zen_store/zenml.db
+user_id: 382383a4-cc29-4ac6-b806-b7a2e8928314
+version: 0.58.2

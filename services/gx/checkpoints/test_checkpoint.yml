@@ -20,8 +20,8 @@ evaluation_parameters: {}
 runtime_configuration: {}
 validations:
   - batch_request:
-      datasource_name: sample_data
-      data_asset_name: sample_asset
+      datasource_name: sample
+      data_asset_name: asset
       options: {}
       batch_slice:
     expectation_suite_name: expectation_suite

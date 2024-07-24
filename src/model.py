@@ -1,4 +1,8 @@
+import os
 import warnings
+
+from transform_data import transform_data
+from utils import init_hydra
 warnings.filterwarnings('ignore')
 from sklearn.exceptions import NotFittedError
 from sklearn.model_selection import GridSearchCV
@@ -8,6 +12,8 @@ import mlflow
 import mlflow.sklearn
 import importlib
 import giskard
+
+BASE_PATH = os.getenv('PROJECTPATH')
 
 def load_features(name, version, random_state=88, size = 1):
     client = Client()
@@ -189,3 +195,14 @@ def retrieve_model_with_version(model_name, model_version = "v1") -> mlflow.pyfu
 
     # best_model
     return best_model
+
+def model_predict(raw_df, base_model):
+    cfg = init_hydra()
+    X = transform_data(
+                        df = raw_df, 
+                        cfg = cfg, 
+                        return_df = False, 
+                        only_transform = True, 
+                        only_X = True
+                      )
+    return base_model.predict(X)

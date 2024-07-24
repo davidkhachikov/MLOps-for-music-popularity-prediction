@@ -70,25 +70,6 @@ def predict(artist_followers=None,
     raw_df = pd.DataFrame(features, index=[0])
     cfg = init_hydra()
 
-    # Drop unnecessary columns
-    raw_df.drop(columns=cfg.data.low_features_number, inplace=True, errors='ignore')
-    # preprocess datetime features
-    for feature in cfg.data.timedate_features:
-        raw_df[feature] = raw_df[feature].apply(lambda d: pd.Timestamp(d) if pd.notnull(d) and d != '' else pd.Timestamp("1970-01-01"))
-
-    for feature in cfg.data.missing_list:
-        raw_df[feature] = raw_df[feature].apply(lambda d: d if pd.notnull(d) and d != '' else '[]')
-
-    for feature in cfg.data.missing_strings:
-        raw_df[feature] = raw_df[feature].apply(lambda d: d if pd.notnull(d) and d != '' else ' ')
-        
-    # Binarize categorical features
-    raw_df["chart"] = raw_df["chart"].map({"top200": 1, "top50": 2})
-    raw_df["chart"] = raw_df["chart"].fillna(0)
-
-    # Impute missing values with median
-    raw_df.fillna(raw_df.median(), inplace=True)
-    raw_df.to_csv('zenml_input.csv')
     X = transform_data(
                         df = raw_df, 
                         cfg = cfg, 
@@ -103,13 +84,15 @@ def predict(artist_followers=None,
     example = json.dumps( 
         { "inputs": example.to_dict() }
     )
+    with open('example.json', 'w') as file:
+        json.dump(features, file)
 
     payload = example
 
     # Send POST request with the payload to the deployed Model API
     # Here you can pass the port number at runtime using Hydra
     response = requests.post(
-        url=f"http://localhost:{port_number}/invocations",
+        url=f"http://localhost:{cfg.docker_port}/invocations",
         data=payload,
         headers={"Content-Type": "application/json"},
     )
@@ -117,7 +100,7 @@ def predict(artist_followers=None,
     # Change this to some meaningful output for your model
     # For classification, it returns the predicted label
     # For regression, it returns the predicted value
-    return response.json()
+    return response.json()['predictions'][0]
 
 # Only one interface is enough
 demo = gr.Interface(
@@ -147,8 +130,8 @@ demo = gr.Interface(
         gr.Number(label="loudness"),
         gr.Text(label="name")
     ],
-    outputs=gr.Text(label="prediction result"),
-    # examples="data/examples"
+    outputs=gr.Text(label="Music Popularity score"),
+    examples="data/examples"
 )
 
 # Launch the web UI locally on port 5155
