@@ -27,7 +27,10 @@ def transform_data(
     X, y = transform(df)
 
     if only_transform:
-        return X, y
+        if only_X:
+            return X
+        else:
+            return X, y
 
     if not return_df:
         X, y = validate(X, y)

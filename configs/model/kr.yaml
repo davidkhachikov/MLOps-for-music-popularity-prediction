@@ -1,0 +1,13 @@
+model_name: knn_regressor
+artifact_path: basic_knn
+
+tag_key: "model"
+tag_value: "basic KNN Regressor"
+
+module_name: "sklearn.neighbors"
+class_name: "KNeighborsRegressor"
+
+params:
+  n_neighbors: [5, 7, 10]
+  algorithm: ['auto', 'ball_tree', 'kd_tree']
+  leaf_size: [10, 30, 50]

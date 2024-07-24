@@ -11,15 +11,16 @@ defaults:
 - data_features
 - model/model
 - experiment
-docker_port: 5152
+
 hydra:
   mode: MULTIRUN
   sweeper:
     params:
-      +model: hgb #, nn
+      +model: kr, hgb
 mae_threshold: 12
 mlflow_port: 5000
 model_port: 5151
+docker_port: 5152
 rmse_threshold: 15
 transformer_version: v1
 web_ui_port: 5155

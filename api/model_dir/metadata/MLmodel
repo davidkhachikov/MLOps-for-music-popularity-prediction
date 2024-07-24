@@ -14,200 +14,206 @@ flavors:
     serialization_format: cloudpickle
     sklearn_version: 1.5.0
 mlflow_version: 2.14.1
-model_size_bytes: 2950535
-model_uuid: 0990786ac737465c8a720fa7705b2419
-run_id: 5b2a03d0cf8f4291a95ca6a0b19ce5cd
+model_size_bytes: 442818
+model_uuid: 01d399aadb2d4ce8a24a8440ba35d32d
+run_id: 645c5a910f544a27ae36641ec0c67e70
 saved_input_example_info:
   artifact_path: input_example.json
   format: tf-serving
   type: ndarray
 signature:
-  inputs: '[{"type": "boolean", "name": "multilabel__AD", "required": true}, {"type":
-    "boolean", "name": "multilabel__AE", "required": true}, {"type": "boolean", "name":
-    "multilabel__AG", "required": true}, {"type": "boolean", "name": "multilabel__AL",
-    "required": true}, {"type": "boolean", "name": "multilabel__AM", "required": true},
-    {"type": "boolean", "name": "multilabel__AO", "required": true}, {"type": "boolean",
-    "name": "multilabel__AR", "required": true}, {"type": "boolean", "name": "multilabel__AT",
-    "required": true}, {"type": "boolean", "name": "multilabel__AU", "required": true},
-    {"type": "boolean", "name": "multilabel__AZ", "required": true}, {"type": "boolean",
-    "name": "multilabel__BA", "required": true}, {"type": "boolean", "name": "multilabel__BB",
-    "required": true}, {"type": "boolean", "name": "multilabel__BD", "required": true},
-    {"type": "boolean", "name": "multilabel__BE", "required": true}, {"type": "boolean",
-    "name": "multilabel__BF", "required": true}, {"type": "boolean", "name": "multilabel__BG",
-    "required": true}, {"type": "boolean", "name": "multilabel__BH", "required": true},
-    {"type": "boolean", "name": "multilabel__BI", "required": true}, {"type": "boolean",
-    "name": "multilabel__BJ", "required": true}, {"type": "boolean", "name": "multilabel__BN",
-    "required": true}, {"type": "boolean", "name": "multilabel__BO", "required": true},
-    {"type": "boolean", "name": "multilabel__BR", "required": true}, {"type": "boolean",
-    "name": "multilabel__BS", "required": true}, {"type": "boolean", "name": "multilabel__BT",
-    "required": true}, {"type": "boolean", "name": "multilabel__BW", "required": true},
-    {"type": "boolean", "name": "multilabel__BY", "required": true}, {"type": "boolean",
-    "name": "multilabel__BZ", "required": true}, {"type": "boolean", "name": "multilabel__CA",
-    "required": true}, {"type": "boolean", "name": "multilabel__CD", "required": true},
-    {"type": "boolean", "name": "multilabel__CG", "required": true}, {"type": "boolean",
-    "name": "multilabel__CH", "required": true}, {"type": "boolean", "name": "multilabel__CI",
-    "required": true}, {"type": "boolean", "name": "multilabel__CL", "required": true},
-    {"type": "boolean", "name": "multilabel__CM", "required": true}, {"type": "boolean",
-    "name": "multilabel__CO", "required": true}, {"type": "boolean", "name": "multilabel__CR",
-    "required": true}, {"type": "boolean", "name": "multilabel__CV", "required": true},
-    {"type": "boolean", "name": "multilabel__CW", "required": true}, {"type": "boolean",
-    "name": "multilabel__CY", "required": true}, {"type": "boolean", "name": "multilabel__CZ",
-    "required": true}, {"type": "boolean", "name": "multilabel__DE", "required": true},
-    {"type": "boolean", "name": "multilabel__DJ", "required": true}, {"type": "boolean",
-    "name": "multilabel__DK", "required": true}, {"type": "boolean", "name": "multilabel__DM",
-    "required": true}, {"type": "boolean", "name": "multilabel__DO", "required": true},
-    {"type": "boolean", "name": "multilabel__DZ", "required": true}, {"type": "boolean",
-    "name": "multilabel__EC", "required": true}, {"type": "boolean", "name": "multilabel__EE",
-    "required": true}, {"type": "boolean", "name": "multilabel__EG", "required": true},
-    {"type": "boolean", "name": "multilabel__ES", "required": true}, {"type": "boolean",
-    "name": "multilabel__ET", "required": true}, {"type": "boolean", "name": "multilabel__FI",
-    "required": true}, {"type": "boolean", "name": "multilabel__FJ", "required": true},
-    {"type": "boolean", "name": "multilabel__FM", "required": true}, {"type": "boolean",
-    "name": "multilabel__FR", "required": true}, {"type": "boolean", "name": "multilabel__GA",
-    "required": true}, {"type": "boolean", "name": "multilabel__GB", "required": true},
-    {"type": "boolean", "name": "multilabel__GD", "required": true}, {"type": "boolean",
-    "name": "multilabel__GE", "required": true}, {"type": "boolean", "name": "multilabel__GH",
-    "required": true}, {"type": "boolean", "name": "multilabel__GM", "required": true},
-    {"type": "boolean", "name": "multilabel__GN", "required": true}, {"type": "boolean",
-    "name": "multilabel__GQ", "required": true}, {"type": "boolean", "name": "multilabel__GR",
-    "required": true}, {"type": "boolean", "name": "multilabel__GT", "required": true},
-    {"type": "boolean", "name": "multilabel__GW", "required": true}, {"type": "boolean",
-    "name": "multilabel__GY", "required": true}, {"type": "boolean", "name": "multilabel__HK",
-    "required": true}, {"type": "boolean", "name": "multilabel__HN", "required": true},
-    {"type": "boolean", "name": "multilabel__HR", "required": true}, {"type": "boolean",
-    "name": "multilabel__HT", "required": true}, {"type": "boolean", "name": "multilabel__HU",
-    "required": true}, {"type": "boolean", "name": "multilabel__ID", "required": true},
-    {"type": "boolean", "name": "multilabel__IE", "required": true}, {"type": "boolean",
-    "name": "multilabel__IL", "required": true}, {"type": "boolean", "name": "multilabel__IN",
-    "required": true}, {"type": "boolean", "name": "multilabel__IQ", "required": true},
-    {"type": "boolean", "name": "multilabel__IS", "required": true}, {"type": "boolean",
-    "name": "multilabel__IT", "required": true}, {"type": "boolean", "name": "multilabel__JM",
-    "required": true}, {"type": "boolean", "name": "multilabel__JO", "required": true},
-    {"type": "boolean", "name": "multilabel__JP", "required": true}, {"type": "boolean",
-    "name": "multilabel__KE", "required": true}, {"type": "boolean", "name": "multilabel__KG",
-    "required": true}, {"type": "boolean", "name": "multilabel__KH", "required": true},
-    {"type": "boolean", "name": "multilabel__KI", "required": true}, {"type": "boolean",
-    "name": "multilabel__KM", "required": true}, {"type": "boolean", "name": "multilabel__KN",
-    "required": true}, {"type": "boolean", "name": "multilabel__KR", "required": true},
-    {"type": "boolean", "name": "multilabel__KW", "required": true}, {"type": "boolean",
-    "name": "multilabel__KZ", "required": true}, {"type": "boolean", "name": "multilabel__LA",
-    "required": true}, {"type": "boolean", "name": "multilabel__LB", "required": true},
-    {"type": "boolean", "name": "multilabel__LC", "required": true}, {"type": "boolean",
-    "name": "multilabel__LI", "required": true}, {"type": "boolean", "name": "multilabel__LK",
-    "required": true}, {"type": "boolean", "name": "multilabel__LR", "required": true},
-    {"type": "boolean", "name": "multilabel__LS", "required": true}, {"type": "boolean",
-    "name": "multilabel__LT", "required": true}, {"type": "boolean", "name": "multilabel__LU",
-    "required": true}, {"type": "boolean", "name": "multilabel__LV", "required": true},
-    {"type": "boolean", "name": "multilabel__LY", "required": true}, {"type": "boolean",
-    "name": "multilabel__MA", "required": true}, {"type": "boolean", "name": "multilabel__MC",
-    "required": true}, {"type": "boolean", "name": "multilabel__MD", "required": true},
-    {"type": "boolean", "name": "multilabel__ME", "required": true}, {"type": "boolean",
-    "name": "multilabel__MG", "required": true}, {"type": "boolean", "name": "multilabel__MH",
-    "required": true}, {"type": "boolean", "name": "multilabel__MK", "required": true},
-    {"type": "boolean", "name": "multilabel__ML", "required": true}, {"type": "boolean",
-    "name": "multilabel__MN", "required": true}, {"type": "boolean", "name": "multilabel__MO",
-    "required": true}, {"type": "boolean", "name": "multilabel__MR", "required": true},
-    {"type": "boolean", "name": "multilabel__MT", "required": true}, {"type": "boolean",
-    "name": "multilabel__MU", "required": true}, {"type": "boolean", "name": "multilabel__MV",
-    "required": true}, {"type": "boolean", "name": "multilabel__MW", "required": true},
-    {"type": "boolean", "name": "multilabel__MX", "required": true}, {"type": "boolean",
-    "name": "multilabel__MY", "required": true}, {"type": "boolean", "name": "multilabel__MZ",
-    "required": true}, {"type": "boolean", "name": "multilabel__NA", "required": true},
-    {"type": "boolean", "name": "multilabel__NE", "required": true}, {"type": "boolean",
-    "name": "multilabel__NG", "required": true}, {"type": "boolean", "name": "multilabel__NI",
-    "required": true}, {"type": "boolean", "name": "multilabel__NL", "required": true},
-    {"type": "boolean", "name": "multilabel__NO", "required": true}, {"type": "boolean",
-    "name": "multilabel__NP", "required": true}, {"type": "boolean", "name": "multilabel__NR",
-    "required": true}, {"type": "boolean", "name": "multilabel__NZ", "required": true},
-    {"type": "boolean", "name": "multilabel__OM", "required": true}, {"type": "boolean",
-    "name": "multilabel__PA", "required": true}, {"type": "boolean", "name": "multilabel__PE",
-    "required": true}, {"type": "boolean", "name": "multilabel__PG", "required": true},
-    {"type": "boolean", "name": "multilabel__PH", "required": true}, {"type": "boolean",
-    "name": "multilabel__PK", "required": true}, {"type": "boolean", "name": "multilabel__PL",
-    "required": true}, {"type": "boolean", "name": "multilabel__PR", "required": true},
-    {"type": "boolean", "name": "multilabel__PS", "required": true}, {"type": "boolean",
-    "name": "multilabel__PT", "required": true}, {"type": "boolean", "name": "multilabel__PW",
-    "required": true}, {"type": "boolean", "name": "multilabel__PY", "required": true},
-    {"type": "boolean", "name": "multilabel__QA", "required": true}, {"type": "boolean",
-    "name": "multilabel__RO", "required": true}, {"type": "boolean", "name": "multilabel__RS",
-    "required": true}, {"type": "boolean", "name": "multilabel__RW", "required": true},
-    {"type": "boolean", "name": "multilabel__SA", "required": true}, {"type": "boolean",
-    "name": "multilabel__SB", "required": true}, {"type": "boolean", "name": "multilabel__SC",
-    "required": true}, {"type": "boolean", "name": "multilabel__SE", "required": true},
-    {"type": "boolean", "name": "multilabel__SG", "required": true}, {"type": "boolean",
-    "name": "multilabel__SI", "required": true}, {"type": "boolean", "name": "multilabel__SK",
-    "required": true}, {"type": "boolean", "name": "multilabel__SL", "required": true},
-    {"type": "boolean", "name": "multilabel__SM", "required": true}, {"type": "boolean",
-    "name": "multilabel__SN", "required": true}, {"type": "boolean", "name": "multilabel__SR",
-    "required": true}, {"type": "boolean", "name": "multilabel__ST", "required": true},
-    {"type": "boolean", "name": "multilabel__SV", "required": true}, {"type": "boolean",
-    "name": "multilabel__SZ", "required": true}, {"type": "boolean", "name": "multilabel__TD",
-    "required": true}, {"type": "boolean", "name": "multilabel__TG", "required": true},
-    {"type": "boolean", "name": "multilabel__TH", "required": true}, {"type": "boolean",
-    "name": "multilabel__TJ", "required": true}, {"type": "boolean", "name": "multilabel__TL",
-    "required": true}, {"type": "boolean", "name": "multilabel__TN", "required": true},
-    {"type": "boolean", "name": "multilabel__TO", "required": true}, {"type": "boolean",
-    "name": "multilabel__TR", "required": true}, {"type": "boolean", "name": "multilabel__TT",
-    "required": true}, {"type": "boolean", "name": "multilabel__TV", "required": true},
-    {"type": "boolean", "name": "multilabel__TW", "required": true}, {"type": "boolean",
-    "name": "multilabel__TZ", "required": true}, {"type": "boolean", "name": "multilabel__UA",
-    "required": true}, {"type": "boolean", "name": "multilabel__UG", "required": true},
-    {"type": "boolean", "name": "multilabel__US", "required": true}, {"type": "boolean",
-    "name": "multilabel__UY", "required": true}, {"type": "boolean", "name": "multilabel__UZ",
-    "required": true}, {"type": "boolean", "name": "multilabel__VC", "required": true},
-    {"type": "boolean", "name": "multilabel__VE", "required": true}, {"type": "boolean",
-    "name": "multilabel__VN", "required": true}, {"type": "boolean", "name": "multilabel__VU",
-    "required": true}, {"type": "boolean", "name": "multilabel__WS", "required": true},
-    {"type": "boolean", "name": "multilabel__XK", "required": true}, {"type": "boolean",
-    "name": "multilabel__ZA", "required": true}, {"type": "boolean", "name": "multilabel__ZM",
-    "required": true}, {"type": "boolean", "name": "multilabel__ZW", "required": true},
-    {"type": "boolean", "name": "categorical__key_0.0", "required": true}, {"type":
-    "boolean", "name": "categorical__key_1.0", "required": true}, {"type": "boolean",
-    "name": "categorical__key_2.0", "required": true}, {"type": "boolean", "name":
-    "categorical__key_3.0", "required": true}, {"type": "boolean", "name": "categorical__key_4.0",
-    "required": true}, {"type": "boolean", "name": "categorical__key_5.0", "required":
-    true}, {"type": "boolean", "name": "categorical__key_6.0", "required": true},
-    {"type": "boolean", "name": "categorical__key_7.0", "required": true}, {"type":
-    "boolean", "name": "categorical__key_8.0", "required": true}, {"type": "boolean",
-    "name": "categorical__key_9.0", "required": true}, {"type": "boolean", "name":
-    "categorical__key_10.0", "required": true}, {"type": "boolean", "name": "categorical__key_11.0",
-    "required": true}, {"type": "boolean", "name": "categorical__time_signature_0.0",
-    "required": true}, {"type": "boolean", "name": "categorical__time_signature_1.0",
-    "required": true}, {"type": "boolean", "name": "categorical__time_signature_3.0",
-    "required": true}, {"type": "boolean", "name": "categorical__time_signature_4.0",
-    "required": true}, {"type": "boolean", "name": "categorical__time_signature_5.0",
-    "required": true}, {"type": "double", "name": "normal__artist_followers", "required":
-    true}, {"type": "double", "name": "normal__album_total_tracks", "required": true},
-    {"type": "double", "name": "normal__artist_popularity", "required": true}, {"type":
-    "double", "name": "normal__tempo", "required": true}, {"type": "double", "name":
-    "normal__speechiness", "required": true}, {"type": "double", "name": "normal__danceability",
-    "required": true}, {"type": "double", "name": "normal__liveness", "required":
-    true}, {"type": "double", "name": "normal__loudness", "required": true}, {"type":
-    "double", "name": "uniform__energy", "required": true}, {"type": "double", "name":
-    "uniform__valence", "required": true}, {"type": "double", "name": "uniform__acousticness",
-    "required": true}, {"type": "double", "name": "uniform__instrumentalness", "required":
-    true}, {"type": "double", "name": "dates__month_sin", "required": true}, {"type":
-    "double", "name": "dates__month_cos", "required": true}, {"type": "double", "name":
-    "dates__day_sin", "required": true}, {"type": "double", "name": "dates__day_cos",
-    "required": true}, {"type": "double", "name": "dates__weekday_sin", "required":
-    true}, {"type": "double", "name": "dates__weekday_cos", "required": true}, {"type":
-    "long", "name": "dates__year", "required": true}, {"type": "long", "name": "int__chart",
-    "required": true}, {"type": "long", "name": "int__mode", "required": true}, {"type":
-    "boolean", "name": "bool__explicit", "required": true}, {"type": "double", "name":
-    "g_vec_0", "required": true}, {"type": "double", "name": "g_vec_1", "required":
+  inputs: '[{"type": "double", "name": "energy", "required": true}, {"type": "double",
+    "name": "valence", "required": true}, {"type": "double", "name": "acousticness",
+    "required": true}, {"type": "double", "name": "instrumentalness", "required":
+    true}, {"type": "double", "name": "chart", "required": true}, {"type": "double",
+    "name": "mode", "required": true}, {"type": "double", "name": "artist_followers",
+    "required": true}, {"type": "double", "name": "album_total_tracks", "required":
+    true}, {"type": "double", "name": "artist_popularity", "required": true}, {"type":
+    "double", "name": "tempo", "required": true}, {"type": "double", "name": "speechiness",
+    "required": true}, {"type": "double", "name": "danceability", "required": true},
+    {"type": "double", "name": "liveness", "required": true}, {"type": "double", "name":
+    "loudness", "required": true}, {"type": "double", "name": "key_0.0", "required":
+    true}, {"type": "double", "name": "key_1.0", "required": true}, {"type": "double",
+    "name": "key_2.0", "required": true}, {"type": "double", "name": "key_3.0", "required":
+    true}, {"type": "double", "name": "key_4.0", "required": true}, {"type": "double",
+    "name": "key_5.0", "required": true}, {"type": "double", "name": "key_6.0", "required":
+    true}, {"type": "double", "name": "key_7.0", "required": true}, {"type": "double",
+    "name": "key_8.0", "required": true}, {"type": "double", "name": "key_9.0", "required":
+    true}, {"type": "double", "name": "key_10.0", "required": true}, {"type": "double",
+    "name": "key_11.0", "required": true}, {"type": "double", "name": "time_signature_0.0",
+    "required": true}, {"type": "double", "name": "time_signature_1.0", "required":
+    true}, {"type": "double", "name": "time_signature_3.0", "required": true}, {"type":
+    "double", "name": "time_signature_4.0", "required": true}, {"type": "double",
+    "name": "time_signature_5.0", "required": true}, {"type": "long", "name": "album_release_date_year",
+    "required": true}, {"type": "double", "name": "album_release_date_month_sin",
+    "required": true}, {"type": "double", "name": "album_release_date_month_cos",
+    "required": true}, {"type": "double", "name": "album_release_date_day_sin", "required":
+    true}, {"type": "double", "name": "album_release_date_day_cos", "required": true},
+    {"type": "double", "name": "album_release_date_weekday_sin", "required": true},
+    {"type": "double", "name": "album_release_date_weekday_cos", "required": true},
+    {"type": "double", "name": "n_vec_0", "required": true}, {"type": "double", "name":
+    "n_vec_1", "required": true}, {"type": "double", "name": "n_vec_2", "required":
+    true}, {"type": "double", "name": "n_vec_3", "required": true}, {"type": "double",
+    "name": "n_vec_4", "required": true}, {"type": "double", "name": "n_vec_5", "required":
+    true}, {"type": "double", "name": "n_vec_6", "required": true}, {"type": "double",
+    "name": "n_vec_7", "required": true}, {"type": "double", "name": "n_vec_8", "required":
+    true}, {"type": "double", "name": "n_vec_9", "required": true}, {"type": "double",
+    "name": "g_vec_0", "required": true}, {"type": "double", "name": "g_vec_1", "required":
     true}, {"type": "double", "name": "g_vec_2", "required": true}, {"type": "double",
     "name": "g_vec_3", "required": true}, {"type": "double", "name": "g_vec_4", "required":
     true}, {"type": "double", "name": "g_vec_5", "required": true}, {"type": "double",
     "name": "g_vec_6", "required": true}, {"type": "double", "name": "g_vec_7", "required":
     true}, {"type": "double", "name": "g_vec_8", "required": true}, {"type": "double",
-    "name": "g_vec_9", "required": true}, {"type": "double", "name": "n_vec_0", "required":
-    true}, {"type": "double", "name": "n_vec_1", "required": true}, {"type": "double",
-    "name": "n_vec_2", "required": true}, {"type": "double", "name": "n_vec_3", "required":
-    true}, {"type": "double", "name": "n_vec_4", "required": true}, {"type": "double",
-    "name": "n_vec_5", "required": true}, {"type": "double", "name": "n_vec_6", "required":
-    true}, {"type": "double", "name": "n_vec_7", "required": true}, {"type": "double",
-    "name": "n_vec_8", "required": true}, {"type": "double", "name": "n_vec_9", "required":
-    true}]'
+    "name": "g_vec_9", "required": true}, {"type": "boolean", "name": "explicit",
+    "required": true}, {"type": "long", "name": "available_markets_AD", "required":
+    true}, {"type": "long", "name": "available_markets_AE", "required": true}, {"type":
+    "long", "name": "available_markets_AG", "required": true}, {"type": "long", "name":
+    "available_markets_AL", "required": true}, {"type": "long", "name": "available_markets_AM",
+    "required": true}, {"type": "long", "name": "available_markets_AO", "required":
+    true}, {"type": "long", "name": "available_markets_AR", "required": true}, {"type":
+    "long", "name": "available_markets_AT", "required": true}, {"type": "long", "name":
+    "available_markets_AU", "required": true}, {"type": "long", "name": "available_markets_AZ",
+    "required": true}, {"type": "long", "name": "available_markets_BA", "required":
+    true}, {"type": "long", "name": "available_markets_BB", "required": true}, {"type":
+    "long", "name": "available_markets_BD", "required": true}, {"type": "long", "name":
+    "available_markets_BE", "required": true}, {"type": "long", "name": "available_markets_BF",
+    "required": true}, {"type": "long", "name": "available_markets_BG", "required":
+    true}, {"type": "long", "name": "available_markets_BH", "required": true}, {"type":
+    "long", "name": "available_markets_BI", "required": true}, {"type": "long", "name":
+    "available_markets_BJ", "required": true}, {"type": "long", "name": "available_markets_BN",
+    "required": true}, {"type": "long", "name": "available_markets_BO", "required":
+    true}, {"type": "long", "name": "available_markets_BR", "required": true}, {"type":
+    "long", "name": "available_markets_BS", "required": true}, {"type": "long", "name":
+    "available_markets_BT", "required": true}, {"type": "long", "name": "available_markets_BW",
+    "required": true}, {"type": "long", "name": "available_markets_BY", "required":
+    true}, {"type": "long", "name": "available_markets_BZ", "required": true}, {"type":
+    "long", "name": "available_markets_CA", "required": true}, {"type": "long", "name":
+    "available_markets_CD", "required": true}, {"type": "long", "name": "available_markets_CG",
+    "required": true}, {"type": "long", "name": "available_markets_CH", "required":
+    true}, {"type": "long", "name": "available_markets_CI", "required": true}, {"type":
+    "long", "name": "available_markets_CL", "required": true}, {"type": "long", "name":
+    "available_markets_CM", "required": true}, {"type": "long", "name": "available_markets_CO",
+    "required": true}, {"type": "long", "name": "available_markets_CR", "required":
+    true}, {"type": "long", "name": "available_markets_CV", "required": true}, {"type":
+    "long", "name": "available_markets_CW", "required": true}, {"type": "long", "name":
+    "available_markets_CY", "required": true}, {"type": "long", "name": "available_markets_CZ",
+    "required": true}, {"type": "long", "name": "available_markets_DE", "required":
+    true}, {"type": "long", "name": "available_markets_DJ", "required": true}, {"type":
+    "long", "name": "available_markets_DK", "required": true}, {"type": "long", "name":
+    "available_markets_DM", "required": true}, {"type": "long", "name": "available_markets_DO",
+    "required": true}, {"type": "long", "name": "available_markets_DZ", "required":
+    true}, {"type": "long", "name": "available_markets_EC", "required": true}, {"type":
+    "long", "name": "available_markets_EE", "required": true}, {"type": "long", "name":
+    "available_markets_EG", "required": true}, {"type": "long", "name": "available_markets_ES",
+    "required": true}, {"type": "long", "name": "available_markets_ET", "required":
+    true}, {"type": "long", "name": "available_markets_FI", "required": true}, {"type":
+    "long", "name": "available_markets_FJ", "required": true}, {"type": "long", "name":
+    "available_markets_FM", "required": true}, {"type": "long", "name": "available_markets_FR",
+    "required": true}, {"type": "long", "name": "available_markets_GA", "required":
+    true}, {"type": "long", "name": "available_markets_GB", "required": true}, {"type":
+    "long", "name": "available_markets_GD", "required": true}, {"type": "long", "name":
+    "available_markets_GE", "required": true}, {"type": "long", "name": "available_markets_GH",
+    "required": true}, {"type": "long", "name": "available_markets_GM", "required":
+    true}, {"type": "long", "name": "available_markets_GN", "required": true}, {"type":
+    "long", "name": "available_markets_GQ", "required": true}, {"type": "long", "name":
+    "available_markets_GR", "required": true}, {"type": "long", "name": "available_markets_GT",
+    "required": true}, {"type": "long", "name": "available_markets_GW", "required":
+    true}, {"type": "long", "name": "available_markets_GY", "required": true}, {"type":
+    "long", "name": "available_markets_HK", "required": true}, {"type": "long", "name":
+    "available_markets_HN", "required": true}, {"type": "long", "name": "available_markets_HR",
+    "required": true}, {"type": "long", "name": "available_markets_HT", "required":
+    true}, {"type": "long", "name": "available_markets_HU", "required": true}, {"type":
+    "long", "name": "available_markets_ID", "required": true}, {"type": "long", "name":
+    "available_markets_IE", "required": true}, {"type": "long", "name": "available_markets_IL",
+    "required": true}, {"type": "long", "name": "available_markets_IN", "required":
+    true}, {"type": "long", "name": "available_markets_IQ", "required": true}, {"type":
+    "long", "name": "available_markets_IS", "required": true}, {"type": "long", "name":
+    "available_markets_IT", "required": true}, {"type": "long", "name": "available_markets_JM",
+    "required": true}, {"type": "long", "name": "available_markets_JO", "required":
+    true}, {"type": "long", "name": "available_markets_JP", "required": true}, {"type":
+    "long", "name": "available_markets_KE", "required": true}, {"type": "long", "name":
+    "available_markets_KG", "required": true}, {"type": "long", "name": "available_markets_KH",
+    "required": true}, {"type": "long", "name": "available_markets_KI", "required":
+    true}, {"type": "long", "name": "available_markets_KM", "required": true}, {"type":
+    "long", "name": "available_markets_KN", "required": true}, {"type": "long", "name":
+    "available_markets_KR", "required": true}, {"type": "long", "name": "available_markets_KW",
+    "required": true}, {"type": "long", "name": "available_markets_KZ", "required":
+    true}, {"type": "long", "name": "available_markets_LA", "required": true}, {"type":
+    "long", "name": "available_markets_LB", "required": true}, {"type": "long", "name":
+    "available_markets_LC", "required": true}, {"type": "long", "name": "available_markets_LI",
+    "required": true}, {"type": "long", "name": "available_markets_LK", "required":
+    true}, {"type": "long", "name": "available_markets_LR", "required": true}, {"type":
+    "long", "name": "available_markets_LS", "required": true}, {"type": "long", "name":
+    "available_markets_LT", "required": true}, {"type": "long", "name": "available_markets_LU",
+    "required": true}, {"type": "long", "name": "available_markets_LV", "required":
+    true}, {"type": "long", "name": "available_markets_LY", "required": true}, {"type":
+    "long", "name": "available_markets_MA", "required": true}, {"type": "long", "name":
+    "available_markets_MC", "required": true}, {"type": "long", "name": "available_markets_MD",
+    "required": true}, {"type": "long", "name": "available_markets_ME", "required":
+    true}, {"type": "long", "name": "available_markets_MG", "required": true}, {"type":
+    "long", "name": "available_markets_MH", "required": true}, {"type": "long", "name":
+    "available_markets_MK", "required": true}, {"type": "long", "name": "available_markets_ML",
+    "required": true}, {"type": "long", "name": "available_markets_MN", "required":
+    true}, {"type": "long", "name": "available_markets_MO", "required": true}, {"type":
+    "long", "name": "available_markets_MR", "required": true}, {"type": "long", "name":
+    "available_markets_MT", "required": true}, {"type": "long", "name": "available_markets_MU",
+    "required": true}, {"type": "long", "name": "available_markets_MV", "required":
+    true}, {"type": "long", "name": "available_markets_MW", "required": true}, {"type":
+    "long", "name": "available_markets_MX", "required": true}, {"type": "long", "name":
+    "available_markets_MY", "required": true}, {"type": "long", "name": "available_markets_MZ",
+    "required": true}, {"type": "long", "name": "available_markets_NA", "required":
+    true}, {"type": "long", "name": "available_markets_NE", "required": true}, {"type":
+    "long", "name": "available_markets_NG", "required": true}, {"type": "long", "name":
+    "available_markets_NI", "required": true}, {"type": "long", "name": "available_markets_NL",
+    "required": true}, {"type": "long", "name": "available_markets_NO", "required":
+    true}, {"type": "long", "name": "available_markets_NP", "required": true}, {"type":
+    "long", "name": "available_markets_NR", "required": true}, {"type": "long", "name":
+    "available_markets_NZ", "required": true}, {"type": "long", "name": "available_markets_OM",
+    "required": true}, {"type": "long", "name": "available_markets_PA", "required":
+    true}, {"type": "long", "name": "available_markets_PE", "required": true}, {"type":
+    "long", "name": "available_markets_PG", "required": true}, {"type": "long", "name":
+    "available_markets_PH", "required": true}, {"type": "long", "name": "available_markets_PK",
+    "required": true}, {"type": "long", "name": "available_markets_PL", "required":
+    true}, {"type": "long", "name": "available_markets_PR", "required": true}, {"type":
+    "long", "name": "available_markets_PS", "required": true}, {"type": "long", "name":
+    "available_markets_PT", "required": true}, {"type": "long", "name": "available_markets_PW",
+    "required": true}, {"type": "long", "name": "available_markets_PY", "required":
+    true}, {"type": "long", "name": "available_markets_QA", "required": true}, {"type":
+    "long", "name": "available_markets_RO", "required": true}, {"type": "long", "name":
+    "available_markets_RS", "required": true}, {"type": "long", "name": "available_markets_RW",
+    "required": true}, {"type": "long", "name": "available_markets_SA", "required":
+    true}, {"type": "long", "name": "available_markets_SB", "required": true}, {"type":
+    "long", "name": "available_markets_SC", "required": true}, {"type": "long", "name":
+    "available_markets_SE", "required": true}, {"type": "long", "name": "available_markets_SG",
+    "required": true}, {"type": "long", "name": "available_markets_SI", "required":
+    true}, {"type": "long", "name": "available_markets_SK", "required": true}, {"type":
+    "long", "name": "available_markets_SL", "required": true}, {"type": "long", "name":
+    "available_markets_SM", "required": true}, {"type": "long", "name": "available_markets_SN",
+    "required": true}, {"type": "long", "name": "available_markets_SR", "required":
+    true}, {"type": "long", "name": "available_markets_ST", "required": true}, {"type":
+    "long", "name": "available_markets_SV", "required": true}, {"type": "long", "name":
+    "available_markets_SZ", "required": true}, {"type": "long", "name": "available_markets_TD",
+    "required": true}, {"type": "long", "name": "available_markets_TG", "required":
+    true}, {"type": "long", "name": "available_markets_TH", "required": true}, {"type":
+    "long", "name": "available_markets_TJ", "required": true}, {"type": "long", "name":
+    "available_markets_TL", "required": true}, {"type": "long", "name": "available_markets_TN",
+    "required": true}, {"type": "long", "name": "available_markets_TO", "required":
+    true}, {"type": "long", "name": "available_markets_TR", "required": true}, {"type":
+    "long", "name": "available_markets_TT", "required": true}, {"type": "long", "name":
+    "available_markets_TV", "required": true}, {"type": "long", "name": "available_markets_TW",
+    "required": true}, {"type": "long", "name": "available_markets_TZ", "required":
+    true}, {"type": "long", "name": "available_markets_UA", "required": true}, {"type":
+    "long", "name": "available_markets_UG", "required": true}, {"type": "long", "name":
+    "available_markets_US", "required": true}, {"type": "long", "name": "available_markets_UY",
+    "required": true}, {"type": "long", "name": "available_markets_UZ", "required":
+    true}, {"type": "long", "name": "available_markets_VC", "required": true}, {"type":
+    "long", "name": "available_markets_VE", "required": true}, {"type": "long", "name":
+    "available_markets_VN", "required": true}, {"type": "long", "name": "available_markets_VU",
+    "required": true}, {"type": "long", "name": "available_markets_WS", "required":
+    true}, {"type": "long", "name": "available_markets_XK", "required": true}, {"type":
+    "long", "name": "available_markets_ZA", "required": true}, {"type": "long", "name":
+    "available_markets_ZM", "required": true}, {"type": "long", "name": "available_markets_ZW",
+    "required": true}]'
   outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
   params: null
-utc_time_created: '2024-07-23 09:43:56.281564'
+utc_time_created: '2024-07-24 08:02:14.451061'

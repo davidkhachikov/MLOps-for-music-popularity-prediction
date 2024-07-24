@@ -70,8 +70,7 @@ def predict(artist_followers=None,
     raw_df = pd.DataFrame(features, index=[0])
     cfg = init_hydra()
 
-    # Drop unnecessary columns
-    raw_df.drop(columns=cfg.data.low_features_number, inplace=True, errors='ignore')
+
     # preprocess datetime features
     for feature in cfg.data.timedate_features:
         raw_df[feature] = raw_df[feature].apply(lambda d: pd.Timestamp(d) if pd.notnull(d) and d != '' else pd.Timestamp("1970-01-01"))
@@ -109,7 +108,7 @@ def predict(artist_followers=None,
     # Send POST request with the payload to the deployed Model API
     # Here you can pass the port number at runtime using Hydra
     response = requests.post(
-        url=f"http://localhost:{port_number}/invocations",
+        url=f"http://localhost:{cfg.docker_port}/invocations",
         data=payload,
         headers={"Content-Type": "application/json"},
     )
@@ -148,7 +147,7 @@ demo = gr.Interface(
         gr.Text(label="name")
     ],
     outputs=gr.Text(label="prediction result"),
-    # examples="data/examples"
+    examples="data/examples"
 )
 
 # Launch the web UI locally on port 5155
