@@ -436,7 +436,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_min_to_be_between",
+      "expectation_type": "expect_column_values_to_be_in_set",
       "kwargs": {
         "column": "key_9.0",
         "value_set": [
@@ -447,7 +447,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "key_10.0"
       },
@@ -472,7 +472,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
+      "expectation_type": "expect_column_values_to_be_in_set",
       "kwargs": {
         "column": "key_11.0",
         "value_set": [
@@ -483,7 +483,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "time_signature_0.0"
       },
@@ -508,7 +508,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
+      "expectation_type": "expect_column_values_to_be_in_set",
       "kwargs": {
         "column": "time_signature_1.0",
         "value_set": [
@@ -519,7 +519,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "time_signature_3.0"
       },
@@ -544,7 +544,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_between",
+      "expectation_type": "expect_column_values_to_be_in_set",
       "kwargs": {
         "column": "time_signature_4.0",
         "value_set": [
@@ -555,7 +555,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "time_signature_5.0"
       },
@@ -588,7 +588,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "album_release_date_month_sin"
       },
@@ -636,7 +636,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "album_release_date_day_sin"
       },
@@ -684,7 +684,7 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
+      "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "album_release_date_weekday_sin"
       },
