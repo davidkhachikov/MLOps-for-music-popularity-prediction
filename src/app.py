@@ -103,6 +103,9 @@ def predict(artist_followers=None,
         { "inputs": example.to_dict() }
     )
 
+    with open('example.json', 'w') as f:
+        json.dump(example, f)
+
     payload = example
 
     # Send POST request with the payload to the deployed Model API
