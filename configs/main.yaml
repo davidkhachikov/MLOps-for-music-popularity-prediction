@@ -4,23 +4,22 @@ data:
   path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
   repo: .
-  sample_num: 2
-  version: AIRFLOW2.3
+  sample_num: 4
+  version: AIRFLOW2.4
 defaults:
 - _self_
 - data_features
 - model/model
 - experiment
-
+docker_port: 5152
 hydra:
   mode: MULTIRUN
   sweeper:
     params:
       +model: kr, hgb
-mae_threshold: 12
+mae_threshold: 10
 mlflow_port: 5000
 model_port: 5151
-docker_port: 5152
 rmse_threshold: 15
 transformer_version: v1
 web_ui_port: 5155

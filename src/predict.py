@@ -5,16 +5,15 @@ from model import load_features
 
 @hydra.main(config_path="../configs", config_name="main", version_base=None) # type: ignore
 def predict(cfg = None):
-
-    X, y = load_features(name = "features_target", 
-                        version = cfg.data.version, 
+    X, y = load_features(name = "features_target",
+                        version = cfg.data.version,
                         random_state=cfg.random_state
                         )
 
     example = X.iloc[0,:]
     example_target = y.iloc[0]
 
-    example = json.dumps( 
+    example = json.dumps(
     { "inputs": example.to_dict() }
     )
 
