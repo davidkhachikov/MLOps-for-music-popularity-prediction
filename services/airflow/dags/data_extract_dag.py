@@ -17,7 +17,15 @@ def update_sample_number(yaml_file_path):
         data = yaml.safe_load(file)
     current_number = data['data']['sample_num']
     new_number = (current_number + 1)
+    
+    # Update the version string format
+    version_key = 'AIRFLOW2.' + str(new_number).zfill(2)  # Ensure two digits for consistency
+    
+    # Assuming 'i' is the placeholder for the version number
+    data['data']['version'] = version_key
     data['data']['sample_num'] = new_number
+    
+    # Save the updated data back to the YAML file
     with open(yaml_file_path, 'w') as file:
         yaml.safe_dump(data, file)
 
@@ -26,7 +34,7 @@ def validation_placeholder():
 
 with DAG(
     dag_id="data_extract",
-    schedule_interval="*/5 * * * *",
+    schedule_interval="*/10 * * * *",
     catchup=False,
     start_date=datetime(2024, 7, 14, 16, 25),
     max_active_runs=1
@@ -62,6 +70,6 @@ with DAG(
         op_args=[os.path.join(BASE_PATH, 'configs/main.yaml')]
     )
 
-    extract_task >> preprocess_task >> validate_task >> load_task >> change_version_task
+    change_version_task >> extract_task >> preprocess_task >> validate_task >> load_task
 
 print("hello, world")
