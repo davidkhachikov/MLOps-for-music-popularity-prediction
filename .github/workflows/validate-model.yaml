@@ -58,7 +58,7 @@ jobs:
       #     PYTHONPATH: ./src
       - name: load data
         run: |
-          dvc doctor
+          dvc remote add -d myremote gdrive://1OEMFbw9EU6kysMPPK9_KBu6R5yEK97GL
           dvc pull -v data/samples/sample.csv
 
           
