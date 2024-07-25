@@ -50,12 +50,12 @@ jobs:
             python3.11 -m pip install --upgrade pip 
             python3.11 -m pip install -r requirements.txt
             
-      - name: Prepare data
-        run: python ./pipelines/data_prepare.py 
-        env:
-          ZENML_CONFIG_PATH: ./services/zenml
-          PROJECTPATH: .
-          PYTHONPATH: ./src
+      # - name: Prepare data
+      #   run: python ./pipelines/data_prepare.py 
+      #   env:
+      #     ZENML_CONFIG_PATH: ./services/zenml
+      #     PROJECTPATH: .
+      #     PYTHONPATH: ./src
           
           
       - name: Run validate
