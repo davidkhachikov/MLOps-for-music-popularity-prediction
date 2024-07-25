@@ -1,4 +1,0 @@
-[core]
-    remote = mlops_remote
-['remote "mlops_remote"']
-    url = gdrive://1PFrkSDuPGwDoPIorr3TzH638lkLSmlZm
