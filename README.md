@@ -1,7 +1,7 @@
 # MLOps for Music Popularity Prediction
 
 ## File Structure
-
+You can read READMEs from folders to get specific information for the part of our project.
 The project is organized as follows:
 
 - `README.md`: Repository documentation.
