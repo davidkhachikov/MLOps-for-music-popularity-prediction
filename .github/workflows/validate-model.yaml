@@ -47,7 +47,8 @@ jobs:
         run: |
             python3.11 -m pip install --upgrade pip 
             python3.11 -m pip install -r requirements.txt
-      - name: Start zenml
+            
+      - name: Run ZenML server  
         run: zenml down && zenml up
         env:
           ZENML_CONFIG_PATH: ./services/zenml
@@ -61,4 +62,3 @@ jobs:
           ZENML_CONFIG_PATH: ./services/zenml
           PROJECTPATH: .
           PYTHONPATH: ./src
-
