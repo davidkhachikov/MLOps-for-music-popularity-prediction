@@ -59,14 +59,14 @@ fi
 $DVC_PATH add "$SAMPLE_CSV_PATH" || { echo "Failed to save data to DVC"; exit 1; }
 $GIT_PATH add "$DVC_FILE_PATH" || { echo "Failed to stage changes for commit"; exit 1; }
 $GIT_PATH commit -m "Save validated data with version ${version}"
-$GIT_PATH tag -d "${version}"
-$GIT_PATH tag -a "${version}" -m "Version tag" || { echo "Failed to create tag"; exit 1; }
+# $GIT_PATH tag -d "${version}"
+$GIT_PATH tag -af "${version}" -m "Version tag" || { echo "Failed to create tag"; exit 1; }
 
 if [ "$push_flag" == "true" ]; then
   $GIT_PATH add services/zenml/
   $GIT_PATH commit -m "Saved zenml db with version ${version}"
-  $GIT_PATH tag -d "${version}"
-  $GIT_PATH tag -a "${version}" -m "Version tag"
+  # $GIT_PATH tag -d "${version}"
+  $GIT_PATH tag -af "${version}" -m "Version tag"
   $DVC_PATH push || { echo "Failed to push data to remote DVC repository"; exit 1; }
   $GIT_PATH push --tags || { echo "Failed to push tags to remote repository"; exit 1; }
   $GIT_PATH push
