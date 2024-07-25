@@ -17,7 +17,7 @@ hydra:
   sweeper:
     params:
       +model: kr, hgb
-mae_threshold: 12
+mae_threshold: 10
 mlflow_port: 5000
 model_port: 5151
 rmse_threshold: 15

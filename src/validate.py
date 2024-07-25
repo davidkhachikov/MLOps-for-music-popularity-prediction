@@ -17,8 +17,9 @@ import mlflow
 import pandas as pd
 import pickle
 
-def prepare_dataset(cfg, max_rows=1000):
-    version = cfg.data.version
+def prepare_dataset(cfg, version=None, max_rows=1000):
+    if version == None:
+        version = cfg.data.version
     df, version = read_datastore(version=version)
     df = df[:max_rows]
     target_column = cfg.data.target_features[0]
@@ -96,7 +97,7 @@ def validate_model(giskard_model, giskard_dataset, version, model_name, model_al
 def main(model_path, model_alias, model_name):
     BASE_PATH = os.getenv('PROJECTPATH')
     cfg = init_hydra()
-    giskard_dataset, df, version = prepare_dataset(cfg)
+    giskard_dataset, df, version = prepare_dataset(cfg, "AIRFLOW2.0")
 
     feature_names = giskard_dataset.df.columns.tolist()  # Assuming this is how you access the DataFrame and its columns
     
