@@ -59,7 +59,7 @@ jobs:
       #     PROJECTPATH: .
       #     PYTHONPATH: ./src
       - name: load data
-        run: dvc pull data/samples/sample.csv.dvc 
+        run: dvc pull data/samples/sample.csv
 
           
       - name: Run validate
