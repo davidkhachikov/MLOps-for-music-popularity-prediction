@@ -56,7 +56,9 @@ jobs:
       #     ZENML_CONFIG_PATH: ./services/zenml
       #     PROJECTPATH: .
       #     PYTHONPATH: ./src
-          
+      - name: load data
+        run: dvc pull data/samples/sample.csv.dvc 
+
           
       - name: Run validate
         run: python ./src/validate.py
