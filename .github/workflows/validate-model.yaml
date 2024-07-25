@@ -42,6 +42,8 @@ jobs:
           cache: 'pip' # caching pip dependencies
           
         # Install Python packages  
+      - name: setting up dvc
+        uses: iterative/setup-dvc@v1
       - name: install python packages
       
         # `run` allows to run shell commands
