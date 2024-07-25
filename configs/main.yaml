@@ -4,8 +4,8 @@ data:
   path_to_raw: ./data/raw/tracks.csv
   remote: mlops_remote
   repo: .
-  sample_num: 4
-  version: AIRFLOW2.4
+  sample_num: 5
+  version: AIRFLOW2.5
 defaults:
 - _self_
 - data_features
