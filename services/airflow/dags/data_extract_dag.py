@@ -14,7 +14,7 @@ current_version = data['data']['version']
 
 with DAG(
     dag_id="data_extract",
-    schedule_interval="*/10 * * * *",
+    schedule_interval="*/6 * * * *",
     catchup=False,
     start_date=datetime(2024, 7, 14, 16, 25),
     max_active_runs=1
