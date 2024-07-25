@@ -1,0 +1,18 @@
+active_stack_id: 81f6f840-3242-4b5b-a90d-b59b89933b0c
+active_workspace_name: default
+analytics_opt_in: true
+store:
+  backup_directory: /home/user/project/MLOps-for-music-popularity-prediction/services/zenml/database_backup
+  backup_strategy: in-memory
+  database: /home/user/project/MLOps-for-music-popularity-prediction/services/zenml/local_stores/default_zen_store/zenml.db
+  driver: sqlite
+  max_overflow: 20
+  pool_pre_ping: true
+  pool_size: 20
+  secrets_store:
+    type: sql
+  ssl_verify_server_cert: false
+  type: sql
+  url: sqlite:////home/user/project/MLOps-for-music-popularity-prediction/services/zenml/local_stores/default_zen_store/zenml.db
+user_id: 1ff04544-8c3f-4a81-afef-294ebcd33653
+version: 0.58.2
