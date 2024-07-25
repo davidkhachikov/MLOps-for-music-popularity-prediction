@@ -6,5 +6,5 @@ for i in {0..4}
 do
     echo "Evaluation champion with data-version $i"
     DATA_VERSION="AIRFLOW2.${i}"
-    mlflow run . --env-manager=local -e predict -P data-version="$DATA_VERSION"
+    mlflow run . --env-manager=local -e predict -P version="$DATA_VERSION"
 done

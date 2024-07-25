@@ -84,8 +84,6 @@ def predict(artist_followers=None,
     example = json.dumps( 
         { "inputs": example.to_dict() }
     )
-    with open('example.json', 'w') as file:
-        json.dump(features, file)
 
     payload = example
 
@@ -135,4 +133,4 @@ demo = gr.Interface(
 )
 
 # Launch the web UI locally on port 5155
-demo.launch(server_port = cfg.web_ui_port)
+demo.launch(share=True)

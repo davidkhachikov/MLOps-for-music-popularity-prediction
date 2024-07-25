@@ -39,7 +39,7 @@ def evaluate(data_version="AIRFLOW2.0", model_name="hist_gradient_boosting", mod
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Evaluate a model.")
-    parser.add_argument("--data-version", type=str, default="AIRFLOW2.0", help="Data version to use for evaluation")
+    parser.add_argument("--data-version", type=str, default="AIRFLOW2.4", help="Data version to use for evaluation")
     parser.add_argument("--model-name", type=str, default="hist_gradient_boosting", help="Model name to evaluate")
     parser.add_argument("--model-alias", type=str, default="champion", help="Model alias to use for evaluation")
     args = parser.parse_args()

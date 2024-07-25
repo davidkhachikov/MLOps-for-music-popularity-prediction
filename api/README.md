@@ -12,6 +12,8 @@ This is the main application file for the API. It contains the following endpoin
     / (GET): A welcome message describing the API and its endpoints.
     /predict (POST): Endpoint for sending prediction requests to the deployed model.
 
+You can use `scripts/test_api.sh` to test api/predict endpoint on example. You can find examples in api/examples folder. Also you can run predict endpoint of mlflow to try model on random element of sample.
+
 `scripts/deploy_docker.sh`
 
 This script is used to build and run the Docker container for the API.
