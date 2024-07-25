@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1721808444154
+current_stage: None
+description: null
+last_updated_timestamp: 1721808444154
+name: hist_gradient_boosting
+run_id: eb13405a38ab4af3915499c6728b314b
+run_link: null
+source: file:///home/user/project/MLOps-for-music-popularity-prediction/mlruns/237462060817752813/eb13405a38ab4af3915499c6728b314b/artifacts/basic_hgb
+status: READY
+status_message: null
+storage_location: file:///home/user/project/MLOps-for-music-popularity-prediction/mlruns/237462060817752813/eb13405a38ab4af3915499c6728b314b/artifacts/basic_hgb
+user_id: null
+version: 20

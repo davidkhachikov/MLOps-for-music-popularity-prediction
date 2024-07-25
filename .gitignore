@@ -169,6 +169,7 @@ cython_debug/
 .vscode/
 
 # MLflow run files
+!mlruns/models
 mlruns/
 multirun/
 outputs/

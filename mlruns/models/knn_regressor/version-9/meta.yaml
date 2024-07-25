@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1721817335961
+current_stage: None
+description: null
+last_updated_timestamp: 1721817335961
+name: knn_regressor
+run_id: b8e276d001ae42748f56c83f66c923df
+run_link: null
+source: file:///home/user/project/MLOps-for-music-popularity-prediction/mlruns/889239663345615269/b8e276d001ae42748f56c83f66c923df/artifacts/basic_knn
+status: READY
+status_message: null
+storage_location: file:///home/user/project/MLOps-for-music-popularity-prediction/mlruns/889239663345615269/b8e276d001ae42748f56c83f66c923df/artifacts/basic_knn
+user_id: null
+version: 9

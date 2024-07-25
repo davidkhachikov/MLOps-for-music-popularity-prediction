@@ -1,11 +1,5 @@
 # api/app.py
 
-import logging
-
-# Add this line near the top of your file, after other imports
-logger = logging.getLogger(__name__)
-
-
 from flask import Flask, request, jsonify, abort, make_response
 from model import model_predict
 
@@ -33,10 +27,7 @@ def info():
 def predict():
     data = None
     try:
-        # Load the JSON data from the request
         data = request.json
-        logger.info(f"Received data: {data}")
-        
         # Validate input
         if 'inputs' not in data:
             raise ValueError("Missing 'inputs' in request data")
@@ -60,12 +51,10 @@ def predict():
         
         return jsonify(result), 200
     except Exception as e:
-        # Log the data that caused the failure
-        logger.error(f"Error processing data: {data}, Error: {str(e)}")
-        # Send the logged data as part of the error response
-        return jsonify({'error': str(e), 'logged_data': data}), 400
+        # Send the error message
+        return jsonify({'error': str(e)}), 400
 
 # This will run a local server to accept requests to the API.
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5001))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=False, host='0.0.0.0', port=port)
