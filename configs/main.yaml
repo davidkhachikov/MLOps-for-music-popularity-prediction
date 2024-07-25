@@ -5,7 +5,7 @@ data:
   remote: mlops_remote
   repo: .
   sample_num: 4
-  version: AIRFLOW2.4
+  version: AIRFLOW2.0
 defaults:
 - _self_
 - data_features
